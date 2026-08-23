@@ -40,7 +40,10 @@ export function Header() {
         >
           <Logo />
 
-          <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+          <nav
+            aria-label="Primary"
+            className="hidden items-center gap-8 lg:flex"
+          >
             {primaryNav.map((item) => (
               <Link
                 key={item.label}
@@ -54,10 +57,10 @@ export function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <Link
-              href="/risk-assessment"
+              href="/client-login"
               className="text-[13.5px] font-medium text-charcoal/80 transition-colors hover:text-navy"
             >
-              Client Login
+              Client Portal
             </Link>
             <span aria-hidden className="h-4 w-px bg-line" />
             <Button href="/risk-assessment" size="sm" variant="primary">
@@ -112,10 +115,18 @@ export function Header() {
             </Link>
           ))}
           <div className="mt-6 flex flex-col gap-3">
-            <Button href="/risk-assessment" variant="secondary" onClick={() => setOpen(false)}>
-              Client Login
+            <Button
+              href="/client-login"
+              variant="secondary"
+              onClick={() => setOpen(false)}
+            >
+              Client Portal
             </Button>
-            <Button href="/risk-assessment" variant="primary" onClick={() => setOpen(false)}>
+            <Button
+              href="/risk-assessment"
+              variant="primary"
+              onClick={() => setOpen(false)}
+            >
               Get Coverage
             </Button>
           </div>

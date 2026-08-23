@@ -1,10 +1,15 @@
-export type LegalSection = { heading: string; paragraphs: string[]; list?: string[] };
+export type LegalSection = {
+  heading: string;
+  paragraphs: string[];
+  list?: string[];
+};
 
 export type LegalDoc = {
   slug: string;
   title: string;
   intro: string;
   updated: string;
+  category?: "core" | "transparency";
   sections: LegalSection[];
 };
 
@@ -268,6 +273,146 @@ export const legalDocs: LegalDoc[] = [
         heading: "4. Contact",
         paragraphs: [
           "For regulatory or compliance enquiries, please contact our office using the details provided on this website.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "underwriting-methodology",
+    title: "Underwriting Methodology",
+    updated: UPDATED,
+    category: "transparency",
+    intro:
+      "An overview of the evidence, judgement and authority framework Meridian Risk uses to assess protocol risk. This methodology is proprietary, may change without notice and does not create a duty to offer coverage.",
+    sections: [
+      {
+        heading: "1. Evidence considered",
+        paragraphs: [
+          "Underwriting may consider architecture, deployed code, audit history, economic design, governance, privileges, liquidity, dependencies, operations, incident history and any other information Meridian Risk considers relevant.",
+        ],
+      },
+      {
+        heading: "2. Judgement and model limitations",
+        paragraphs: [
+          "Models, scores and on-chain indicators support but do not replace underwriting judgement. Meridian Risk may apply adjustments, referrals, exclusions, sub-limits or decline a risk notwithstanding any displayed or calculated score.",
+        ],
+      },
+      {
+        heading: "3. No entitlement or reliance",
+        paragraphs: [
+          "Submission of information, completion of review or prior quotation creates no entitlement to coverage, renewal or consistent terms. Meridian Risk may revise or withdraw indications before authorized execution of a policy.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "security-practices",
+    title: "Security Practices",
+    updated: UPDATED,
+    category: "transparency",
+    intro:
+      "A high-level statement of the administrative and technical practices applied to underwriting information. Detailed controls are confidential and no security measure eliminates risk.",
+    sections: [
+      {
+        heading: "1. Information handling",
+        paragraphs: [
+          "Access to underwriting and claims information is limited according to business need and role. Service providers may process information under contractual obligations and applicable law.",
+        ],
+      },
+      {
+        heading: "2. Security controls",
+        paragraphs: [
+          "Meridian Risk uses a risk-based combination of identity controls, encryption, logging, environment separation, vendor review and incident procedures. Controls may vary by system and sensitivity.",
+        ],
+      },
+      {
+        heading: "3. No warranty",
+        paragraphs: [
+          "This statement is not a certification, warranty or representation that systems are invulnerable. Meridian Risk disclaims liability to the fullest extent permitted by law for reliance on this summary.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "capital-capacity",
+    title: "Capital & Capacity Information",
+    updated: UPDATED,
+    category: "transparency",
+    intro:
+      "General information concerning insurance capacity. Capacity is transaction-specific, may be supported by third parties and is not committed until stated in an executed policy.",
+    sections: [
+      {
+        heading: "1. Availability of capacity",
+        paragraphs: [
+          "Capacity depends on jurisdiction, product, accumulation, risk quality, market conditions and applicable authorization. Website references to limits or capacity are not offers or reservations of capital.",
+        ],
+      },
+      {
+        heading: "2. Reinsurance and participation",
+        paragraphs: [
+          "Meridian Risk may use reinsurance, co-insurance or other participation arrangements. Unless the policy expressly provides otherwise, the insured has no direct rights against a reinsurer or capacity provider.",
+        ],
+      },
+      {
+        heading: "3. Counterparty diligence",
+        paragraphs: [
+          "Financial and regulatory information appropriate to a proposed transaction may be made available during placement, subject to confidentiality, law and the rights of third parties.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "governance",
+    title: "Corporate Governance",
+    updated: UPDATED,
+    category: "transparency",
+    intro:
+      "A summary of the authority and oversight principles applied within Meridian Risk. It does not amend any policy, create fiduciary duties or confer rights on website users.",
+    sections: [
+      {
+        heading: "1. Authority and referral",
+        paragraphs: [
+          "Underwriting, claims and operational decisions are subject to defined authority and referral requirements. Only an authorized representative may bind coverage or amend policy terms.",
+        ],
+      },
+      {
+        heading: "2. Oversight and records",
+        paragraphs: [
+          "Material decisions may be subject to technical, legal, compliance, capital or committee review. Meridian Risk maintains records in accordance with its policies and applicable requirements.",
+        ],
+      },
+      {
+        heading: "3. No waiver by communication",
+        paragraphs: [
+          "Statements by personnel, service providers or models do not waive a policy provision or bind Meridian Risk unless documented in an authorized written endorsement.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "partners-reinsurance",
+    title: "Partners & Reinsurance",
+    updated: UPDATED,
+    category: "transparency",
+    intro:
+      "General information on the use of specialist providers and risk-transfer counterparties. Specific relationships may be confidential, conditional or subject to change.",
+    sections: [
+      {
+        heading: "1. Specialist providers",
+        paragraphs: [
+          "Meridian Risk may engage auditors, forensic firms, counsel, data providers, brokers, claims specialists and other advisers. Their involvement does not make them insurers or create duties to an insured unless expressly agreed.",
+        ],
+      },
+      {
+        heading: "2. Reinsurance",
+        paragraphs: [
+          "Reinsurance is an arrangement between Meridian Risk and its reinsurers. It does not relieve the insured of policy obligations or provide direct rights against a reinsurer unless expressly stated in the policy.",
+        ],
+      },
+      {
+        heading: "3. Changes and confidentiality",
+        paragraphs: [
+          "Counterparties, service providers and participation structures may change. Meridian Risk is not required to disclose confidential commercial terms except where required by law or the issued policy.",
         ],
       },
     ],

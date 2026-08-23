@@ -19,14 +19,18 @@ export function RiskIntelligence() {
               Underwriting informed by on-chain intelligence.
             </h2>
             <p className="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">
-              We evaluate protocol risk across the technical, economic, governance and operational
-              factors that shape an insured environment — combining on-chain data with disciplined
+              We evaluate protocol risk across the technical, economic,
+              governance and operational factors that shape an insured
+              environment — combining on-chain data with disciplined
               underwriting judgement.
             </p>
 
             <ul className="mt-9 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {riskInputs.map((input) => (
-                <li key={input} className="flex items-start gap-2.5 text-[14px] text-charcoal/80">
+                <li
+                  key={input}
+                  className="flex items-start gap-2.5 text-[14px] text-charcoal/80"
+                >
                   <IconCheck className="mt-0.5 shrink-0 text-gold" />
                   {input}
                 </li>
@@ -45,7 +49,9 @@ export function RiskIntelligence() {
                     Protocol Risk Profile
                   </span>
                 </div>
-                <span className="font-mono text-[11px] text-slate-faint">REF · MRX-4471</span>
+                <span className="font-mono text-[11px] text-slate-faint">
+                  REF · MRX-4471
+                </span>
               </div>
 
               <div className="grid gap-8 p-8 sm:grid-cols-2 sm:p-10">
@@ -73,14 +79,16 @@ export function RiskIntelligence() {
                     <div className="text-[11px] uppercase tracking-[0.1em] text-slate-faint">
                       {s.k}
                     </div>
-                    <div className="mt-1.5 font-serif text-[15px] text-navy">{s.v}</div>
+                    <div className="mt-1.5 font-serif text-[15px] text-navy">
+                      {s.v}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
             <p className="mt-4 text-[12px] text-slate-faint">
-              Illustrative risk profile. Indicators, weightings and outcomes vary by protocol and
-              are subject to underwriting review.
+              Illustrative risk profile. Indicators, weightings and outcomes
+              vary by protocol and are subject to underwriting review.
             </p>
           </div>
         </div>

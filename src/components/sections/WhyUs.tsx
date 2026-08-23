@@ -5,7 +5,10 @@ import { pillars } from "@/lib/content";
 
 export function WhyUs() {
   return (
-    <section id="why-us" className="scroll-mt-24 border-t border-line bg-ivory-50 py-24 lg:py-32">
+    <section
+      id="why-us"
+      className="scroll-mt-24 border-t border-line bg-ivory-50 py-24 lg:py-32"
+    >
       <div className="container-x">
         <div className="reveal max-w-2xl">
           <SectionLabel>Why Meridian</SectionLabel>

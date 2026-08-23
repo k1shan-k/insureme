@@ -6,13 +6,13 @@ export function CoverageCard({
   title,
   description,
   icon,
-  href = "/risk-assessment",
+  href,
 }: {
   index: string;
   title: string;
   description: string;
   icon: React.ReactNode;
-  href?: string;
+  href: string;
 }) {
   return (
     <Link
@@ -51,9 +51,15 @@ export function StepCard({
 }) {
   return (
     <div className="relative border-t border-line-dark pt-8">
-      <span className="font-serif text-4xl font-light text-gold-light/90">{step}</span>
-      <h3 className="mt-5 font-serif text-xl font-medium text-ivory">{title}</h3>
-      <p className="mt-3 text-[14px] leading-relaxed text-ivory/60">{description}</p>
+      <span className="font-serif text-4xl font-light text-gold-light/90">
+        {step}
+      </span>
+      <h3 className="mt-5 font-serif text-xl font-medium text-ivory">
+        {title}
+      </h3>
+      <p className="mt-3 text-[14px] leading-relaxed text-ivory/60">
+        {description}
+      </p>
     </div>
   );
 }
@@ -73,7 +79,9 @@ export function PillarCard({
         {icon}
       </span>
       <h3 className="mt-6 font-serif text-xl font-medium text-navy">{title}</h3>
-      <p className="mt-3 text-[14.5px] leading-relaxed text-slate-muted">{description}</p>
+      <p className="mt-3 text-[14.5px] leading-relaxed text-slate-muted">
+        {description}
+      </p>
     </div>
   );
 }

@@ -32,7 +32,11 @@ export function HeroVisual() {
       {/* Network layer */}
       <div className="relative overflow-hidden border border-line bg-navy-950">
         <div className="pointer-events-none absolute inset-0 opacity-[0.9]">
-          <svg viewBox="0 0 400 200" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
+          <svg
+            viewBox="0 0 400 200"
+            className="h-full w-full"
+            preserveAspectRatio="xMidYMid slice"
+          >
             <defs>
               <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stopColor="#C4A15A" stopOpacity="0.15" />
@@ -76,8 +80,20 @@ export function HeroVisual() {
             ))}
             {nodes.map((n, i) => (
               <g key={i}>
-                <circle cx={n.cx} cy={n.cy} r="9" fill="none" stroke="#2A466B" strokeWidth="0.75" />
-                <circle cx={n.cx} cy={n.cy} r="2.4" fill={i % 3 === 0 ? "#C4A15A" : "#7FA0C4"} />
+                <circle
+                  cx={n.cx}
+                  cy={n.cy}
+                  r="9"
+                  fill="none"
+                  stroke="#2A466B"
+                  strokeWidth="0.75"
+                />
+                <circle
+                  cx={n.cx}
+                  cy={n.cy}
+                  r="2.4"
+                  fill={i % 3 === 0 ? "#C4A15A" : "#7FA0C4"}
+                />
               </g>
             ))}
           </svg>
@@ -88,17 +104,23 @@ export function HeroVisual() {
             <span className="text-[10px] font-medium uppercase tracking-label text-gold-light">
               Protocol Risk Profile
             </span>
-            <span className="text-[10px] uppercase tracking-label text-ivory/40">Live</span>
+            <span className="text-[10px] uppercase tracking-label text-ivory/40">
+              Live
+            </span>
           </div>
           <div className="mt-6 flex items-end gap-6">
             <div>
-              <div className="font-serif text-6xl font-light leading-none text-ivory">72</div>
+              <div className="font-serif text-6xl font-light leading-none text-ivory">
+                72
+              </div>
               <div className="mt-1 text-[11px] uppercase tracking-label text-ivory/45">
                 Overall / 100
               </div>
             </div>
             <div className="mb-1 border-l border-line-dark pl-6">
-              <div className="text-[11px] uppercase tracking-label text-gold-light">Moderate</div>
+              <div className="text-[11px] uppercase tracking-label text-gold-light">
+                Moderate
+              </div>
               <div className="mt-1 text-xs text-ivory/55">Composite index</div>
             </div>
           </div>

@@ -15,12 +15,14 @@ export function WhyInsurance() {
           <div className="reveal lg:col-span-6" data-reveal-delay="100">
             <div className="max-w-xl space-y-6 text-[16px] leading-relaxed text-slate-muted">
               <p>
-                DeFi protocols operate across smart contracts, governance systems, liquidity
-                pools, oracles, bridges and interconnected infrastructure. A single failure can
-                propagate rapidly across an ecosystem.
+                DeFi protocols operate across smart contracts, governance
+                systems, liquidity pools, oracles, bridges and interconnected
+                infrastructure. A single failure can propagate rapidly across an
+                ecosystem.
               </p>
               <p className="text-charcoal">
-                Our underwriting framework is designed specifically for these risks.
+                Our underwriting framework is designed specifically for these
+                risks.
               </p>
             </div>
 
@@ -42,7 +44,10 @@ export function WhyInsurance() {
         </div>
 
         {/* Editorial risk diagram */}
-        <div className="reveal mt-16 border border-line bg-navy-950 p-8 sm:p-12" data-reveal-delay="120">
+        <div
+          className="reveal mt-16 border border-line bg-navy-950 p-8 sm:p-12"
+          data-reveal-delay="120"
+        >
           <RiskWeb />
         </div>
       </div>
@@ -68,20 +73,27 @@ function RiskWeb() {
           Illustrative
         </span>
       </div>
-      <svg viewBox="0 0 100 34" className="w-full" preserveAspectRatio="none" aria-hidden>
+      <svg
+        viewBox="0 0 100 34"
+        className="w-full"
+        preserveAspectRatio="none"
+        aria-hidden
+      >
         {layers.map((a, i) =>
-          layers.slice(i + 1).map((b, j) => (
-            <line
-              key={`${i}-${j}`}
-              x1={a.x}
-              y1={i % 2 === 0 ? 8 : 24}
-              x2={b.x}
-              y2={(i + j + 1) % 2 === 0 ? 8 : 24}
-              stroke="#C4A15A"
-              strokeWidth="0.15"
-              strokeOpacity={0.35}
-            />
-          ))
+          layers
+            .slice(i + 1)
+            .map((b, j) => (
+              <line
+                key={`${i}-${j}`}
+                x1={a.x}
+                y1={i % 2 === 0 ? 8 : 24}
+                x2={b.x}
+                y2={(i + j + 1) % 2 === 0 ? 8 : 24}
+                stroke="#C4A15A"
+                strokeWidth="0.15"
+                strokeOpacity={0.35}
+              />
+            )),
         )}
         {layers.map((l, i) => (
           <circle

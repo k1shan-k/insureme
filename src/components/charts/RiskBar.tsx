@@ -22,7 +22,9 @@ export function RiskBar({
     <div className="group">
       <div className="flex items-baseline justify-between">
         <span className="text-[13px] text-charcoal/80">{label}</span>
-        <span className="font-serif text-[15px] tabular-nums text-navy">{value}</span>
+        <span className="font-serif text-[15px] tabular-nums text-navy">
+          {value}
+        </span>
       </div>
       <div className="mt-2 h-[3px] w-full bg-line/80">
         <div

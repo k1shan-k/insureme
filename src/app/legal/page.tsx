@@ -3,11 +3,12 @@ import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { IconArrowUpRight } from "@/components/ui/Icons";
 import { legalDocs } from "@/lib/legal";
+import { insurancePrograms } from "@/lib/programs";
 
 export const metadata: Metadata = {
   title: "Legal & Policy Documentation",
   description:
-    "Privacy Policy, Terms of Use, Insurance Policy Terms, Coverage Disclosures, Claims Procedure, Risk Disclosures and Regulatory Information.",
+    "Core policy documents, program terms, disclosures, claims procedures and regulatory information.",
 };
 
 export default function LegalIndexPage() {
@@ -20,8 +21,8 @@ export default function LegalIndexPage() {
             Documentation and disclosures.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-            The frameworks that govern our website, coverage and claims — published in the interest
-            of clarity and transparency.
+            The frameworks that govern our website, coverage and claims —
+            published in the interest of clarity and transparency.
           </p>
         </div>
       </section>
@@ -36,12 +37,47 @@ export default function LegalIndexPage() {
                 className="group flex flex-col border-b border-line p-8 transition-colors hover:bg-ivory-50 sm:odd:border-r lg:p-10"
               >
                 <div className="flex items-start justify-between">
-                  <h2 className="font-serif text-xl font-medium text-navy">{d.title}</h2>
+                  <h2 className="font-serif text-xl font-medium text-navy">
+                    {d.title}
+                  </h2>
                   <IconArrowUpRight className="mt-1 text-slate-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-gold" />
                 </div>
-                <p className="mt-3 text-[14.5px] leading-relaxed text-slate-muted">{d.intro}</p>
+                <p className="mt-3 text-[14.5px] leading-relaxed text-slate-muted">
+                  {d.intro}
+                </p>
               </Link>
             ))}
+          </div>
+
+          <div className="mt-20 border-t border-line pt-12">
+            <SectionLabel>Program terms</SectionLabel>
+            <h2 className="mt-5 max-w-2xl font-serif text-4xl font-light text-navy">
+              Indicative terms by insurance program.
+            </h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-slate-muted">
+              Review program-specific triggers, exclusions, insured obligations,
+              claims controls and insurer protections. Issued policy
+              documentation always controls.
+            </p>
+            <div className="mt-10 grid border-l border-r border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+              {insurancePrograms.map((program) => (
+                <Link
+                  key={program.slug}
+                  href={`/insurance/${program.slug}#indicative-terms`}
+                  className="group flex flex-col border-b border-line p-7 transition-colors hover:bg-ivory-50"
+                >
+                  <span className="font-serif text-sm text-gold">
+                    {program.index}
+                  </span>
+                  <h3 className="mt-4 font-serif text-xl font-medium text-navy">
+                    {program.title}
+                  </h3>
+                  <span className="mt-6 inline-flex items-center gap-2 text-[13px] font-medium text-navy group-hover:text-gold">
+                    Review terms <IconArrowUpRight />
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -24,7 +24,8 @@ const SITE_URL = "https://meridianrisk.example";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Meridian Risk — Insurance infrastructure for the decentralized economy",
+    default:
+      "Meridian Risk — Insurance infrastructure for the decentralized economy",
     template: "%s — Meridian Risk",
   },
   description:

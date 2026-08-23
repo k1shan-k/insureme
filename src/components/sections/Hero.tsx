@@ -18,12 +18,18 @@ export function Hero() {
               Insurance for the decentralized economy.
             </h1>
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate-muted">
-              Protecting protocols, digital assets, and Web3 infrastructure against defined
-              on-chain risks through institutional-grade underwriting.
+              Protecting protocols, digital assets, and Web3 infrastructure
+              against defined on-chain risks through institutional-grade
+              underwriting.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button href="/risk-assessment" size="lg" variant="primary" className="group">
+              <Button
+                href="/risk-assessment"
+                size="lg"
+                variant="primary"
+                className="group"
+              >
                 Get a Risk Assessment
                 <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Button>

@@ -19,9 +19,10 @@ export function Monitoring() {
               Risk evolves. Underwriting should too.
             </h2>
             <p className="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">
-              Protocol architecture, governance, liquidity and dependencies can change after a
-              policy is issued. Our risk intelligence framework is designed to help identify
-              material changes across the insured environment.
+              Protocol architecture, governance, liquidity and dependencies can
+              change after a policy is issued. Our risk intelligence framework
+              is designed to help identify material changes across the insured
+              environment.
             </p>
           </div>
 
@@ -31,7 +32,9 @@ export function Monitoring() {
                 <span className="text-[11px] font-medium uppercase tracking-label text-gold-light">
                   Risk Change Monitor
                 </span>
-                <span className="font-mono text-[11px] text-ivory/40">Last sync · 00:03 UTC</span>
+                <span className="font-mono text-[11px] text-ivory/40">
+                  Last sync · 00:03 UTC
+                </span>
               </div>
 
               <ul className="divide-y divide-line-dark">
@@ -59,8 +62,8 @@ export function Monitoring() {
               </ul>
             </div>
             <p className="mt-4 text-[12px] text-slate-faint">
-              Monitoring signals are informational and do not constitute a determination of
-              coverage, breach or claim outcome.
+              Monitoring signals are informational and do not constitute a
+              determination of coverage, breach or claim outcome.
             </p>
           </div>
         </div>

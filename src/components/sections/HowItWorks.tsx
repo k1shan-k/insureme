@@ -24,7 +24,12 @@ export function HowItWorks() {
 
         <div className="reveal mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
-            <StepCard key={s.step} step={s.step} title={s.title} description={s.description} />
+            <StepCard
+              key={s.step}
+              step={s.step}
+              title={s.title}
+              description={s.description}
+            />
           ))}
         </div>
       </div>

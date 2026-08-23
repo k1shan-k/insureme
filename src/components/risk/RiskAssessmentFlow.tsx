@@ -6,6 +6,7 @@ import { Button, ArrowRight } from "@/components/ui/Button";
 import { IconCheck } from "@/components/ui/Icons";
 import { RiskBar } from "@/components/charts/RiskBar";
 import { RiskGauge } from "@/components/charts/RiskGauge";
+import { insurancePrograms } from "@/lib/programs";
 
 type StepId = 0 | 1 | 2 | 3;
 
@@ -16,16 +17,19 @@ const stepMeta = [
   { label: "Contact Underwriting" },
 ];
 
-const coverageInterests = [
-  "Smart Contract Cover",
-  "Protocol Exploit Cover",
-  "Cross-Chain & Bridge Cover",
-  "Stablecoin & Depeg Cover",
-  "Treasury & Digital Asset Cover",
-  "Custom Protocol Cover",
+const chains = [
+  "Ethereum",
+  "Arbitrum",
+  "Optimism",
+  "Base",
+  "Polygon",
+  "Solana",
+  "Other",
 ];
 
-const chains = ["Ethereum", "Arbitrum", "Optimism", "Base", "Polygon", "Solana", "Other"];
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+class IntakeError extends Error {}
 
 export function RiskAssessmentFlow() {
   const [step, setStep] = useState<StepId>(0);
@@ -39,25 +43,81 @@ export function RiskAssessmentFlow() {
     governance: "",
     admin: "",
     oracles: "",
-    incidents: "",
     interests: [] as string[],
     name: "",
     email: "",
     role: "",
     notes: "",
+    companySite: "",
   });
 
-  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
-  const toggle = (k: "chains" | "interests", v: string) =>
-    setForm((f) => ({
-      ...f,
-      [k]: f[k].includes(v) ? f[k].filter((x) => x !== v) : [...f[k], v],
+  const set = (k: keyof typeof form, v: string) => {
+    setSubmissionState("idle");
+    setSubmissionError("");
+    setForm((current) => ({ ...current, [k]: v }));
+  };
+  const toggle = (k: "chains" | "interests", v: string) => {
+    setSubmissionState("idle");
+    setSubmissionError("");
+    setForm((current) => ({
+      ...current,
+      [k]: current[k].includes(v)
+        ? current[k].filter((item) => item !== v)
+        : [...current[k], v],
     }));
+  };
 
   const [submitted, setSubmitted] = useState(false);
+  const [submissionState, setSubmissionState] = useState<
+    "idle" | "submitting" | "error"
+  >("idle");
+  const [submissionError, setSubmissionError] = useState("");
+  const [submissionReference, setSubmissionReference] = useState("");
   const next = () => setStep((s) => Math.min(3, s + 1) as StepId);
   const back = () => setStep((s) => Math.max(0, s - 1) as StepId);
-  const submit = () => setSubmitted(true);
+  const submit = async () => {
+    setSubmissionError("");
+    setSubmissionState("submitting");
+    try {
+      const response = await fetch("/api/risk-assessments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      let result: { reference?: string; error?: string } = {};
+      try {
+        const responseText = await response.text();
+        result = responseText
+          ? (JSON.parse(responseText) as { reference?: string; error?: string })
+          : {};
+      } catch {
+        result = {};
+      }
+
+      if (!response.ok) {
+        throw new IntakeError(
+          result.error ||
+            "Underwriting intake is currently unavailable. Please try again.",
+        );
+      }
+      if (!result.reference) {
+        throw new IntakeError(
+          "We could not confirm receipt of the submission. Please try again.",
+        );
+      }
+
+      setSubmissionReference(result.reference);
+      setSubmitted(true);
+    } catch (error) {
+      setSubmissionError(
+        error instanceof IntakeError
+          ? error.message
+          : "Underwriting intake is currently unavailable. Please check your connection and try again.",
+      );
+      setSubmissionState("error");
+    }
+  };
 
   if (submitted) {
     return (
@@ -69,10 +129,19 @@ export function RiskAssessmentFlow() {
           Your assessment request has been received.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-slate-muted">
-          Thank you, {form.name || "there"}. Our underwriting team will review the information for{" "}
-          <span className="text-charcoal">{form.protocol || "your protocol"}</span> and follow up at{" "}
-          <span className="text-charcoal">{form.email || "your email"}</span>. This acknowledgement
-          does not constitute an offer of, or binding commitment to provide, insurance.
+          Thank you, {form.name || "there"}. Our underwriting team will review
+          the information for{" "}
+          <span className="text-charcoal">
+            {form.protocol || "your protocol"}
+          </span>{" "}
+          and follow up at{" "}
+          <span className="text-charcoal">{form.email || "your email"}</span>.
+          Reference{" "}
+          <span className="font-medium text-charcoal">
+            {submissionReference}
+          </span>
+          . This acknowledgement confirms intake only and does not constitute an
+          offer of, or binding commitment to provide, insurance.
         </p>
         <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <Button href="/" variant="secondary">
@@ -90,7 +159,7 @@ export function RiskAssessmentFlow() {
     step === 0
       ? form.protocol.trim() !== "" && form.category !== ""
       : step === 3
-        ? form.name.trim() !== "" && form.email.trim() !== ""
+        ? form.name.trim() !== "" && EMAIL.test(form.email.trim())
         : true;
 
   return (
@@ -120,7 +189,11 @@ export function RiskAssessmentFlow() {
               </span>
               <span
                 className={`text-[12.5px] font-medium ${
-                  active ? "text-navy" : done ? "text-charcoal/70" : "text-slate-faint"
+                  active
+                    ? "text-navy"
+                    : done
+                      ? "text-charcoal/70"
+                      : "text-slate-faint"
                 }`}
               >
                 {s.label}
@@ -161,17 +234,34 @@ export function RiskAssessmentFlow() {
                   onChange={(e) => set("category", e.target.value)}
                 >
                   <option value="">Select category</option>
-                  {["Lending", "DEX / AMM", "Stablecoin", "Bridge", "Derivatives", "Staking / LST", "Infrastructure", "Other"].map(
-                    (o) => (
-                      <option key={o}>{o}</option>
-                    )
-                  )}
+                  {[
+                    "Lending",
+                    "DEX / AMM",
+                    "Stablecoin",
+                    "Bridge",
+                    "Derivatives",
+                    "Staking / LST",
+                    "Infrastructure",
+                    "Other",
+                  ].map((o) => (
+                    <option key={o}>{o}</option>
+                  ))}
                 </select>
               </Field>
               <Field label="Total value locked (approx.)">
-                <select className={inputCls} value={form.tvl} onChange={(e) => set("tvl", e.target.value)}>
+                <select
+                  className={inputCls}
+                  value={form.tvl}
+                  onChange={(e) => set("tvl", e.target.value)}
+                >
                   <option value="">Select range</option>
-                  {["< $10M", "$10M – $50M", "$50M – $250M", "$250M – $1B", "> $1B"].map((o) => (
+                  {[
+                    "< $10M",
+                    "$10M – $50M",
+                    "$50M – $250M",
+                    "$250M – $1B",
+                    "> $1B",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
@@ -181,7 +271,11 @@ export function RiskAssessmentFlow() {
             <Field label="Deployed networks" className="mt-6">
               <div className="flex flex-wrap gap-2">
                 {chains.map((c) => (
-                  <Chip key={c} active={form.chains.includes(c)} onClick={() => toggle("chains", c)}>
+                  <Chip
+                    key={c}
+                    active={form.chains.includes(c)}
+                    onClick={() => toggle("chains", c)}
+                  >
                     {c}
                   </Chip>
                 ))}
@@ -190,33 +284,70 @@ export function RiskAssessmentFlow() {
 
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               <Field label="Audit history">
-                <select className={inputCls} value={form.audits} onChange={(e) => set("audits", e.target.value)}>
+                <select
+                  className={inputCls}
+                  value={form.audits}
+                  onChange={(e) => set("audits", e.target.value)}
+                >
                   <option value="">Select</option>
-                  {["No formal audit", "1 audit", "2–3 audits", "4+ audits / continuous"].map((o) => (
+                  {[
+                    "No formal audit",
+                    "1 audit",
+                    "2–3 audits",
+                    "4+ audits / continuous",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
               </Field>
               <Field label="Governance model">
-                <select className={inputCls} value={form.governance} onChange={(e) => set("governance", e.target.value)}>
+                <select
+                  className={inputCls}
+                  value={form.governance}
+                  onChange={(e) => set("governance", e.target.value)}
+                >
                   <option value="">Select</option>
-                  {["Multisig", "Timelock + multisig", "On-chain DAO", "Foundation-controlled", "Immutable"].map((o) => (
+                  {[
+                    "Multisig",
+                    "Timelock + multisig",
+                    "On-chain DAO",
+                    "Foundation-controlled",
+                    "Immutable",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
               </Field>
               <Field label="Admin / upgrade privileges">
-                <select className={inputCls} value={form.admin} onChange={(e) => set("admin", e.target.value)}>
+                <select
+                  className={inputCls}
+                  value={form.admin}
+                  onChange={(e) => set("admin", e.target.value)}
+                >
                   <option value="">Select</option>
-                  {["Upgradeable proxies", "Timelocked upgrades", "Restricted admin", "No admin keys"].map((o) => (
+                  {[
+                    "Upgradeable proxies",
+                    "Timelocked upgrades",
+                    "Restricted admin",
+                    "No admin keys",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
               </Field>
               <Field label="Oracle dependencies">
-                <select className={inputCls} value={form.oracles} onChange={(e) => set("oracles", e.target.value)}>
+                <select
+                  className={inputCls}
+                  value={form.oracles}
+                  onChange={(e) => set("oracles", e.target.value)}
+                >
                   <option value="">Select</option>
-                  {["None", "Single provider", "Multiple providers", "Custom / internal"].map((o) => (
+                  {[
+                    "None",
+                    "Single provider",
+                    "Multiple providers",
+                    "Custom / internal",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
@@ -243,7 +374,10 @@ export function RiskAssessmentFlow() {
               </div>
               <div className="flex flex-col justify-center gap-5">
                 <RiskBar label="Smart Contract" value={78} />
-                <RiskBar label="Governance" value={form.governance.includes("Immutable") ? 88 : 69} />
+                <RiskBar
+                  label="Governance"
+                  value={form.governance.includes("Immutable") ? 88 : 69}
+                />
                 <RiskBar label="Oracle Dependency" value={74} />
                 <RiskBar label="Liquidity" value={81} />
                 <RiskBar label="Operational Controls" value={76} />
@@ -256,8 +390,12 @@ export function RiskAssessmentFlow() {
                 { k: "Data Confidence", v: "Indicative" },
               ].map((s) => (
                 <div key={s.k} className="border border-line p-4">
-                  <div className="text-[11px] uppercase tracking-[0.1em] text-slate-faint">{s.k}</div>
-                  <div className="mt-1.5 font-serif text-[15px] text-navy">{s.v}</div>
+                  <div className="text-[11px] uppercase tracking-[0.1em] text-slate-faint">
+                    {s.k}
+                  </div>
+                  <div className="mt-1.5 font-serif text-[15px] text-navy">
+                    {s.v}
+                  </div>
                 </div>
               ))}
             </div>
@@ -271,23 +409,27 @@ export function RiskAssessmentFlow() {
             intro="Select the coverage lines relevant to your protocol. Availability, limits, deductibles and conditions are determined through underwriting and set out in policy documentation."
           >
             <div className="grid gap-3 sm:grid-cols-2">
-              {coverageInterests.map((c) => {
-                const active = form.interests.includes(c);
+              {insurancePrograms.map((program) => {
+                const active = form.interests.includes(program.slug);
                 return (
                   <button
                     type="button"
-                    key={c}
-                    onClick={() => toggle("interests", c)}
+                    key={program.slug}
+                    onClick={() => toggle("interests", program.slug)}
                     className={`flex items-center justify-between border px-5 py-4 text-left transition-colors ${
                       active
                         ? "border-navy bg-navy/[0.03]"
                         : "border-line hover:border-navy/40"
                     }`}
                   >
-                    <span className="text-[14.5px] text-charcoal">{c}</span>
+                    <span className="text-[14.5px] text-charcoal">
+                      {program.title}
+                    </span>
                     <span
                       className={`flex h-5 w-5 items-center justify-center border ${
-                        active ? "border-gold bg-gold text-white" : "border-line text-transparent"
+                        active
+                          ? "border-gold bg-gold text-white"
+                          : "border-line text-transparent"
                       }`}
                     >
                       <IconCheck />
@@ -297,8 +439,9 @@ export function RiskAssessmentFlow() {
               })}
             </div>
             <p className="mt-6 text-[13px] leading-relaxed text-slate-faint">
-              Coverage is subject to underwriting, applicable policy terms, limits, deductibles,
-              exclusions and conditions. Selection here indicates interest only.
+              Coverage is subject to underwriting, applicable policy terms,
+              limits, deductibles, exclusions and conditions. Selection here
+              indicates interest only.
             </p>
           </StepShell>
         )}
@@ -311,7 +454,12 @@ export function RiskAssessmentFlow() {
           >
             <div className="grid gap-6 sm:grid-cols-2">
               <Field label="Full name" required>
-                <input className={inputCls} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Jane Doe" />
+                <input
+                  className={inputCls}
+                  value={form.name}
+                  onChange={(e) => set("name", e.target.value)}
+                  placeholder="Jane Doe"
+                />
               </Field>
               <Field label="Work email" required>
                 <input
@@ -323,9 +471,17 @@ export function RiskAssessmentFlow() {
                 />
               </Field>
               <Field label="Role" className="sm:col-span-2">
-                <input className={inputCls} value={form.role} onChange={(e) => set("role", e.target.value)} placeholder="e.g. Head of Treasury, Security Lead" />
+                <input
+                  className={inputCls}
+                  value={form.role}
+                  onChange={(e) => set("role", e.target.value)}
+                  placeholder="e.g. Head of Treasury, Security Lead"
+                />
               </Field>
-              <Field label="Anything else we should know?" className="sm:col-span-2">
+              <Field
+                label="Anything else we should know?"
+                className="sm:col-span-2"
+              >
                 <textarea
                   rows={4}
                   className={`${inputCls} resize-none`}
@@ -334,15 +490,40 @@ export function RiskAssessmentFlow() {
                   placeholder="Context on your architecture, timelines or specific risks."
                 />
               </Field>
+              <div className="sr-only" aria-hidden="true">
+                <label htmlFor="company-site">Company site</label>
+                <input
+                  id="company-site"
+                  name="company-site"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.companySite}
+                  onChange={(event) => set("companySite", event.target.value)}
+                />
+              </div>
             </div>
             <p className="mt-6 text-[13px] leading-relaxed text-slate-faint">
-              By submitting, you consent to being contacted regarding your risk assessment. See our{" "}
-              <Link href="/legal/privacy" className="underline decoration-line underline-offset-2 hover:text-navy">
+              By submitting, you consent to being contacted regarding your risk
+              assessment. See our{" "}
+              <Link
+                href="/legal/privacy"
+                className="underline decoration-line underline-offset-2 hover:text-navy"
+              >
                 Privacy Policy
               </Link>
-              . This submission is not an application for, or a binding offer of, insurance.
+              . This submission is not an application for, or a binding offer
+              of, insurance.
             </p>
           </StepShell>
+        )}
+
+        {submissionState === "error" && (
+          <div
+            role="alert"
+            className="mt-8 border border-[#B5623A]/40 bg-[#B5623A]/[0.05] px-5 py-4 text-[13.5px] text-[#8F4529]"
+          >
+            {submissionError}
+          </div>
         )}
 
         {/* Nav */}
@@ -357,13 +538,29 @@ export function RiskAssessmentFlow() {
           </button>
 
           {step < 3 ? (
-            <Button variant="primary" onClick={next} disabled={!canContinue} className="group">
-              {step === 0 ? "Review Risk" : step === 1 ? "Explore Coverage" : "Continue"}
+            <Button
+              variant="primary"
+              onClick={next}
+              disabled={!canContinue}
+              className="group"
+            >
+              {step === 0
+                ? "Review Risk"
+                : step === 1
+                  ? "Explore Coverage"
+                  : "Continue"}
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           ) : (
-            <Button variant="gold" onClick={submit} disabled={!canContinue} className="group">
-              Submit for Review
+            <Button
+              variant="gold"
+              onClick={submit}
+              disabled={!canContinue || submissionState === "submitting"}
+              className="group"
+            >
+              {submissionState === "submitting"
+                ? "Submitting…"
+                : "Submit for Review"}
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           )}
@@ -391,9 +588,13 @@ function StepShell({
 }) {
   return (
     <div>
-      <span className="text-[11px] font-medium uppercase tracking-label text-gold">{eyebrow}</span>
+      <span className="text-[11px] font-medium uppercase tracking-label text-gold">
+        {eyebrow}
+      </span>
       <h2 className="mt-3 font-serif text-3xl font-light text-navy">{title}</h2>
-      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-muted">{intro}</p>
+      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-muted">
+        {intro}
+      </p>
       <div className="mt-8">{children}</div>
     </div>
   );
@@ -434,7 +635,9 @@ function Chip({
       type="button"
       onClick={onClick}
       className={`border px-4 py-2 text-[13px] transition-colors ${
-        active ? "border-navy bg-navy text-ivory" : "border-line text-charcoal hover:border-navy/40"
+        active
+          ? "border-navy bg-navy text-ivory"
+          : "border-line text-charcoal hover:border-navy/40"
       }`}
     >
       {children}

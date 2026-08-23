@@ -119,7 +119,12 @@ export function IconArrowUpRight({ className }: IconProps) {
       fill="none"
       aria-hidden="true"
     >
-      <path d="M4 10L10 4M5 4h5v5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" />
+      <path
+        d="M4 10L10 4M5 4h5v5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="square"
+      />
     </svg>
   );
 }
@@ -150,7 +155,12 @@ export function IconCheck({ className }: IconProps) {
       fill="none"
       aria-hidden="true"
     >
-      <path d="M3 8.5L6.5 12 13 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" />
+      <path
+        d="M3 8.5L6.5 12 13 4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="square"
+      />
     </svg>
   );
 }

@@ -10,7 +10,8 @@ export default function NotFound() {
             This page could not be found.
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-slate-muted">
-            The page you are looking for may have moved or no longer exists. Return home to continue.
+            The page you are looking for may have moved or no longer exists.
+            Return home to continue.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button href="/" variant="primary">

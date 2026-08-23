@@ -32,13 +32,13 @@ npm start
 
 ## Design system
 
-| Token        | Value                          | Usage                          |
-| ------------ | ------------------------------ | ------------------------------ |
-| Ivory        | `#F7F4EE`                      | Page background                |
-| Navy         | `#0E2A47` / `#0A1F36` / `#07172A` | Primary brand, dark sections |
-| Charcoal     | `#1C1F26`                      | Body typography                |
-| Slate muted  | `#5C6672`                      | Secondary text                 |
-| Gold / bronze| `#A9852F` / `#C4A15A`          | Restrained accent              |
+| Token         | Value                             | Usage                        |
+| ------------- | --------------------------------- | ---------------------------- |
+| Ivory         | `#F7F4EE`                         | Page background              |
+| Navy          | `#0E2A47` / `#0A1F36` / `#07172A` | Primary brand, dark sections |
+| Charcoal      | `#1C1F26`                         | Body typography              |
+| Slate muted   | `#5C6672`                         | Secondary text               |
+| Gold / bronze | `#A9852F` / `#C4A15A`             | Restrained accent            |
 
 - **Serif** (Source Serif 4) for editorial headlines
 - **Sans** (Inter) for body and UI
@@ -71,15 +71,25 @@ src/
 ## Pages
 
 - `/` — Homepage
-- `/risk-assessment` — Get a Risk Assessment (Protocol Info → Risk Review → Coverage Options → Contact Underwriting)
-- `/legal` — Legal & policy index
-- `/legal/[slug]` — Privacy, Terms, Policy Terms, Coverage Disclosures, Claims Procedure, Risk Disclosures, Regulatory Information
+- `/insurance` and `/insurance/[slug]` — Six insurance programs with detailed indicative terms
+- `/risk-assessment` — Protocol Info → Risk Review → Coverage Options → Contact Underwriting
+- `/client-login` — Invitation-based policyholder portal access
+- `/company/[slug]` — About, leadership and careers
+- `/resources` and `/resources/[slug]` — Insights, research and risk reports
+- `/legal` and `/legal/[slug]` — Core legal documents and transparency statements
 
 ## Deployment
 
-Deploys cleanly to any Node host or [Vercel](https://vercel.com/). No environment variables are
-required. The risk-assessment form is front-end only; wire the submit handler in
-`components/risk/RiskAssessmentFlow.tsx` to your CRM / underwriting intake endpoint.
+Deploy to any compatible Next.js host or Cloudflare using its Next.js adapter. Copy `.env.example`
+to your deployment configuration. `RISK_ASSESSMENT_WEBHOOK_URL` is required before the assessment
+flow will acknowledge intake; the endpoint must durably persist or enqueue accepted submissions.
+`RISK_ASSESSMENT_WEBHOOK_TOKEN` adds optional bearer authentication. Set
+`NEXT_PUBLIC_CLIENT_PORTAL_URL` when a secure policyholder portal is available, and configure
+`NEXT_PUBLIC_UNDERWRITING_EMAIL` / `NEXT_PUBLIC_CAREERS_EMAIL` for live contact actions.
+
+Company contact values are environment-driven and are omitted as live actions when unconfigured.
+Canonical-domain placeholders in `layout.tsx`, `sitemap.ts` and `robots.ts` must be replaced before
+production launch.
 
 ## Content & compliance note
 

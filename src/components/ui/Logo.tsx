@@ -19,7 +19,14 @@ export function Logo({
     >
       <span aria-hidden="true" className="shrink-0">
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-          <rect x="0.6" y="0.6" width="24.8" height="24.8" stroke={mark} strokeWidth="1.1" />
+          <rect
+            x="0.6"
+            y="0.6"
+            width="24.8"
+            height="24.8"
+            stroke={mark}
+            strokeWidth="1.1"
+          />
           <path
             d="M6 18V8l7 6 7-6v10"
             stroke={mark}

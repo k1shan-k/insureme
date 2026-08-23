@@ -13,15 +13,24 @@ export function FinalCTA() {
             Protect what you&rsquo;ve built.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-muted">
-            Start with a protocol risk assessment and explore coverage designed around your
-            architecture.
+            Start with a protocol risk assessment and explore coverage designed
+            around your architecture.
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button href="/risk-assessment" size="lg" variant="primary" className="group">
+            <Button
+              href="/risk-assessment"
+              size="lg"
+              variant="primary"
+              className="group"
+            >
               Get a Risk Assessment
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
-            <Button href="/risk-assessment#contact" size="lg" variant="secondary">
+            <Button
+              href="/risk-assessment#contact"
+              size="lg"
+              variant="secondary"
+            >
               Contact Underwriting
             </Button>
           </div>

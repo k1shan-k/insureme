@@ -53,8 +53,14 @@ const config: Config = {
         "8xl": "88rem",
       },
       fontSize: {
-        "display": ["clamp(2.6rem, 5.2vw, 4.6rem)", { lineHeight: "1.04", letterSpacing: "-0.02em" }],
-        "hero": ["clamp(3rem, 6vw, 5.4rem)", { lineHeight: "1.02", letterSpacing: "-0.025em" }],
+        display: [
+          "clamp(2.6rem, 5.2vw, 4.6rem)",
+          { lineHeight: "1.04", letterSpacing: "-0.02em" },
+        ],
+        hero: [
+          "clamp(3rem, 6vw, 5.4rem)",
+          { lineHeight: "1.02", letterSpacing: "-0.025em" },
+        ],
       },
       keyframes: {
         "fade-up": {
@@ -65,7 +71,7 @@ const config: Config = {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
-        "draw": {
+        draw: {
           "0%": { strokeDashoffset: "1" },
           "100%": { strokeDashoffset: "0" },
         },

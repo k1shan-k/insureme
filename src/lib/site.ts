@@ -3,18 +3,18 @@ export const site = {
   legalName: "Meridian Risk Underwriting Ltd.",
   tagline: "Insurance infrastructure for the decentralized economy.",
   year: 2026,
-  email: "underwriting@meridianrisk.example",
-  phone: "+1 (212) 555-0180",
-  address: "One Financial Square, New York, NY 10004",
+  email: process.env.NEXT_PUBLIC_UNDERWRITING_EMAIL || "",
+  phone: process.env.NEXT_PUBLIC_UNDERWRITING_PHONE || "",
+  address: process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "",
 };
 
 export const primaryNav: { label: string; href: string }[] = [
-  { label: "Insurance", href: "/#coverage" },
+  { label: "Insurance", href: "/insurance" },
   { label: "Risk Intelligence", href: "/#risk-intelligence" },
   { label: "For Protocols", href: "/#for-protocols" },
-  { label: "Claims", href: "/#claims" },
-  { label: "Resources", href: "/#trust" },
-  { label: "About", href: "/#why-us" },
+  { label: "Claims", href: "/legal/claims-procedure" },
+  { label: "Resources", href: "/resources" },
+  { label: "About", href: "/company/about" },
 ];
 
 export const footerColumns: {
@@ -24,16 +24,16 @@ export const footerColumns: {
   {
     heading: "Company",
     links: [
-      { label: "About", href: "/#why-us" },
-      { label: "Leadership", href: "/#trust" },
-      { label: "Careers", href: "/#trust" },
-      { label: "Contact", href: "/risk-assessment" },
+      { label: "About", href: "/company/about" },
+      { label: "Leadership", href: "/company/leadership" },
+      { label: "Careers", href: "/company/careers" },
+      { label: "Contact", href: "/risk-assessment#contact" },
     ],
   },
   {
     heading: "Insurance",
     links: [
-      { label: "Coverage", href: "/#coverage" },
+      { label: "Programs", href: "/insurance" },
       { label: "For Protocols", href: "/#for-protocols" },
       { label: "Risk Intelligence", href: "/#risk-intelligence" },
       { label: "Claims", href: "/legal/claims-procedure" },
@@ -42,10 +42,10 @@ export const footerColumns: {
   {
     heading: "Resources",
     links: [
-      { label: "Insights", href: "/#trust" },
-      { label: "Research", href: "/#trust" },
-      { label: "Risk Reports", href: "/#risk-intelligence" },
-      { label: "Documentation", href: "/legal/coverage-disclosures" },
+      { label: "Insights", href: "/resources/insights" },
+      { label: "Research", href: "/resources/research" },
+      { label: "Risk Reports", href: "/resources/risk-reports" },
+      { label: "Documentation", href: "/legal" },
     ],
   },
   {
@@ -59,5 +59,3 @@ export const footerColumns: {
     ],
   },
 ];
-
-

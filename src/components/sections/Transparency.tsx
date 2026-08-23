@@ -14,8 +14,9 @@ export function Transparency() {
               Confidence comes from clarity.
             </h2>
             <p className="mt-7 max-w-sm text-[16px] leading-relaxed text-slate-muted">
-              We publish the frameworks that govern our underwriting, coverage and claims — so that
-              counterparties can evaluate us with the same discipline we apply to them.
+              We publish the frameworks that govern our underwriting, coverage
+              and claims — so that counterparties can evaluate us with the same
+              discipline we apply to them.
             </p>
           </div>
 

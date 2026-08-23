@@ -20,9 +20,10 @@ export default function RiskAssessmentPage() {
               Begin with a risk assessment.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-              Provide your protocol information to receive an indicative risk profile and explore
-              coverage designed around your architecture. The process below is a preliminary review
-              and is not an application for, or binding offer of, insurance.
+              Provide your protocol information to receive an indicative risk
+              profile and explore coverage designed around your architecture.
+              The process below is a preliminary review and is not an
+              application for, or binding offer of, insurance.
             </p>
           </div>
         </div>
@@ -33,31 +34,52 @@ export default function RiskAssessmentPage() {
           <div className="mx-auto max-w-4xl">
             <RiskAssessmentFlow />
 
-            <div id="contact" className="mt-16 grid gap-8 border-t border-line pt-12 sm:grid-cols-3">
+            <div
+              id="contact"
+              className="mt-16 grid gap-8 border-t border-line pt-12 sm:grid-cols-3"
+            >
               <div>
-                <h2 className="font-serif text-lg text-navy">Contact Underwriting</h2>
+                <h2 className="font-serif text-lg text-navy">
+                  Contact Underwriting
+                </h2>
                 <p className="mt-2 text-[14px] leading-relaxed text-slate-muted">
-                  Prefer to speak directly? Our underwriting team is available for institutional
-                  enquiries.
+                  Prefer to speak directly? Our underwriting team is available
+                  for institutional enquiries.
                 </p>
               </div>
               <div>
-                <div className="text-[11px] uppercase tracking-label text-slate-faint">Email</div>
-                <a
-                  href={`mailto:${site.email}`}
-                  className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
-                >
-                  {site.email}
-                </a>
+                <div className="text-[11px] uppercase tracking-label text-slate-faint">
+                  Email
+                </div>
+                {site.email ? (
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
+                  >
+                    {site.email}
+                  </a>
+                ) : (
+                  <p className="mt-2 text-[14px] text-slate-muted">
+                    Available during onboarding
+                  </p>
+                )}
               </div>
               <div>
-                <div className="text-[11px] uppercase tracking-label text-slate-faint">Telephone</div>
-                <a
-                  href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                  className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
-                >
-                  {site.phone}
-                </a>
+                <div className="text-[11px] uppercase tracking-label text-slate-faint">
+                  Telephone
+                </div>
+                {site.phone ? (
+                  <a
+                    href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
+                    className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
+                  >
+                    {site.phone}
+                  </a>
+                ) : (
+                  <p className="mt-2 text-[14px] text-slate-muted">
+                    Available to policyholders
+                  </p>
+                )}
               </div>
             </div>
           </div>

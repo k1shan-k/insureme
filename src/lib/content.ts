@@ -6,49 +6,6 @@ export const trustItems = [
   "Operational Risk",
 ];
 
-export const coverage = [
-  {
-    index: "01",
-    title: "Smart Contract Cover",
-    description:
-      "Protection against defined losses arising from qualifying smart-contract incidents.",
-    icon: "smart-contract",
-  },
-  {
-    index: "02",
-    title: "Protocol Exploit Cover",
-    description: "Coverage designed for qualifying protocol-level security events.",
-    icon: "exploit",
-  },
-  {
-    index: "03",
-    title: "Cross-Chain & Bridge Cover",
-    description:
-      "Protection against defined failures involving bridges and cross-chain infrastructure.",
-    icon: "bridge",
-  },
-  {
-    index: "04",
-    title: "Stablecoin & Depeg Cover",
-    description:
-      "Coverage for specifically defined market and asset events where applicable.",
-    icon: "depeg",
-  },
-  {
-    index: "05",
-    title: "Treasury & Digital Asset Cover",
-    description: "Protection for eligible protocol-controlled digital assets.",
-    icon: "treasury",
-  },
-  {
-    index: "06",
-    title: "Custom Protocol Cover",
-    description:
-      "Tailored underwriting for sophisticated or unconventional Web3 architectures.",
-    icon: "custom",
-  },
-] as const;
-
 export const steps = [
   {
     step: "01",
@@ -99,10 +56,18 @@ export const riskInputs = [
 ];
 
 export const monitoringAlerts = [
-  { text: "Governance configuration changed", tag: "Governance", severity: "Elevated" },
+  {
+    text: "Governance configuration changed",
+    tag: "Governance",
+    severity: "Elevated",
+  },
   { text: "New administrator detected", tag: "Access", severity: "Material" },
   { text: "Oracle dependency increased", tag: "Oracle", severity: "Elevated" },
-  { text: "TVL concentration increased", tag: "Liquidity", severity: "Moderate" },
+  {
+    text: "TVL concentration increased",
+    tag: "Liquidity",
+    severity: "Moderate",
+  },
   { text: "Contract upgrade detected", tag: "Code", severity: "Material" },
 ];
 
@@ -146,14 +111,17 @@ export const pillars = [
 ];
 
 export const transparencyItems = [
-  { label: "Underwriting Methodology", href: "/legal/policy-terms" },
-  { label: "Policy Documentation", href: "/legal/policy-terms" },
-  { label: "Coverage Limits", href: "/legal/coverage-disclosures" },
+  {
+    label: "Underwriting Methodology",
+    href: "/legal/underwriting-methodology",
+  },
+  { label: "Policy Documentation", href: "/legal" },
+  { label: "Coverage Disclosures", href: "/legal/coverage-disclosures" },
   { label: "Claims Process", href: "/legal/claims-procedure" },
-  { label: "Security Practices", href: "/legal/regulatory" },
+  { label: "Security Practices", href: "/legal/security-practices" },
   { label: "Risk Disclosures", href: "/legal/risk-disclosures" },
-  { label: "Capital & Capacity", href: "/legal/regulatory" },
+  { label: "Capital & Capacity", href: "/legal/capital-capacity" },
   { label: "Regulatory Information", href: "/legal/regulatory" },
-  { label: "Governance", href: "/legal/regulatory" },
-  { label: "Partners & Reinsurance", href: "/legal/regulatory" },
+  { label: "Governance", href: "/legal/governance" },
+  { label: "Partners & Reinsurance", href: "/legal/partners-reinsurance" },
 ];

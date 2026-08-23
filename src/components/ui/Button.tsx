@@ -31,40 +31,54 @@ type CommonProps = {
 
 type ButtonAsLink = CommonProps & {
   href: string;
-} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "className" | "children">;
+} & Omit<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    "href" | "className" | "children"
+  >;
 
 type ButtonAsButton = CommonProps & {
   href?: undefined;
-} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">;
+} & Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    "className" | "children"
+  >;
 
 type ButtonProps = ButtonAsLink | ButtonAsButton;
 
-export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonProps>(
-  function Button({ variant = "primary", size = "md", className = "", children, ...props }, ref) {
-    const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+export const Button = forwardRef<
+  HTMLAnchorElement | HTMLButtonElement,
+  ButtonProps
+>(function Button(
+  { variant = "primary", size = "md", className = "", children, ...props },
+  ref,
+) {
+  const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 
-    if ("href" in props && props.href !== undefined) {
-      const { href, ...rest } = props as ButtonAsLink;
-      return (
-        <Link
-          href={href}
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          className={classes}
-          {...rest}
-        >
-          {children}
-        </Link>
-      );
-    }
-
-    const { ...rest } = props as ButtonAsButton;
+  if ("href" in props && props.href !== undefined) {
+    const { href, ...rest } = props as ButtonAsLink;
     return (
-      <button ref={ref as React.Ref<HTMLButtonElement>} className={classes} {...rest}>
+      <Link
+        href={href}
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        className={classes}
+        {...rest}
+      >
         {children}
-      </button>
+      </Link>
     );
   }
-);
+
+  const { ...rest } = props as ButtonAsButton;
+  return (
+    <button
+      ref={ref as React.Ref<HTMLButtonElement>}
+      className={classes}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+});
 
 export function ArrowRight({ className = "" }: { className?: string }) {
   return (

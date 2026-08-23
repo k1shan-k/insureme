@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian Risk — Preview</title>
+  <meta name="description" content="Insurance infrastructure for the decentralized economy." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ivory: { DEFAULT: "#F7F4EE", 50: "#FBFAF6", 100: "#F7F4EE", 200: "#EFEAE0" },
+            navy: { DEFAULT: "#0E2A47", 700: "#123253", 800: "#0E2A47", 900: "#0A1F36", 950: "#07172A" },
+            charcoal: { DEFAULT: "#1C1F26" },
+            slate: { muted: "#5C6672", faint: "#8A929C" },
+            gold: { DEFAULT: "#A9852F", light: "#C4A15A" },
+            line: { DEFAULT: "#DED8CB", dark: "#20344F" },
+          },
+          fontFamily: {
+            serif: ['"Source Serif 4"', "Georgia", "serif"],
+            sans: ['"Inter"', "system-ui", "sans-serif"],
+          },
+          letterSpacing: { label: "0.16em" },
+          maxWidth: { "8xl": "88rem" },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background: #F7F4EE; color: #1C1F26; font-family: "Inter", system-ui, sans-serif; }
+    ::selection { background: #0E2A47; color: #F7F4EE; }
+    .container-x { margin-inline: auto; width: 100%; max-width: 88rem; padding-inline: 1.5rem; }
+    @media (min-width:768px){ .container-x { padding-inline: 2.5rem; } }
+    @media (min-width:1024px){ .container-x { padding-inline: 3.5rem; } }
+    .label::before { content:""; display:inline-block; height:1px; width:2rem; background:rgba(169,133,47,.6); margin-right:.6rem; vertical-align:middle; }
+    .label-light::before { background:rgba(196,161,90,.5); }
+    .reveal { opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+    .reveal.vis { opacity:1; transform:none; }
+    .bar > span { display:block; height:100%; }
+    .cardline { position:relative; }
+    .cardline::after { content:""; position:absolute; left:0; bottom:0; height:1px; width:100%; background:#A9852F; transform:scaleX(0); transform-origin:left; transition:transform .5s cubic-bezier(.22,1,.36,1); }
+    .cardline:hover::after { transform:scaleX(1); }
+    @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none} }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- Preview banner -->
+  <div class="bg-navy-950 text-ivory/70 text-center text-[12px] py-2 tracking-wide">
+    Static design preview — the production build is a Next.js 14 application.
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-line bg-ivory/95 backdrop-blur-md">
+    <div class="container-x">
+      <div class="flex h-16 items-center justify-between">
+        <a href="/" class="inline-flex items-center gap-3">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="0.6" y="0.6" width="24.8" height="24.8" stroke="#0E2A47" stroke-width="1.1" />
+            <path d="M6 18V8l7 6 7-6v10" stroke="#0E2A47" stroke-width="1.3" fill="none" />
+            <path d="M13 14v4" stroke="#A9852F" stroke-width="1.3" />
+          </svg>
+          <span class="flex flex-col leading-none text-navy">
+            <span class="font-serif text-[19px] font-semibold tracking-tight">Meridian<span class="text-gold"> Risk</span></span>
+            <span class="mt-1 text-[8.5px] font-medium uppercase tracking-[0.24em] text-slate-muted">Underwriting Group</span>
+          </span>
+        </a>
+        <nav class="hidden items-center gap-8 lg:flex text-[13.5px] font-medium text-charcoal/85">
+          <a href="#coverage" class="hover:text-navy">Insurance</a>
+          <a href="#risk" class="hover:text-navy">Risk Intelligence</a>
+          <a href="#protocols" class="hover:text-navy">For Protocols</a>
+          <a href="#claims" class="hover:text-navy">Claims</a>
+          <a href="#trust" class="hover:text-navy">Resources</a>
+          <a href="#why" class="hover:text-navy">About</a>
+        </nav>
+        <div class="hidden items-center gap-3 lg:flex">
+          <a href="/client-login" class="text-[13.5px] font-medium text-charcoal/80 hover:text-navy">Client Portal</a>
+          <span class="h-4 w-px bg-line"></span>
+          <a href="#assess" class="inline-flex items-center gap-2 bg-navy text-ivory text-[13px] px-4 py-2 hover:bg-navy-950 transition-colors">Get Coverage →</a>
+        </div>
+        <span class="lg:hidden text-navy text-sm font-medium">Menu</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-ivory pt-20 lg:pt-28">
+    <div class="pointer-events-none absolute right-0 top-0 h-[560px] w-[46%]" style="background:radial-gradient(ellipse at top right,rgba(169,133,47,0.06),transparent 60%)"></div>
+    <div class="container-x relative">
+      <div class="grid items-center gap-14 pb-20 lg:grid-cols-2 lg:gap-16 lg:pb-28">
+        <div class="reveal max-w-xl">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Insurance infrastructure for Web3</span>
+          <h1 class="mt-7 font-serif font-light text-navy leading-[1.02] tracking-tight" style="font-size:clamp(3rem,6vw,5.4rem)">Insurance for the decentralized economy.</h1>
+          <p class="mt-7 max-w-lg text-lg leading-relaxed text-slate-muted">Protecting protocols, digital assets, and Web3 infrastructure against defined on-chain risks through institutional-grade underwriting.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#assess" class="inline-flex items-center justify-center gap-2 bg-navy text-ivory text-[15px] px-7 py-4 hover:bg-navy-950 transition-colors">Get a Risk Assessment →</a>
+            <a href="#coverage" class="inline-flex items-center justify-center gap-2 border border-navy/25 text-navy text-[15px] px-7 py-4 hover:border-navy hover:bg-navy/[0.03] transition-colors">Explore Coverage</a>
+          </div>
+          <p class="mt-8 text-[13px] tracking-wide text-slate-faint">Built for protocols <span class="mx-2.5 text-gold">•</span> Designed for institutional risk management</p>
+        </div>
+
+        <!-- Hero visual -->
+        <div class="reveal">
+          <div class="relative">
+            <div class="relative overflow-hidden border border-line bg-navy-950">
+              <div class="pointer-events-none absolute inset-0">
+                <svg viewBox="0 0 400 200" class="h-full w-full" preserveAspectRatio="xMidYMid slice">
+                  <defs><linearGradient id="edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#C4A15A" stop-opacity="0.15"/><stop offset="50%" stop-color="#C4A15A" stop-opacity="0.5"/><stop offset="100%" stop-color="#C4A15A" stop-opacity="0.15"/></linearGradient></defs>
+                  <g stroke="#1C3654" stroke-width="0.5">
+                    <line x1="50" y1="0" x2="50" y2="200"/><line x1="100" y1="0" x2="100" y2="200"/><line x1="150" y1="0" x2="150" y2="200"/><line x1="200" y1="0" x2="200" y2="200"/><line x1="250" y1="0" x2="250" y2="200"/><line x1="300" y1="0" x2="300" y2="200"/><line x1="350" y1="0" x2="350" y2="200"/>
+                    <line x1="0" y1="50" x2="400" y2="50"/><line x1="0" y1="100" x2="400" y2="100"/><line x1="0" y1="150" x2="400" y2="150"/>
+                  </g>
+                  <g stroke="url(#edge)" stroke-width="1">
+                    <line x1="40" y1="60" x2="120" y2="30"/><line x1="40" y1="60" x2="118" y2="130"/><line x1="120" y1="30" x2="200" y2="78"/><line x1="118" y1="130" x2="200" y2="78"/><line x1="200" y1="78" x2="285" y2="40"/><line x1="200" y1="78" x2="290" y2="150"/><line x1="285" y1="40" x2="360" y2="100"/><line x1="290" y1="150" x2="360" y2="100"/><line x1="120" y1="30" x2="285" y2="40"/>
+                  </g>
+                  <g>
+                    <circle cx="40" cy="60" r="2.4" fill="#C4A15A"/><circle cx="120" cy="30" r="2.4" fill="#7FA0C4"/><circle cx="118" cy="130" r="2.4" fill="#7FA0C4"/><circle cx="200" cy="78" r="2.4" fill="#C4A15A"/><circle cx="285" cy="40" r="2.4" fill="#7FA0C4"/><circle cx="290" cy="150" r="2.4" fill="#7FA0C4"/><circle cx="360" cy="100" r="2.4" fill="#C4A15A"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="relative px-8 pb-8 pt-10 sm:px-10">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-medium uppercase tracking-label text-gold-light">Protocol Risk Profile</span>
+                  <span class="text-[10px] uppercase tracking-label text-ivory/40">Live</span>
+                </div>
+                <div class="mt-6 flex items-end gap-6">
+                  <div><div class="font-serif text-6xl font-light leading-none text-ivory">72</div><div class="mt-1 text-[11px] uppercase tracking-label text-ivory/45">Overall / 100</div></div>
+                  <div class="mb-1 border-l border-line-dark pl-6"><div class="text-[11px] uppercase tracking-label text-gold-light">Moderate</div><div class="mt-1 text-xs text-ivory/55">Composite index</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="relative z-10 -mt-6 ml-6 border border-line bg-ivory/95 p-6 sm:ml-10 sm:p-7 shadow-2xl backdrop-blur">
+              <div class="mb-4 flex items-center justify-between border-b border-line pb-3">
+                <span class="text-[10px] font-medium uppercase tracking-label text-slate-muted">Risk Factors</span>
+                <span class="text-[10px] uppercase tracking-label text-slate-faint">Weighted</span>
+              </div>
+              <div class="grid gap-4" id="heroBars"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <section class="border-y border-line bg-ivory-50">
+    <div class="container-x">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-line" id="trustbar"></div>
+    </div>
+  </section>
+
+  <!-- Why insurance -->
+  <section class="bg-ivory py-24 lg:py-32">
+    <div class="container-x">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="reveal lg:col-span-6">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Why Web3 needs insurance</span>
+          <h2 class="mt-7 max-w-lg font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Digital infrastructure requires digital risk protection.</h2>
+        </div>
+        <div class="reveal lg:col-span-6">
+          <div class="max-w-xl space-y-6 text-[16px] leading-relaxed text-slate-muted">
+            <p>DeFi protocols operate across smart contracts, governance systems, liquidity pools, oracles, bridges and interconnected infrastructure. A single failure can propagate rapidly across an ecosystem.</p>
+            <p class="text-charcoal">Our underwriting framework is designed specifically for these risks.</p>
+          </div>
+          <div class="mt-10 grid grid-cols-3 divide-x divide-line border-y border-line">
+            <div class="px-4 py-6 pl-0"><div class="font-serif text-lg text-navy">Interconnected</div><div class="mt-1 text-[12px] uppercase tracking-[0.12em] text-slate-faint">Systems</div></div>
+            <div class="px-4 py-6"><div class="font-serif text-lg text-navy">Propagating</div><div class="mt-1 text-[12px] uppercase tracking-[0.12em] text-slate-faint">Failure Modes</div></div>
+            <div class="px-4 py-6"><div class="font-serif text-lg text-navy">Evolving</div><div class="mt-1 text-[12px] uppercase tracking-[0.12em] text-slate-faint">Architectures</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coverage -->
+  <section id="coverage" class="border-t border-line bg-ivory-50 py-24 lg:py-32">
+    <div class="container-x">
+      <div class="reveal grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Our coverage</span>
+          <h2 class="mt-7 max-w-2xl font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Coverage built around the risks that matter.</h2>
+        </div>
+        <p class="max-w-sm text-[15px] leading-relaxed text-slate-muted lg:col-span-4">Each line is underwritten independently against defined risk parameters, with limits and conditions structured to the insured environment.</p>
+      </div>
+      <div class="reveal mt-14 grid border-l border-r border-line sm:grid-cols-2 lg:grid-cols-3" id="coverageGrid"></div>
+      <p class="reveal mt-8 max-w-3xl text-[13px] leading-relaxed text-slate-faint">Coverage is subject to underwriting, applicable policy terms, limits, deductibles, exclusions and conditions.</p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-navy-900 py-24 text-ivory lg:py-32">
+    <div class="container-x">
+      <div class="reveal grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <span class="label label-light text-[11px] font-medium uppercase tracking-label text-gold-light">How it works</span>
+          <h2 class="mt-7 max-w-2xl font-serif font-light text-ivory leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">From protocol assessment to protection.</h2>
+        </div>
+        <div class="lg:col-span-4 lg:text-right"><a href="#assess" class="inline-flex items-center gap-2 bg-gold text-white text-sm px-6 py-3 hover:bg-[#96741f] transition-colors">Begin Assessment →</a></div>
+      </div>
+      <div class="reveal mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4" id="steps"></div>
+    </div>
+  </section>
+
+  <!-- Risk intelligence -->
+  <section id="risk" class="border-t border-line bg-ivory py-24 lg:py-32">
+    <div class="container-x">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="reveal lg:col-span-5">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Risk intelligence</span>
+          <h2 class="mt-7 font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Underwriting informed by on-chain intelligence.</h2>
+          <p class="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">We evaluate protocol risk across the technical, economic, governance and operational factors that shape an insured environment — combining on-chain data with disciplined underwriting judgement.</p>
+          <ul class="mt-9 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 text-[14px] text-charcoal/80" id="riskInputs"></ul>
+        </div>
+        <div class="reveal lg:col-span-7">
+          <div class="border border-line bg-white shadow-2xl">
+            <div class="flex items-center justify-between border-b border-line bg-ivory-50 px-6 py-4">
+              <div class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-gold"></span><span class="text-[11px] font-medium uppercase tracking-label text-navy">Protocol Risk Profile</span></div>
+              <span class="text-[11px] text-slate-faint" style="font-family:monospace">REF · MRX-4471</span>
+            </div>
+            <div class="grid gap-8 p-8 sm:grid-cols-2 sm:p-10">
+              <div class="flex flex-col items-center justify-center border-b border-line pb-8 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
+                <span class="mb-4 text-[11px] uppercase tracking-label text-slate-faint">Overall Risk</span>
+                <div class="relative flex flex-col items-center">
+                  <svg width="200" height="118" viewBox="0 0 200 118">
+                    <path d="M 15 108 A 85 85 0 0 1 185 108" fill="none" stroke="#E4DDCE" stroke-width="7"/>
+                    <path d="M 15 108 A 85 85 0 0 1 185 108" fill="none" stroke="#A9852F" stroke-width="7" stroke-linecap="round" stroke-dasharray="267" stroke-dashoffset="74.8"/>
+                  </svg>
+                  <div class="absolute bottom-0 flex flex-col items-center">
+                    <span class="font-serif text-5xl font-light leading-none text-navy">72<span class="text-xl text-slate-faint"> / 100</span></span>
+                    <span class="mt-2 text-[11px] font-medium uppercase tracking-label text-gold">Moderate</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col justify-center gap-5" id="riskFactors"></div>
+            </div>
+            <div class="grid grid-cols-3 divide-x divide-line border-t border-line text-center">
+              <div class="px-4 py-5"><div class="text-[11px] uppercase tracking-[0.1em] text-slate-faint">Audits</div><div class="mt-1.5 font-serif text-[15px] text-navy">3 reviewed</div></div>
+              <div class="px-4 py-5"><div class="text-[11px] uppercase tracking-[0.1em] text-slate-faint">Governance</div><div class="mt-1.5 font-serif text-[15px] text-navy">Timelocked</div></div>
+              <div class="px-4 py-5"><div class="text-[11px] uppercase tracking-[0.1em] text-slate-faint">Coverage</div><div class="mt-1.5 font-serif text-[15px] text-navy">Eligible</div></div>
+            </div>
+          </div>
+          <p class="mt-4 text-[12px] text-slate-faint">Illustrative risk profile. Indicators, weightings and outcomes vary by protocol and are subject to underwriting review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monitoring -->
+  <section class="border-t border-line bg-ivory-50 py-24 lg:py-32">
+    <div class="container-x">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="reveal lg:col-span-5">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Continuous monitoring</span>
+          <h2 class="mt-7 font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Risk evolves. Underwriting should too.</h2>
+          <p class="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">Protocol architecture, governance, liquidity and dependencies can change after a policy is issued. Our risk intelligence framework is designed to help identify material changes across the insured environment.</p>
+        </div>
+        <div class="reveal lg:col-span-7">
+          <div class="border border-line bg-navy-950">
+            <div class="flex items-center justify-between border-b border-line-dark px-6 py-4">
+              <span class="text-[11px] font-medium uppercase tracking-label text-gold-light">Risk Change Monitor</span>
+              <span class="text-[11px] text-ivory/40" style="font-family:monospace">Last sync · 00:03 UTC</span>
+            </div>
+            <ul class="divide-y divide-line-dark" id="alerts"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For protocols -->
+  <section id="protocols" class="bg-ivory py-24 lg:py-32">
+    <div class="container-x">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="reveal lg:col-span-5">
+          <span class="label text-[11px] font-medium uppercase tracking-label text-gold">For protocols</span>
+          <h2 class="mt-7 font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Built for teams responsible for billions in on-chain value.</h2>
+          <p class="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">We work with the organizations that operate, secure and govern critical digital infrastructure — structuring coverage around the specific architecture of each insured environment.</p>
+          <div class="mt-9"><a href="#assess" class="inline-flex items-center gap-2 bg-navy text-ivory text-[15px] px-7 py-4 hover:bg-navy-950 transition-colors">Discuss Your Risk →</a></div>
+        </div>
+        <div class="reveal lg:col-span-7">
+          <div class="grid grid-cols-1 border-t border-line sm:grid-cols-2" id="audiences"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section id="why" class="border-t border-line bg-ivory-50 py-24 lg:py-32">
+    <div class="container-x">
+      <div class="reveal max-w-2xl">
+        <span class="label text-[11px] font-medium uppercase tracking-label text-gold">Why Meridian</span>
+        <h2 class="mt-7 font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Insurance expertise for an on-chain world.</h2>
+      </div>
+      <div class="reveal mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:grid-cols-4" id="pillars"></div>
+    </div>
+  </section>
+
+  <!-- Claims -->
+  <section id="claims" class="border-t border-line bg-navy-900 py-24 text-ivory lg:py-32">
+    <div class="container-x">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="reveal lg:col-span-5">
+          <span class="label label-light text-[11px] font-medium uppercase tracking-label text-gold-light">Claims</span>
+          <h2 class="mt-7 font-serif font-light text-ivory leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">When incidents happen, clarity matters.</h2>
+          <p class="mt-7 max-w-md text-[16px] leading-relaxed text-ivory/65">Our claims framework is designed to provide a structured process for incident notification, evidence preservation, investigation, loss assessment and resolution.</p>
+          <div class="mt-9"><a href="/legal/claims-procedure" class="inline-flex items-center gap-2 bg-gold text-white text-[15px] px-7 py-4 hover:bg-[#96741f] transition-colors">Understand the Claims Process →</a></div>
+        </div>
+        <div class="reveal lg:col-span-7 lg:pt-4">
+          <ol class="grid gap-x-10 gap-y-10 sm:grid-cols-2" id="claimsSteps"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section id="assess" class="relative overflow-hidden border-t border-line bg-ivory py-28 lg:py-36">
+    <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(169,133,47,0.07),transparent 62%)"></div>
+    <div class="container-x relative">
+      <div class="reveal mx-auto max-w-3xl text-center">
+        <h2 class="font-serif font-light text-navy leading-[1.04] tracking-tight" style="font-size:clamp(2.6rem,5.2vw,4.6rem)">Protect what you&rsquo;ve built.</h2>
+        <p class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-muted">Start with a protocol risk assessment and explore coverage designed around your architecture.</p>
+        <div class="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+          <a href="/risk-assessment" class="inline-flex items-center justify-center gap-2 bg-navy text-ivory text-[15px] px-7 py-4 hover:bg-navy-950 transition-colors">Get a Risk Assessment →</a>
+          <a href="/risk-assessment#contact" class="inline-flex items-center justify-center gap-2 border border-navy/25 text-navy text-[15px] px-7 py-4 hover:border-navy transition-colors">Contact Underwriting</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-line-dark bg-navy-950 text-ivory/70">
+    <div class="container-x py-16">
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <span class="font-serif text-[19px] font-semibold text-ivory">Meridian<span class="text-gold"> Risk</span></span>
+          <p class="mt-6 max-w-xs text-sm leading-relaxed text-ivory/55">Insurance infrastructure for the decentralized economy. Institutional-grade underwriting for the risks that define on-chain finance.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8" id="footerCols"></div>
+      </div>
+      <div class="mt-16 border-t border-line-dark pt-8">
+        <p class="max-w-4xl text-xs leading-relaxed text-ivory/45">Insurance products and coverage are subject to applicable policy terms, conditions, limitations and exclusions. Nothing on this website constitutes an offer to provide insurance, financial, legal or investment advice.</p>
+        <p class="mt-8 text-xs text-ivory/45">© 2026 Meridian Risk. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const bar = (label, value) => {
+      const color = value >= 80 ? "#3A6B4C" : value >= 70 ? "#A9852F" : "#B5623A";
+      return `<div><div class="flex items-baseline justify-between"><span class="text-[13px] text-charcoal/80">${label}</span><span class="font-serif text-[15px] text-navy">${value}</span></div><div class="mt-2 h-[3px] w-full bg-line bar"><span style="width:${value}%;background:${color}"></span></div></div>`;
+    };
+    document.getElementById("heroBars").innerHTML = [["Smart Contract",78],["Governance",69],["Liquidity",81],["Operational Controls",76]].map(([l,v])=>bar(l,v)).join("");
+    document.getElementById("riskFactors").innerHTML = [["Smart Contract",78],["Governance",69],["Oracle Dependency",74],["Liquidity",81],["Operational Controls",76]].map(([l,v])=>bar(l,v)).join("");
+
+    document.getElementById("trustbar").innerHTML = ["Protocol Risk","Smart Contract Risk","Digital Asset Risk","Cross-Chain Risk","Operational Risk"].map(t=>`<div class="flex items-center justify-center px-4 py-7 text-center border-b border-line lg:border-b-0"><span class="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-muted">${t}</span></div>`).join("");
+
+    const cov = [["01","Smart Contract Cover","Protection against defined losses arising from qualifying smart-contract incidents.","smart-contract-cover"],["02","Protocol Exploit Cover","Coverage designed for qualifying protocol-level security events.","protocol-exploit-cover"],["03","Cross-Chain & Bridge Cover","Protection against defined failures involving bridges and cross-chain infrastructure.","cross-chain-bridge-cover"],["04","Stablecoin & Depeg Cover","Coverage for specifically defined market and asset events where applicable.","stablecoin-depeg-cover"],["05","Treasury & Digital Asset Cover","Protection for eligible protocol-controlled digital assets.","treasury-digital-asset-cover"],["06","Custom Protocol Cover","Tailored underwriting for sophisticated or unconventional Web3 architectures.","custom-protocol-cover"]];
+    document.getElementById("coverageGrid").innerHTML = cov.map(([n,t,d,slug])=>`<a href="/insurance/${slug}" class="cardline group flex flex-col border-t border-line bg-ivory p-8 hover:bg-ivory-50 transition-colors lg:p-9"><div class="flex items-start justify-between"><span class="font-serif text-sm text-slate-faint">${n}</span></div><h3 class="mt-8 font-serif text-[22px] font-medium leading-snug text-navy">${t}</h3><p class="mt-3 flex-1 text-[14.5px] leading-relaxed text-slate-muted">${d}</p><span class="mt-7 inline-flex items-center gap-1.5 text-[13px] font-medium text-navy group-hover:text-gold transition-colors">Learn more ↗</span></a>`).join("");
+
+    const steps = [["01","Submit Your Protocol","Provide architecture, contracts, audits, TVL, governance and security information."],["02","Underwrite the Risk","Our framework evaluates technical, economic, governance and operational risk factors."],["03","Receive a Proposal","Review available coverage, limits, pricing, deductibles and policy conditions."],["04","Manage Your Coverage","Monitor policy status, risk information, incidents and claims through your account."]];
+    document.getElementById("steps").innerHTML = steps.map(([n,t,d])=>`<div class="border-t border-line-dark pt-8"><span class="font-serif text-4xl font-light text-gold-light">${n}</span><h3 class="mt-5 font-serif text-xl font-medium text-ivory">${t}</h3><p class="mt-3 text-[14px] leading-relaxed text-ivory/60">${d}</p></div>`).join("");
+
+    document.getElementById("riskInputs").innerHTML = ["Smart contract architecture","Audit history","Governance controls","Admin privileges","Oracle dependencies","Liquidity","TVL concentration","Cross-chain dependencies","Infrastructure dependencies","Operational controls","Incident history"].map(x=>`<li class="flex items-start gap-2.5"><span class="mt-0.5 text-gold">✓</span>${x}</li>`).join("");
+
+    const alerts = [["Governance configuration changed","Governance","Elevated","#A9852F"],["New administrator detected","Access","Material","#B5623A"],["Oracle dependency increased","Oracle","Elevated","#A9852F"],["TVL concentration increased","Liquidity","Moderate","#8A929C"],["Contract upgrade detected","Code","Material","#B5623A"]];
+    document.getElementById("alerts").innerHTML = alerts.map(([t,tag,sev,c])=>`<li class="flex items-center justify-between gap-4 px-6 py-5"><div class="flex items-center gap-4"><span class="text-gold-light">△</span><div><p class="text-[14.5px] text-ivory/90">${t}</p><p class="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-ivory/40">${tag}</p></div></div><span class="shrink-0 border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em]" style="color:${c};border-color:${c}55">${sev}</span></li>`).join("");
+
+    document.getElementById("audiences").innerHTML = ["DeFi Protocols","DAOs","Foundations","Stablecoin Issuers","Exchanges","Bridges","Custodians","Infrastructure Providers","Institutional Digital-Asset Platforms"].map((a,i)=>`<div class="flex items-center justify-between border-b border-line px-2 py-5 ${i%2===0?'sm:border-r sm:pr-6':'sm:pl-6'}"><span class="font-serif text-lg text-navy">${a}</span><span class="font-serif text-sm text-slate-faint">${String(i+1).padStart(2,"0")}</span></div>`).join("");
+
+    const pillars = [["Institutional Underwriting","Disciplined risk assessment built for complex digital infrastructure."],["Web3-Native Expertise","Deep understanding of smart contracts, governance, digital assets and protocol architecture."],["Data-Driven Risk Intelligence","Continuous visibility into the factors that influence protocol risk."],["Clear Policy Frameworks","Defined coverage, limits, conditions, exclusions and claims procedures."]];
+    document.getElementById("pillars").innerHTML = pillars.map(([t,d])=>`<div class="border-t border-line pt-8"><h3 class="mt-6 font-serif text-xl font-medium text-navy">${t}</h3><p class="mt-3 text-[14.5px] leading-relaxed text-slate-muted">${d}</p></div>`).join("");
+
+    const cs = [["01","Notification","Structured incident notification and initial intake."],["02","Preservation","Guidance on preserving on-chain and off-chain evidence."],["03","Investigation","Technical and factual review against policy terms."],["04","Resolution","Loss assessment and determination under the policy."]];
+    document.getElementById("claimsSteps").innerHTML = cs.map(([n,t,d])=>`<li class="border-t border-line-dark pt-6"><span class="font-serif text-3xl font-light text-gold-light">${n}</span><h3 class="mt-4 font-serif text-lg text-ivory">${t}</h3><p class="mt-2 text-[14px] leading-relaxed text-ivory/55">${d}</p></li>`).join("");
+
+    const fc = [["Company",[["About","/company/about"],["Leadership","/company/leadership"],["Careers","/company/careers"],["Contact","/risk-assessment#contact"]]],["Insurance",[["Programs","/insurance"],["For Protocols","/#for-protocols"],["Risk Intelligence","/#risk-intelligence"],["Claims","/legal/claims-procedure"]]],["Resources",[["Insights","/resources/insights"],["Research","/resources/research"],["Risk Reports","/resources/risk-reports"],["Documentation","/legal"]]],["Legal",[["Terms of Use","/legal/terms"],["Privacy Policy","/legal/privacy"],["Policy Terms","/legal/policy-terms"],["Regulatory Information","/legal/regulatory"]]]];
+    document.getElementById("footerCols").innerHTML = fc.map(([h,ls])=>`<div><h3 class="text-[11px] font-medium uppercase tracking-label text-gold-light">${h}</h3><ul class="mt-5 space-y-3">${ls.map(([label,href])=>`<li><a href="${href}" class="text-sm text-ivory/65 hover:text-ivory transition-colors">${label}</a></li>`).join("")}</ul></div>`).join("");
+
+    // reveal on scroll
+    const io = new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("vis");io.unobserve(e.target);}}),{threshold:.12,rootMargin:"0px 0px -8% 0px"});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>

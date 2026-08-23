@@ -4,7 +4,10 @@ import { audiences } from "@/lib/content";
 
 export function ForProtocols() {
   return (
-    <section id="for-protocols" className="scroll-mt-24 bg-ivory py-24 lg:py-32">
+    <section
+      id="for-protocols"
+      className="scroll-mt-24 bg-ivory py-24 lg:py-32"
+    >
       <div className="container-x">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="reveal lg:col-span-5">
@@ -13,12 +16,17 @@ export function ForProtocols() {
               Built for teams responsible for billions in on-chain value.
             </h2>
             <p className="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">
-              We work with the organizations that operate, secure and govern critical digital
-              infrastructure — structuring coverage around the specific architecture of each
-              insured environment.
+              We work with the organizations that operate, secure and govern
+              critical digital infrastructure — structuring coverage around the
+              specific architecture of each insured environment.
             </p>
             <div className="mt-9">
-              <Button href="/risk-assessment" size="lg" variant="primary" className="group">
+              <Button
+                href="/risk-assessment"
+                size="lg"
+                variant="primary"
+                className="group"
+              >
                 Discuss Your Risk
                 <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
