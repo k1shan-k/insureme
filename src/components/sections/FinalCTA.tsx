@@ -10,12 +10,16 @@ export function FinalCTA() {
       <div className="container-x relative">
         <div className="reveal mx-auto max-w-3xl text-center">
           <h2 className="font-serif text-display font-light text-navy">
-            Request a preliminary underwriting review.
+            Request a manual underwriting review.
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-muted">
-            Provide initial information about the organization, architecture,
-            controls and coverage to be considered. Submission does not create
-            coverage or an obligation to offer terms.
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-muted">
+            Provide organization, architecture, controls and requested coverage
+            for manual underwriting review. A human underwriter will review a
+            complete submission and send the assessment and quotation within 24
+            hours. If more information is required, the submitter will receive a
+            status update within that period. No automated score is produced.
+            Any quotation remains subject to underwriting and authorized
+            transaction documents and does not bind coverage.
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <Button

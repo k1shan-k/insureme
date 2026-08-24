@@ -15,9 +15,9 @@ export const steps = [
   },
   {
     step: "02",
-    title: "Preliminary review",
+    title: "Manual underwriting review",
     description:
-      "Underwriting reviews the available technical, economic, governance and operational evidence.",
+      "A human underwriter reviews a complete submission and sends the assessment and quotation within 24 hours. If more information is required, the submitter receives a status update within that period. No automated score is produced.",
   },
   {
     step: "03",

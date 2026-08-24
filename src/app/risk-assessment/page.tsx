@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "Request an Assessment",
   description:
-    "Submit information about digital-asset protocols and infrastructure for preliminary underwriting review. No score, eligibility decision, insurance coverage, or terms are produced online.",
+    "Submit comprehensive protocol and coverage information for manual underwriting review. A human underwriter will send the assessment and quotation within 24 hours of a complete submission, or provide a status update if more information is required. No automated score is produced.",
   path: "/risk-assessment",
 });
 
@@ -20,17 +20,18 @@ export default function RiskAssessmentPage() {
       <section className="border-b border-line bg-navy-900 pb-14 pt-32 text-ivory lg:pb-20 lg:pt-40">
         <div className="container-x">
           <div className="max-w-3xl">
-            <SectionLabel tone="light">
-              Preliminary underwriting review
-            </SectionLabel>
+            <SectionLabel tone="light">Manual underwriting review</SectionLabel>
             <h1 className="mt-6 font-serif text-display font-light text-ivory">
               Request an assessment
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-              Provide information about a digital-asset protocol or
-              infrastructure for preliminary underwriting review. This process
-              does not produce a score, eligibility decision, insurance
-              coverage, or terms.
+              Provide comprehensive organization, architecture, control and
+              coverage information for manual underwriting review. A human
+              underwriter will review a complete submission and send the
+              assessment and quotation within 24 hours. If more information is
+              required, the submitter will receive a status update within that
+              period. No automated score is produced, and any quotation remains
+              subject to underwriting and authorized transaction documents.
             </p>
           </div>
         </div>

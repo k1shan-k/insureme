@@ -38,8 +38,12 @@ export function Hero() {
             </div>
 
             <p className="mt-8 max-w-lg text-[13px] leading-relaxed text-slate-faint">
-              Submission does not constitute an application, quotation, offer or
-              decision to provide insurance.
+              A human underwriter will review a complete submission and send the
+              assessment and quotation within 24 hours. If more information is
+              required, the submitter will receive a status update within that
+              period. No automated score is produced. Any quotation is subject
+              to underwriting and authorized transaction documents and does not
+              bind coverage.
             </p>
           </div>
 
