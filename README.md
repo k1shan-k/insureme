@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). In non-production environments, the site URL defaults to this local origin when `NEXT_PUBLIC_SITE_URL` is blank.
+Open [http://localhost:3000](http://localhost:3000). The site URL defaults to this local origin only when `NEXT_PUBLIC_SITE_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, and `VERCEL_URL` are all blank outside production.
 
 ### Production build
 
@@ -25,7 +25,7 @@ npm run build
 npm start
 ```
 
-`NEXT_PUBLIC_SITE_URL` is required in production and must contain the verified public HTTPS origin only, without credentials, a path, query parameters, or a fragment. It supplies route-correct canonical metadata, the sitemap, and robots configuration.
+`NEXT_PUBLIC_SITE_URL` is the preferred production origin and must contain the verified public HTTPS origin only, without credentials, a path, query parameters, or a fragment. On Vercel, builds fall back to `VERCEL_PROJECT_PRODUCTION_URL` and then `VERCEL_URL` when the explicit value is blank. The resolved origin supplies route-correct canonical metadata, the sitemap, and robots configuration. Non-Vercel production builds must set `NEXT_PUBLIC_SITE_URL`.
 
 ## Design system
 
@@ -81,7 +81,7 @@ src/
 
 Copy `.env.example` into the deployment's environment configuration and set only verified values.
 
-- `NEXT_PUBLIC_SITE_URL` is required in production.
+- `NEXT_PUBLIC_SITE_URL` is preferred in production and should be set to the verified public canonical origin. When it is blank on Vercel, the application uses `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL`; ensure Vercel system environment variables are available to the build. Non-Vercel production builds must set `NEXT_PUBLIC_SITE_URL`.
 - `NEXT_PUBLIC_CLIENT_PORTAL_URL` is optional and must be a credential-free HTTPS URL when set. Blank or invalid values are omitted outside production; invalid configured values fail clearly in production. `NEXT_PUBLIC_CLIENT_SERVICES_EMAIL` and other public entity or contact values are optional and omitted when blank.
 - `RISK_ASSESSMENT_WEBHOOK_URL` is required in production, must be credential-free HTTPS, and must point to a receiver that durably persists or enqueues accepted assessment submissions before returning `2xx`. HTTP is permitted only outside production.
 - `RISK_ASSESSMENT_WEBHOOK_TOKEN` is required in production. Keep it separate from `CLAIMS_NOTIFICATION_WEBHOOK_TOKEN` and never expose either through `NEXT_PUBLIC_*`.
@@ -123,7 +123,7 @@ The form does not accept file uploads. It instructs users not to provide seed ph
 
 Do not launch until all of the following are complete:
 
-- Verify the production `NEXT_PUBLIC_SITE_URL` and every configured public contact and portal value.
+- Verify the resolved production origin: set `NEXT_PUBLIC_SITE_URL` to the approved canonical domain, or confirm the Vercel system-domain fallback is correct. Verify every configured public contact and portal value.
 - Deploy durable webhook receivers for both intake routes; verify assessment and claims deduplication using `Idempotency-Key`, and retain the assessment reference header.
 - Configure manual assessment assignment, queue monitoring, and escalation so every complete submission receives an assessment and quotation within 24 hours or a status update within that period.
 - Approve all public legal, entity, regulatory, carrier, capacity, and transaction facts before publication.
