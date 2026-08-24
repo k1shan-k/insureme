@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import {
-  digitalAssetMarks,
+  defiProjectMarks,
   insuranceMarketMarks,
   type MarketMark,
 } from "@/lib/marketMarks";
@@ -19,19 +20,19 @@ export function MarketAndAssets() {
       <div className="container-x">
         <div className="reveal grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <SectionLabel>Market &amp; asset landscape</SectionLabel>
+            <SectionLabel>Insurance &amp; DeFi landscape</SectionLabel>
             <h2
               id="market-landscape-title"
               className="mt-5 max-w-2xl font-serif text-3xl font-light text-navy sm:text-4xl"
             >
-              Built to operate across institutional insurance and on-chain
-              markets.
+              Brand context across global insurance and specialist DeFi markets.
             </h2>
           </div>
           <p className="max-w-md text-[13.5px] leading-relaxed text-slate-muted lg:col-span-5 lg:justify-self-end">
-            Organizations and assets shown are market references only. Display
-            does not indicate a partnership, endorsement, capacity commitment,
-            active policy or guaranteed eligibility.
+            Brand marks identify market participants and selected DeFi projects
+            for editorial context. Display does not indicate a partnership,
+            endorsement, capacity commitment, active policy or guaranteed
+            eligibility.
           </p>
         </div>
       </div>
@@ -56,8 +57,8 @@ export function MarketAndAssets() {
           paused={paused}
         />
         <Marquee
-          label="Illustrative digital-asset exposures considered in underwriting"
-          marks={digitalAssetMarks}
+          label="Selected DeFi and on-chain finance project references"
+          marks={defiProjectMarks}
           direction="reverse"
           paused={paused}
         />
@@ -65,10 +66,12 @@ export function MarketAndAssets() {
 
       <div className="container-x mt-8">
         <p className="max-w-4xl text-[12px] leading-relaxed text-slate-faint">
-          Digital assets are not insured merely because they appear here.
-          Coverage attaches only to the named insured, scheduled assets, systems
-          and risks expressly stated in an issued policy, subject to all limits,
-          retentions, exclusions and conditions.
+          The protocol marks shown are limited to DeFi and related on-chain
+          finance projects; native layer-one assets such as BTC and ETH are not
+          represented. Display does not mean a project, token or position is
+          insured. Coverage attaches only to named insureds, scheduled assets,
+          systems and risks expressly stated in an issued policy, subject to all
+          limits, retentions, exclusions and conditions.
         </p>
       </div>
     </section>
@@ -121,23 +124,12 @@ function MarkGroup({
       {marks.map((mark) => (
         <div
           key={`${duplicate ? "duplicate-" : ""}${mark.name}`}
-          className="market-mark"
+          className={`market-mark ${
+            mark.tone === "defi" ? "market-mark--defi" : ""
+          }`}
         >
-          <span
-            className={`market-mark__symbol ${
-              mark.tone === "asset" ? "market-mark__symbol--asset" : ""
-            }`}
-          >
-            {mark.short}
-          </span>
-          <span>
-            <span className="block font-serif text-lg font-medium leading-none text-navy/85">
-              {mark.name}
-            </span>
-            <span className="mt-1.5 block text-[9px] font-medium uppercase tracking-[0.14em] text-slate-faint">
-              {mark.descriptor}
-            </span>
-          </span>
+          <BrandLogo brand={mark.logo} className="market-mark__logo" />
+          <span className="market-mark__descriptor">{mark.descriptor}</span>
         </div>
       ))}
     </div>

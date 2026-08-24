@@ -136,11 +136,12 @@ body {
 
 .market-mark {
   display: flex;
-  min-width: 250px;
-  align-items: center;
-  gap: 0.9rem;
-  padding-inline: 1.75rem;
-  opacity: 0.68;
+  min-width: 235px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding-inline: 2rem;
+  opacity: 0.76;
   transition: opacity 300ms ease;
 }
 
@@ -148,25 +149,30 @@ body {
   opacity: 1;
 }
 
-.market-mark__symbol {
-  display: inline-flex;
-  height: 2.5rem;
-  width: 2.5rem;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(14, 42, 71, 0.28);
-  color: #0e2a47;
-  font-family: var(--font-serif);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+.market-mark__logo {
+  display: block;
+  width: 156px;
+  height: 48px;
+  overflow: visible;
+  transition: transform 300ms ease;
 }
 
-.market-mark__symbol--asset {
-  border-radius: 999px;
-  border-color: rgba(169, 133, 47, 0.38);
-  color: #a9852f;
+.market-mark:hover .market-mark__logo {
+  transform: translateY(-1px);
+}
+
+.market-mark__descriptor {
+  padding-left: 0.2rem;
+  color: #7c8690;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.market-mark--defi .market-mark__descriptor {
+  color: #8a7133;
 }
 
 @media (prefers-reduced-motion: reduce) {
