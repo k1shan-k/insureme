@@ -1,9 +1,5 @@
-import { RiskBar } from "./RiskBar";
-
 /**
- * Refined, abstract institutional risk visualization.
- * A restrained network diagram layered behind a compact risk-profile card.
- * No literal crypto imagery — thin lines, muted tones, editorial data.
+ * Abstract network visualization with factual preliminary-review status.
  */
 export function HeroVisual() {
   const nodes = [
@@ -26,10 +22,15 @@ export function HeroVisual() {
     [5, 6],
     [1, 4],
   ];
+  const reviewAreas = [
+    "Architecture and deployed code",
+    "Governance and privileges",
+    "External dependencies",
+    "Operational controls",
+  ];
 
   return (
     <div className="relative">
-      {/* Network layer */}
       <div className="relative overflow-hidden border border-line bg-navy-950">
         <div className="pointer-events-none absolute inset-0 opacity-[0.9]">
           <svg
@@ -44,104 +45,99 @@ export function HeroVisual() {
                 <stop offset="100%" stopColor="#C4A15A" stopOpacity="0.15" />
               </linearGradient>
             </defs>
-            {/* faint grid */}
-            {Array.from({ length: 9 }).map((_, i) => (
+            {Array.from({ length: 9 }).map((_, index) => (
               <line
-                key={`v${i}`}
-                x1={i * 50}
+                key={`v${index}`}
+                x1={index * 50}
                 y1={0}
-                x2={i * 50}
+                x2={index * 50}
                 y2={200}
                 stroke="#1C3654"
                 strokeWidth="0.5"
               />
             ))}
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <line
-                key={`h${i}`}
+                key={`h${index}`}
                 x1={0}
-                y1={i * 50}
+                y1={index * 50}
                 x2={400}
-                y2={i * 50}
+                y2={index * 50}
                 stroke="#1C3654"
                 strokeWidth="0.5"
               />
             ))}
-            {edges.map(([a, b], i) => (
+            {edges.map(([start, end], index) => (
               <line
-                key={i}
-                x1={nodes[a].cx}
-                y1={nodes[a].cy}
-                x2={nodes[b].cx}
-                y2={nodes[b].cy}
+                key={index}
+                x1={nodes[start].cx}
+                y1={nodes[start].cy}
+                x2={nodes[end].cx}
+                y2={nodes[end].cy}
                 stroke="url(#edge)"
                 strokeWidth="1"
               />
             ))}
-            {nodes.map((n, i) => (
-              <g key={i}>
+            {nodes.map((node, index) => (
+              <g key={index}>
                 <circle
-                  cx={n.cx}
-                  cy={n.cy}
+                  cx={node.cx}
+                  cy={node.cy}
                   r="9"
                   fill="none"
                   stroke="#2A466B"
                   strokeWidth="0.75"
                 />
                 <circle
-                  cx={n.cx}
-                  cy={n.cy}
+                  cx={node.cx}
+                  cy={node.cy}
                   r="2.4"
-                  fill={i % 3 === 0 ? "#C4A15A" : "#7FA0C4"}
+                  fill={index % 3 === 0 ? "#C4A15A" : "#7FA0C4"}
                 />
               </g>
             ))}
           </svg>
         </div>
 
-        <div className="relative px-8 pb-8 pt-10 sm:px-10">
-          <div className="flex items-center justify-between">
+        <div className="relative px-8 pb-10 pt-10 sm:px-10">
+          <div className="flex items-center justify-between gap-4">
             <span className="text-[10px] font-medium uppercase tracking-label text-gold-light">
-              Protocol Risk Profile
+              Preliminary underwriting review
             </span>
             <span className="text-[10px] uppercase tracking-label text-ivory/40">
-              Live
+              No automated score
             </span>
           </div>
-          <div className="mt-6 flex items-end gap-6">
-            <div>
-              <div className="font-serif text-6xl font-light leading-none text-ivory">
-                72
-              </div>
-              <div className="mt-1 text-[11px] uppercase tracking-label text-ivory/45">
-                Overall / 100
-              </div>
+          <div className="mt-16 max-w-sm border-l border-line-dark pl-6">
+            <div className="font-serif text-3xl font-light text-ivory">
+              Evidence before conclusions
             </div>
-            <div className="mb-1 border-l border-line-dark pl-6">
-              <div className="text-[11px] uppercase tracking-label text-gold-light">
-                Moderate
-              </div>
-              <div className="mt-1 text-xs text-ivory/55">Composite index</div>
+            <div className="mt-3 text-sm leading-relaxed text-ivory/55">
+              Eligibility, insurance coverage, and terms are not determined by
+              the website.
             </div>
           </div>
         </div>
       </div>
 
-      {/* Data card layer — offset for depth */}
-      <div className="relative z-10 -mt-6 ml-6 mr-0 border border-line bg-ivory/98 p-6 shadow-[0_24px_60px_-30px_rgba(10,31,54,0.45)] sm:ml-10 sm:p-7 backdrop-blur">
+      <div className="relative z-10 -mt-6 ml-6 mr-0 border border-line bg-ivory/98 p-6 shadow-[0_24px_60px_-30px_rgba(10,31,54,0.45)] backdrop-blur sm:ml-10 sm:p-7">
         <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
           <span className="text-[10px] font-medium uppercase tracking-label text-slate-muted">
-            Risk Factors
+            Review areas
           </span>
           <span className="text-[10px] uppercase tracking-label text-slate-faint">
-            Weighted
+            Information dependent
           </span>
         </div>
-        <div className="grid gap-4">
-          <RiskBar label="Smart Contract" value={78} />
-          <RiskBar label="Governance" value={69} />
-          <RiskBar label="Liquidity" value={81} />
-          <RiskBar label="Operational Controls" value={76} />
+        <div className="grid gap-3 sm:grid-cols-2">
+          {reviewAreas.map((area) => (
+            <div
+              key={area}
+              className="border border-line bg-white px-4 py-3 text-[12.5px] text-charcoal"
+            >
+              {area}
+            </div>
+          ))}
         </div>
       </div>
     </div>

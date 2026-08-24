@@ -191,10 +191,10 @@ export function ClaimNotificationForm() {
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Button href="/legal/claims-procedure" variant="primary">
-            Review Claims Procedure
+            Review claims procedure
           </Button>
           <Button href="/client-login" variant="secondary">
-            Policyholder Portal
+            Policyholder portal
           </Button>
         </div>
       </div>
@@ -494,8 +494,9 @@ export function ClaimNotificationForm() {
           <div className="mt-8 flex flex-col-reverse gap-4 border-t border-line pt-7 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-xl text-[12px] leading-relaxed text-slate-faint">
               Do not submit seed phrases, private keys, passwords, signing
-              requests or privileged credentials. A secure evidence channel may
-              be provided after initial intake.
+              requests or privileged credentials. Use only a separately
+              authenticated channel identified in issued documentation for
+              sensitive evidence.
             </p>
             <Button
               type="submit"
@@ -503,7 +504,7 @@ export function ClaimNotificationForm() {
               disabled={state === "submitting"}
               className="group shrink-0"
             >
-              {state === "submitting" ? "Submitting…" : "Notify an Incident"}
+              {state === "submitting" ? "Submitting…" : "Notify an incident"}
               <ArrowRight className="transition-transform group-hover:translate-x-1" />
             </Button>
           </div>

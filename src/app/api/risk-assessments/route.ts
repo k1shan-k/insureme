@@ -251,7 +251,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Online intake is temporarily unavailable. Please use the underwriting contact details below.",
+          "Online intake is temporarily unavailable. Please try again later.",
       },
       { status: 503 },
     );

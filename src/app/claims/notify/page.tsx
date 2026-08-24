@@ -3,13 +3,14 @@ import Link from "next/link";
 import { ClaimNotificationForm } from "@/components/claims/ClaimNotificationForm";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { IconCheck } from "@/components/ui/Icons";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Notify an Incident",
+export const metadata: Metadata = createPageMetadata({
+  title: "Initial Incident Notification",
   description:
-    "Submit an initial incident notification to Meridian Risk. Notification is intake only and does not determine coverage or payment.",
-  alternates: { canonical: "/claims/notify" },
-};
+    "Submit initial incident information through the configured intake route. Receipt does not determine insurance coverage, satisfy every notice requirement, or waive a deadline.",
+  path: "/claims/notify",
+});
 
 const noticeParameters = [
   "Policy or proposal reference",
@@ -29,12 +30,13 @@ export default function ClaimNotificationPage() {
             <div className="lg:col-span-8">
               <SectionLabel tone="light">Claims notification</SectionLabel>
               <h1 className="mt-6 max-w-4xl font-serif text-display font-light text-ivory">
-                Notify us when an incident may give rise to a claim.
+                Submit initial incident information
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-                Provide an initial notice as soon as practicable. Do not delay
-                containment, evidence preservation or any separate notice
-                required by your issued policy.
+                Provide initial information as soon as practicable, but do not
+                delay safety, containment, evidence preservation, or any notice
+                required by issued documentation. This form is an intake route
+                only.
               </p>
             </div>
             <div className="border-l border-line-dark pl-6 lg:col-span-4">
@@ -78,15 +80,15 @@ export default function ClaimNotificationPage() {
                     Before submitting
                   </h2>
                   <p className="mt-3 text-[13px] leading-relaxed text-slate-muted">
-                    Review your policy notice requirements. This web form does
-                    not extend or replace contractual deadlines, proof-of-loss
-                    obligations or emergency contacts.
+                    Review issued notice requirements. This web form does not
+                    extend or replace contractual deadlines, proof-of-loss
+                    obligations, administrator channels, or emergency contacts.
                   </p>
                   <Link
                     href="/legal/claims-procedure"
                     className="mt-5 inline-flex text-[13px] font-medium text-navy underline decoration-line underline-offset-4 hover:text-gold"
                   >
-                    Read the Claims Procedure
+                    Review claims procedure
                   </Link>
                 </div>
               </div>

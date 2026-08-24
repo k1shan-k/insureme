@@ -12,15 +12,15 @@ export function Coverage() {
       <div className="container-x">
         <div className="reveal grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
-            <SectionLabel>Our coverage</SectionLabel>
+            <SectionLabel>Coverage areas</SectionLabel>
             <h2 className="mt-7 max-w-2xl font-serif text-display font-light text-navy">
-              Coverage built around the risks that matter.
+              Insurance structures for defined digital-asset risks.
             </h2>
           </div>
           <p className="max-w-sm text-[15px] leading-relaxed text-slate-muted lg:col-span-4">
-            Each line is underwritten independently against defined risk
-            parameters, with limits and conditions structured to the insured
-            environment.
+            Each structure is considered separately. Scope, limits, retentions,
+            exclusions and conditions are established through underwriting and
+            recorded in issued policy documentation.
           </p>
         </div>
 
@@ -38,8 +38,9 @@ export function Coverage() {
         </div>
 
         <p className="reveal mt-8 max-w-3xl text-[13px] leading-relaxed text-slate-faint">
-          Coverage is subject to underwriting, applicable policy terms, limits,
-          deductibles, exclusions and conditions.
+          Availability is subject to underwriting, jurisdiction, capacity and
+          the terms of the applicable policy. Website descriptions are not
+          quotations or binders.
         </p>
       </div>
     </section>

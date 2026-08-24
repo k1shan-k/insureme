@@ -6,44 +6,28 @@ export function WhyInsurance() {
       <div className="container-x">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="reveal lg:col-span-6">
-            <SectionLabel>Why Web3 needs insurance</SectionLabel>
+            <SectionLabel>Risk transfer</SectionLabel>
             <h2 className="mt-7 max-w-lg font-serif text-display font-light text-navy">
-              Digital infrastructure requires digital risk protection.
+              Selected on-chain risks can be defined, assessed and transferred.
             </h2>
           </div>
 
           <div className="reveal lg:col-span-6" data-reveal-delay="100">
             <div className="max-w-xl space-y-6 text-[16px] leading-relaxed text-slate-muted">
               <p>
-                DeFi protocols operate across smart contracts, governance
-                systems, liquidity pools, oracles, bridges and interconnected
-                infrastructure. A single failure can propagate rapidly across an
-                ecosystem.
+                Digital-asset protocols depend on deployed code, governance,
+                liquidity, oracles, bridges, custody and operating procedures. A
+                failure in one component can affect multiple systems and assets.
               </p>
               <p className="text-charcoal">
-                Our underwriting framework is designed specifically for these
-                risks.
+                Insurance can address specified loss pathways when the insured
+                environment, covered trigger, valuation method and policy
+                obligations are documented clearly.
               </p>
-            </div>
-
-            <div className="mt-10 grid grid-cols-3 divide-x divide-line border-y border-line">
-              {[
-                { k: "Interconnected", v: "Systems" },
-                { k: "Propagating", v: "Failure Modes" },
-                { k: "Evolving", v: "Architectures" },
-              ].map((s) => (
-                <div key={s.k} className="px-4 py-6 first:pl-0">
-                  <div className="font-serif text-lg text-navy">{s.k}</div>
-                  <div className="mt-1 text-[12px] uppercase tracking-[0.12em] text-slate-faint">
-                    {s.v}
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
 
-        {/* Editorial risk diagram */}
         <div
           className="reveal mt-16 border border-line bg-navy-950 p-8 sm:p-12"
           data-reveal-delay="120"
@@ -57,20 +41,20 @@ export function WhyInsurance() {
 
 function RiskWeb() {
   const layers = [
-    { label: "Smart Contracts", x: 8 },
+    { label: "Smart contracts", x: 8 },
     { label: "Governance", x: 26 },
     { label: "Oracles", x: 44 },
-    { label: "Liquidity Pools", x: 62 },
+    { label: "Liquidity", x: 62 },
     { label: "Bridges", x: 80 },
   ];
   return (
     <div>
       <div className="mb-8 flex items-center justify-between">
         <span className="text-[10px] font-medium uppercase tracking-label text-gold-light">
-          Interdependency Map
+          Example dependency map
         </span>
         <span className="text-[10px] uppercase tracking-label text-ivory/40">
-          Illustrative
+          Not a risk assessment
         </span>
       </div>
       <svg
@@ -95,10 +79,10 @@ function RiskWeb() {
               />
             )),
         )}
-        {layers.map((l, i) => (
+        {layers.map((layer, i) => (
           <circle
-            key={l.label}
-            cx={l.x}
+            key={layer.label}
+            cx={layer.x}
             cy={i % 2 === 0 ? 8 : 24}
             r="1.1"
             fill={i % 2 === 0 ? "#C4A15A" : "#7FA0C4"}
@@ -106,12 +90,12 @@ function RiskWeb() {
         ))}
       </svg>
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {layers.map((l) => (
+        {layers.map((layer) => (
           <span
-            key={l.label}
+            key={layer.label}
             className="text-center text-[11px] uppercase tracking-wide text-ivory/50"
           >
-            {l.label}
+            {layer.label}
           </span>
         ))}
       </div>

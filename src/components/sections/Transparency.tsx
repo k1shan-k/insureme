@@ -9,14 +9,14 @@ export function Transparency() {
       <div className="container-x">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="reveal lg:col-span-4">
-            <SectionLabel>Trust &amp; transparency</SectionLabel>
+            <SectionLabel>Information and disclosures</SectionLabel>
             <h2 className="mt-7 font-serif text-display font-light text-navy">
-              Confidence comes from clarity.
+              Review the documents relevant to a coverage decision.
             </h2>
             <p className="mt-7 max-w-sm text-[16px] leading-relaxed text-slate-muted">
-              We publish the frameworks that govern our underwriting, coverage
-              and claims — so that counterparties can evaluate us with the same
-              discipline we apply to them.
+              These pages explain general underwriting considerations, policy
+              structure, claims handling and material limitations. Executed
+              transaction documents control in every case.
             </p>
           </div>
 

@@ -11,19 +11,19 @@ export function WhyUs() {
     >
       <div className="container-x">
         <div className="reveal max-w-2xl">
-          <SectionLabel>Why Meridian</SectionLabel>
+          <SectionLabel>Operating principles</SectionLabel>
           <h2 className="mt-7 font-serif text-display font-light text-navy">
-            Insurance expertise for an on-chain world.
+            Clear evidence, policy boundaries and decision records.
           </h2>
         </div>
 
         <div className="reveal mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((p) => (
+          {pillars.map((pillar) => (
             <PillarCard
-              key={p.title}
-              title={p.title}
-              description={p.description}
-              icon={renderIcon(p.icon, "h-7 w-7")}
+              key={pillar.title}
+              title={pillar.title}
+              description={pillar.description}
+              icon={renderIcon(pillar.icon, "h-7 w-7")}
             />
           ))}
         </div>

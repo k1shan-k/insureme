@@ -60,11 +60,11 @@ export function Header() {
               href="/client-login"
               className="text-[13.5px] font-medium text-charcoal/80 transition-colors hover:text-navy"
             >
-              Client Portal
+              Policyholder portal
             </Link>
             <span aria-hidden className="h-4 w-px bg-line" />
             <Button href="/risk-assessment" size="sm" variant="primary">
-              Get Coverage
+              Request an assessment
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </Button>
           </div>
@@ -120,14 +120,14 @@ export function Header() {
               variant="secondary"
               onClick={() => setOpen(false)}
             >
-              Client Portal
+              Policyholder portal
             </Button>
             <Button
               href="/risk-assessment"
               variant="primary"
               onClick={() => setOpen(false)}
             >
-              Get Coverage
+              Request an assessment
             </Button>
           </div>
         </nav>

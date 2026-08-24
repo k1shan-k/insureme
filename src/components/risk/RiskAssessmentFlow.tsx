@@ -4,17 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, ArrowRight } from "@/components/ui/Button";
 import { IconCheck } from "@/components/ui/Icons";
-import { RiskBar } from "@/components/charts/RiskBar";
-import { RiskGauge } from "@/components/charts/RiskGauge";
 import { insurancePrograms } from "@/lib/programs";
 
 type StepId = 0 | 1 | 2 | 3;
 
 const stepMeta = [
-  { label: "Protocol Information" },
-  { label: "Risk Review" },
-  { label: "Coverage Options" },
-  { label: "Contact Underwriting" },
+  { label: "Protocol information" },
+  { label: "Information review" },
+  { label: "Coverage interests" },
+  { label: "Contact information" },
 ];
 
 const chains = [
@@ -98,7 +96,7 @@ export function RiskAssessmentFlow() {
       if (!response.ok) {
         throw new IntakeError(
           result.error ||
-            "Underwriting intake is currently unavailable. Please try again.",
+            "Online intake is temporarily unavailable. Please try again.",
         );
       }
       if (!result.reference) {
@@ -113,7 +111,7 @@ export function RiskAssessmentFlow() {
       setSubmissionError(
         error instanceof IntakeError
           ? error.message
-          : "Underwriting intake is currently unavailable. Please check your connection and try again.",
+          : "Online intake is temporarily unavailable. Check your connection and try again.",
       );
       setSubmissionState("error");
     }
@@ -126,29 +124,23 @@ export function RiskAssessmentFlow() {
           <IconCheck className="h-6 w-6" />
         </div>
         <h2 className="mt-7 font-serif text-3xl font-light text-navy">
-          Your assessment request has been received.
+          Assessment request received
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-slate-muted">
-          Thank you, {form.name || "there"}. Our underwriting team will review
-          the information for{" "}
-          <span className="text-charcoal">
-            {form.protocol || "your protocol"}
-          </span>{" "}
-          and follow up at{" "}
-          <span className="text-charcoal">{form.email || "your email"}</span>.
-          Reference{" "}
+          The submitted information has been recorded under reference{" "}
           <span className="font-medium text-charcoal">
             {submissionReference}
           </span>
-          . This acknowledgement confirms intake only and does not constitute an
-          offer of, or binding commitment to provide, insurance.
+          . Receipt confirms intake for preliminary underwriting review only. It
+          does not indicate eligibility, determine insurance coverage, or
+          constitute an offer or binding commitment.
         </p>
         <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <Button href="/" variant="secondary">
-            Return Home
+            Return home
           </Button>
-          <Button href="/legal/claims-procedure" variant="ghost">
-            Read the Claims Process →
+          <Button href="/legal/underwriting-methodology" variant="ghost">
+            Review underwriting methodology →
           </Button>
         </div>
       </div>
@@ -207,20 +199,28 @@ export function RiskAssessmentFlow() {
         {step === 0 && (
           <StepShell
             eyebrow="Step one"
-            title="Tell us about your protocol"
-            intro="Share the essentials of your architecture. This information initiates a preliminary risk review — it is not an application for insurance."
+            title="Provide protocol information"
+            intro="Provide information about the digital-asset protocol or infrastructure. Submission begins a preliminary underwriting review; it is not an application for insurance coverage."
           >
             <div className="grid gap-6 sm:grid-cols-2">
-              <Field label="Protocol / Organization name" required>
+              <Field label="Protocol or organization name" required>
                 <input
+                  type="text"
+                  name="protocol"
+                  autoComplete="organization"
+                  maxLength={160}
                   className={inputCls}
                   value={form.protocol}
                   onChange={(e) => set("protocol", e.target.value)}
-                  placeholder="e.g. Aperture Finance"
+                  placeholder="Enter the protocol or organization name"
                 />
               </Field>
               <Field label="Website">
                 <input
+                  type="url"
+                  name="website"
+                  autoComplete="url"
+                  maxLength={300}
                   className={inputCls}
                   value={form.website}
                   onChange={(e) => set("website", e.target.value)}
@@ -359,54 +359,42 @@ export function RiskAssessmentFlow() {
         {step === 1 && (
           <StepShell
             eyebrow="Step two"
-            title="Preliminary risk review"
-            intro="Based on the information provided, our framework generates an indicative risk profile. This is illustrative and does not constitute an underwriting decision or offer of coverage."
+            title="Information review"
+            intro="The information has not yet been reviewed by an underwriter. This step confirms the status of the request before coverage interests and contact information are submitted."
           >
-            <div className="grid gap-8 border border-line bg-ivory-50 p-7 sm:grid-cols-2 sm:p-9">
-              <div className="flex flex-col items-center justify-center border-b border-line pb-8 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
-                <span className="mb-4 text-[11px] uppercase tracking-label text-slate-faint">
-                  Indicative Overall Risk
-                </span>
-                <RiskGauge score={72} label="Moderate" />
-                <p className="mt-5 text-center text-[12px] text-slate-faint">
-                  Composite of the factors below
-                </p>
-              </div>
-              <div className="flex flex-col justify-center gap-5">
-                <RiskBar label="Smart Contract" value={78} />
-                <RiskBar
-                  label="Governance"
-                  value={form.governance.includes("Immutable") ? 88 : 69}
-                />
-                <RiskBar label="Oracle Dependency" value={74} />
-                <RiskBar label="Liquidity" value={81} />
-                <RiskBar label="Operational Controls" value={76} />
-              </div>
-            </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3">
               {[
-                { k: "Eligibility", v: "Preliminary: Eligible" },
-                { k: "Suggested Review", v: "Standard underwriting" },
-                { k: "Data Confidence", v: "Indicative" },
-              ].map((s) => (
-                <div key={s.k} className="border border-line p-4">
+                { k: "Assessment status", v: "Not yet reviewed" },
+                { k: "Next step", v: "Underwriter review" },
+                { k: "Coverage status", v: "Not determined" },
+              ].map((status) => (
+                <div
+                  key={status.k}
+                  className="border border-line bg-ivory-50 p-5"
+                >
                   <div className="text-[11px] uppercase tracking-[0.1em] text-slate-faint">
-                    {s.k}
+                    {status.k}
                   </div>
-                  <div className="mt-1.5 font-serif text-[15px] text-navy">
-                    {s.v}
+                  <div className="mt-2 font-serif text-lg text-navy">
+                    {status.v}
                   </div>
                 </div>
               ))}
             </div>
+            <p className="mt-6 max-w-3xl text-[14px] leading-relaxed text-slate-muted">
+              No score, eligibility decision, insurance coverage determination,
+              or terms have been produced. Any assessment depends on the
+              information and evidence considered during preliminary
+              underwriting review.
+            </p>
           </StepShell>
         )}
 
         {step === 2 && (
           <StepShell
             eyebrow="Step three"
-            title="Coverage of interest"
-            intro="Select the coverage lines relevant to your protocol. Availability, limits, deductibles and conditions are determined through underwriting and set out in policy documentation."
+            title="Insurance coverage interests"
+            intro="Select relevant areas of potential insurance coverage for digital-asset protocols and infrastructure. Availability and terms can be determined only through underwriting and issued transaction documents."
           >
             <div className="grid gap-3 sm:grid-cols-2">
               {insurancePrograms.map((program) => {
@@ -439,9 +427,9 @@ export function RiskAssessmentFlow() {
               })}
             </div>
             <p className="mt-6 text-[13px] leading-relaxed text-slate-faint">
-              Coverage is subject to underwriting, applicable policy terms,
-              limits, deductibles, exclusions and conditions. Selection here
-              indicates interest only.
+              Selection records an area of interest only. Transaction documents
+              control insurance coverage, including any limits, retentions,
+              exclusions, and conditions.
             </p>
           </StepShell>
         )}
@@ -449,33 +437,46 @@ export function RiskAssessmentFlow() {
         {step === 3 && (
           <StepShell
             eyebrow="Step four"
-            title="Connect with underwriting"
-            intro="Provide a point of contact and our underwriting team will follow up to continue the assessment."
+            title="Provide contact information"
+            intro="Provide an authorized point of contact for the preliminary underwriting review."
           >
             <div className="grid gap-6 sm:grid-cols-2">
               <Field label="Full name" required>
                 <input
+                  type="text"
+                  name="name"
+                  required
+                  autoComplete="name"
+                  maxLength={120}
                   className={inputCls}
                   value={form.name}
                   onChange={(e) => set("name", e.target.value)}
-                  placeholder="Jane Doe"
+                  placeholder="Enter the authorized contact name"
                 />
               </Field>
               <Field label="Work email" required>
                 <input
                   type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  maxLength={254}
                   className={inputCls}
                   value={form.email}
                   onChange={(e) => set("email", e.target.value)}
-                  placeholder="jane@protocol.xyz"
+                  placeholder="Enter a work email address"
                 />
               </Field>
               <Field label="Role" className="sm:col-span-2">
                 <input
+                  type="text"
+                  name="role"
+                  autoComplete="organization-title"
+                  maxLength={120}
                   className={inputCls}
                   value={form.role}
                   onChange={(e) => set("role", e.target.value)}
-                  placeholder="e.g. Head of Treasury, Security Lead"
+                  placeholder="Position or function"
                 />
               </Field>
               <Field
@@ -483,11 +484,13 @@ export function RiskAssessmentFlow() {
                 className="sm:col-span-2"
               >
                 <textarea
+                  name="notes"
                   rows={4}
+                  maxLength={2_000}
                   className={`${inputCls} resize-none`}
                   value={form.notes}
                   onChange={(e) => set("notes", e.target.value)}
-                  placeholder="Context on your architecture, timelines or specific risks."
+                  placeholder="Provide relevant architecture, timing, or risk context. Do not include credentials or confidential security material."
                 />
               </Field>
               <div className="sr-only" aria-hidden="true">
@@ -503,16 +506,16 @@ export function RiskAssessmentFlow() {
               </div>
             </div>
             <p className="mt-6 text-[13px] leading-relaxed text-slate-faint">
-              By submitting, you consent to being contacted regarding your risk
-              assessment. See our{" "}
+              By submitting, you consent to contact about this preliminary
+              underwriting review. See the{" "}
               <Link
                 href="/legal/privacy"
                 className="underline decoration-line underline-offset-2 hover:text-navy"
               >
-                Privacy Policy
+                Privacy policy
               </Link>
-              . This submission is not an application for, or a binding offer
-              of, insurance.
+              . Submission does not produce insurance coverage or bind any
+              terms.
             </p>
           </StepShell>
         )}
@@ -545,9 +548,9 @@ export function RiskAssessmentFlow() {
               className="group"
             >
               {step === 0
-                ? "Review Risk"
+                ? "Review information"
                 : step === 1
-                  ? "Explore Coverage"
+                  ? "Select coverage interests"
                   : "Continue"}
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
@@ -560,7 +563,7 @@ export function RiskAssessmentFlow() {
             >
               {submissionState === "submitting"
                 ? "Submitting…"
-                : "Submit for Review"}
+                : "Submit for review"}
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           )}

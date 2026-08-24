@@ -280,7 +280,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Online claims intake is temporarily unavailable. Follow the notice method in your policy or contact your authorized Meridian representative.",
+          "Online claims intake is temporarily unavailable. Follow the notice method and administrator contact stated in your issued documentation.",
       },
       { status: 503 },
     );

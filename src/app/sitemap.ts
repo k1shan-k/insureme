@@ -2,12 +2,9 @@ import type { MetadataRoute } from "next";
 import { legalDocs } from "@/lib/legal";
 import { insurancePrograms } from "@/lib/programs";
 import { companyPages, resourcePages } from "@/lib/institutional";
-
-const BASE = "https://meridianrisk.example";
+import { siteUrl } from "@/lib/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   const staticRoutes = [
     "",
     "/risk-assessment",
@@ -16,36 +13,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources",
     "/legal",
   ].map((path) => ({
-    url: `${BASE}${path}`,
-    lastModified: now,
+    url: `${siteUrl}${path}`,
     changeFrequency: "monthly" as const,
     priority: path === "" ? 1 : 0.8,
   }));
 
   const programRoutes = insurancePrograms.map((program) => ({
-    url: `${BASE}/insurance/${program.slug}`,
-    lastModified: now,
+    url: `${siteUrl}/insurance/${program.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const companyRoutes = companyPages.map((page) => ({
-    url: `${BASE}/company/${page.slug}`,
-    lastModified: now,
+    url: `${siteUrl}/company/${page.slug}`,
     changeFrequency: "yearly" as const,
     priority: 0.5,
   }));
 
   const resourceRoutes = resourcePages.map((page) => ({
-    url: `${BASE}/resources/${page.slug}`,
-    lastModified: now,
+    url: `${siteUrl}/resources/${page.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
 
   const legalRoutes = legalDocs.map((doc) => ({
-    url: `${BASE}/legal/${doc.slug}`,
-    lastModified: now,
+    url: `${siteUrl}/legal/${doc.slug}`,
     changeFrequency: "yearly" as const,
     priority: 0.4,
   }));

@@ -13,58 +13,52 @@ export type LegalDoc = {
   sections: LegalSection[];
 };
 
-const UPDATED = "1 January 2026";
+const UPDATED = "24 August 2026";
 
 export const legalDocs: LegalDoc[] = [
   {
     slug: "privacy",
-    title: "Privacy Policy",
+    title: "Privacy Notice",
     updated: UPDATED,
     intro:
-      "This Privacy Policy explains how Meridian Risk Underwriting Ltd. and its affiliates collect, use, disclose and safeguard information in connection with our website, underwriting and risk-intelligence activities.",
+      "This notice provides general information about personal data submitted through this website. Transaction-specific notices and documentation may provide additional information.",
     sections: [
       {
-        heading: "1. Information we collect",
+        heading: "1. Information submitted through the site",
         paragraphs: [
-          "We collect information you provide directly — such as contact details, protocol information, claim or incident notifications and correspondence — as well as information generated through your use of our website and services.",
-        ],
-        list: [
-          "Identity and contact information provided in enquiries or applications.",
-          "Protocol and organizational information submitted for risk assessment.",
-          "Claim and incident information, including policy references, discovery times, event descriptions, affected systems and initial loss estimates.",
-          "Technical evidence such as transaction hashes, public addresses, logs, evidence links, mitigation records and claims correspondence.",
-          "Technical data such as IP address, device and browser information.",
-          "Publicly available on-chain data relevant to underwriting and monitoring.",
+          "The assessment and incident-notification forms collect the contact, organization, protocol, risk, policy-reference, and incident information entered by the user. Hosting, security, and delivery systems may also process technical request information needed to operate and protect the site.",
+          "Do not submit seed phrases, private keys, passwords, signing requests, privileged credentials, undisclosed vulnerabilities, or other secrets through a public form. Use an authenticated channel identified in relevant transaction documentation for sensitive material.",
         ],
       },
       {
-        heading: "2. How we use information",
+        heading: "2. Purposes",
         paragraphs: [
-          "We use information to assess risk, provide and administer coverage, communicate with counterparties, meet legal and regulatory obligations, and improve our services. We process personal data only where we have a lawful basis to do so.",
+          "Submitted information may be used to route and review an enquiry, conduct a preliminary underwriting review, process an initial incident notification, maintain records, protect the site, and meet applicable legal requirements. A website submission does not determine insurance coverage or satisfy every transaction-specific requirement.",
         ],
       },
       {
-        heading: "3. Sharing and disclosure",
+        heading: "3. Recipients",
         paragraphs: [
-          "We may share information with affiliates, insurers, reinsurers, brokers, claims experts, forensic investigators, counsel, service providers, professional advisers, and regulatory or governmental authorities where permitted or required. We do not sell personal information.",
+          "Information may be processed by service providers that operate the website or configured intake systems. For a specific transaction or incident, information may also be shared as needed with the parties and professional advisers identified by, or necessary for, that matter, subject to applicable documentation and law.",
+          "Do not assume that a carrier, broker, administrator, investigator, adviser, or other third party will receive a website submission unless that is confirmed through an authorized channel.",
         ],
       },
       {
-        heading: "4. Data retention",
+        heading: "4. Retention and location",
         paragraphs: [
-          "We retain information for as long as necessary to fulfil the purposes described in this policy, including to satisfy legal, regulatory, accounting and reporting requirements.",
+          "Retention and processing location depend on the configured service providers, the purpose of the submission, applicable law, and any transaction-specific requirements. Information should not be submitted unless it is appropriate for those purposes.",
         ],
       },
       {
-        heading: "5. Your rights",
+        heading: "5. Requests and contact",
         paragraphs: [
-          "Subject to applicable law, you may have rights to access, correct, delete or restrict the processing of your personal data. Requests can be directed to our contact address below.",
+          "Privacy rights vary by jurisdiction. Use a configured public contact route on this site or the contact route in relevant transaction documentation to make a privacy enquiry. Additional identity verification may be required before a request is processed.",
         ],
       },
       {
-        heading: "6. Security",
+        heading: "6. Security limitations",
         paragraphs: [
-          "We maintain administrative, technical and organizational measures designed to protect information. No method of transmission or storage is entirely secure, and we cannot guarantee absolute security.",
+          "Internet transmission and storage involve risk. The website is not an appropriate channel for credentials or highly sensitive security material, and no public website can guarantee absolute confidentiality or security.",
         ],
       },
     ],
@@ -74,75 +68,75 @@ export const legalDocs: LegalDoc[] = [
     title: "Terms of Use",
     updated: UPDATED,
     intro:
-      "These Terms of Use govern your access to and use of this website. By accessing the website you agree to these terms.",
+      "These terms apply to use of this public website. They do not govern an insurance transaction or replace transaction-specific documentation.",
     sections: [
       {
-        heading: "1. Informational purpose",
+        heading: "1. General information",
         paragraphs: [
-          "The content of this website is provided for general information only. It does not constitute an offer to sell, or a solicitation to buy, any insurance product, nor does it constitute financial, legal, tax or investment advice.",
+          "Website content is general information, not insurance, legal, tax, financial, security, or investment advice. It is not an offer, quotation, binder, policy, or commitment to provide insurance coverage.",
         ],
       },
       {
-        heading: "2. No binding coverage",
+        heading: "2. Transaction documentation",
         paragraphs: [
-          "Nothing on this website creates a contract of insurance or a binding commitment to provide coverage. Coverage is available only pursuant to a policy issued following underwriting and subject to its terms, conditions, limits and exclusions.",
+          "Authorization, entity, carrier, administrator, product, jurisdiction, and insurance coverage facts for a transaction are stated in the relevant transaction documents. Website summaries do not establish or amend those facts. Transaction documents control coverage.",
         ],
       },
       {
-        heading: "3. Intellectual property",
+        heading: "3. Website use",
         paragraphs: [
-          "All content, trademarks and materials on this website are owned by or licensed to Meridian Risk and are protected by applicable intellectual property laws. You may not reproduce or distribute them without permission.",
+          "Users should provide accurate information, avoid unlawful or disruptive use, and avoid submitting credentials or material they are not authorized to disclose. Access to a public page does not grant access to a policyholder system or confidential information.",
         ],
       },
       {
-        heading: "4. Limitation of liability",
+        heading: "4. Accuracy and availability",
         paragraphs: [
-          "To the fullest extent permitted by law, Meridian Risk shall not be liable for any loss or damage arising from reliance on information contained on this website.",
+          "Content may be incomplete, become outdated, or be revised. The website may be unavailable or contain links to third-party resources. Users should verify material facts through authorized transaction channels before relying on them.",
         ],
       },
       {
-        heading: "5. Governing law",
+        heading: "5. Applicable terms",
         paragraphs: [
-          "These terms are governed by the laws of the jurisdiction in which the relevant Meridian Risk entity is established, without regard to conflict-of-law principles.",
+          "Any additional legal terms, governing law, dispute process, limitation period, or liability allocation applicable to an insurance or service relationship must be determined from the documentation governing that relationship, not from this general page.",
         ],
       },
     ],
   },
   {
     slug: "policy-terms",
-    title: "Insurance Policy Terms",
+    title: "Coverage Documentation Overview",
     updated: UPDATED,
     intro:
-      "This page summarizes the framework of definitions, conditions, limits, deductibles and exclusions that structure our insurance policies. The controlling terms are those set out in the issued policy documentation.",
+      "This non-binding overview identifies subjects commonly addressed in insurance documentation. It does not describe an issued policy or create insurance coverage, exclusions, duties, or rights.",
     sections: [
       {
-        heading: "1. Structure of a policy",
+        heading: "1. Transaction parties and scope",
         paragraphs: [
-          "Each policy comprises a schedule, definitions, insuring clauses, conditions, exclusions and endorsements. Coverage applies only to losses that fall within the insuring clauses and are not otherwise excluded.",
+          "Documentation may identify relevant entities, insured interests, scheduled contracts, wallets, assets, networks, dependencies, and the period of insurance. The applicable transaction documents provide the authoritative scope.",
         ],
       },
       {
-        heading: "2. Limits and deductibles",
+        heading: "2. Event and loss definitions",
         paragraphs: [
-          "Policies specify aggregate and per-event limits, sub-limits, deductibles and retentions. Amounts payable are subject to these figures and to any applicable co-insurance.",
+          "Documentation may define relevant events, causation, discovery, evidence, valuation, aggregation, and recovery treatment. Similar terminology can have different meanings in different transactions.",
         ],
       },
       {
-        heading: "3. Conditions",
+        heading: "3. Financial parameters",
         paragraphs: [
-          "Coverage is conditional on matters including accurate disclosure, ongoing compliance with agreed security and governance controls, timely notification of incidents, and cooperation during investigation.",
+          "Limits, sublimits, deductibles, waiting periods, coinsurance, and other retentions are transaction-specific. No amount or structure displayed on this website applies unless included in issued documentation.",
         ],
       },
       {
-        heading: "4. Exclusions",
+        heading: "4. Exclusions and conditions",
         paragraphs: [
-          "Policies contain exclusions which may include, among others, losses arising from undisclosed material facts, fraud or collusion by insured parties, sanctioned activity, and events outside defined coverage triggers.",
+          "Issued documentation may contain exclusions, notice provisions, information requirements, change provisions, mitigation requirements, evidence requirements, and other conditions. This overview does not state what applies to a particular transaction.",
         ],
       },
       {
-        heading: "5. Interpretation",
+        heading: "5. Controlling documents",
         paragraphs: [
-          "In the event of any inconsistency between this summary and the issued policy documentation, the issued policy documentation prevails.",
+          "The relevant binder, schedule, policy wording, endorsements, certificates, and other authorized transaction documents determine the parties' rights and obligations. Transaction documents control coverage.",
         ],
       },
     ],
@@ -152,30 +146,30 @@ export const legalDocs: LegalDoc[] = [
     title: "Coverage Disclosures",
     updated: UPDATED,
     intro:
-      "These disclosures describe important limitations and conditions applicable to our coverage products. They should be read together with the applicable policy documentation.",
+      "These disclosures explain the limited role of public program information. They are not transaction terms.",
     sections: [
       {
-        heading: "1. Coverage is defined and conditional",
+        heading: "1. Underwriting is required",
         paragraphs: [
-          "Our products provide coverage for specifically defined risks. Coverage varies by product, risk profile and policy conditions. Specific exclusions, limits and deductibles apply.",
+          "A submission may be considered in a preliminary underwriting review. It does not establish eligibility, availability, price, limits, wording, or insurance coverage.",
         ],
       },
       {
-        heading: "2. No guarantee of payment",
+        heading: "2. Coverage is transaction-specific",
         paragraphs: [
-          "The existence of a policy does not guarantee payment of any particular claim. Claims are assessed against the policy terms, and payment depends on whether the loss falls within coverage and satisfies applicable conditions.",
+          "Potential insurance coverage depends on the applicable parties, jurisdiction, risk, underwriting decision, and issued documentation. Public program categories are only general risk-area summaries.",
         ],
       },
       {
-        heading: "3. Underwriting dependency",
+        heading: "3. Claims are not predetermined",
         paragraphs: [
-          "Availability, scope and pricing of coverage are determined through underwriting and may change based on the information provided and the assessed risk of the insured environment.",
+          "An incident notification, risk assessment, or reference to a program does not determine whether a loss is covered or payable. Any determination must be made under the applicable transaction documents and facts.",
         ],
       },
       {
-        heading: "4. Material change",
+        heading: "4. Changes and dependencies",
         paragraphs: [
-          "Material changes to an insured protocol — including to architecture, governance, dependencies or controls — may affect coverage and must be disclosed in accordance with policy conditions.",
+          "Changes to code, architecture, governance, assets, custody, dependencies, or controls may alter risk. Any reporting or approval requirements are found in issued documentation.",
         ],
       },
     ],
@@ -185,30 +179,30 @@ export const legalDocs: LegalDoc[] = [
     title: "Claims Procedure",
     updated: UPDATED,
     intro:
-      "This page describes the structured process our claims framework is designed to follow. It is a general description and does not modify the terms of any issued policy.",
+      "This page provides general incident-notification guidance. It does not replace the notice channels, deadlines, procedures, or requirements in issued documentation.",
     sections: [
       {
-        heading: "1. Notification",
+        heading: "1. Use the required notice channel",
         paragraphs: [
-          "Insured parties should notify us of a potential claim or incident as soon as reasonably practicable, and in any event within any period specified in the policy. Timely notification is a condition of coverage.",
+          "Follow the notice instructions in the issued policy, binder, schedule, or administrator documentation. If those documents identify a carrier, broker, administrator, portal, email address, or other channel, use that channel within the stated time. Do not rely on this website as the only notice method unless the issued documentation expressly permits it.",
         ],
       },
       {
-        heading: "2. Evidence preservation",
+        heading: "2. Safety, mitigation, and deadlines",
         paragraphs: [
-          "We provide guidance on preserving relevant on-chain and off-chain evidence. Prompt preservation supports an accurate and efficient assessment.",
+          "Prioritize safety and reasonable containment and mitigation. Do not delay action or a required notice while completing a web form. A website submission does not extend a deadline, waive a requirement, or satisfy a proof-of-loss obligation.",
         ],
       },
       {
-        heading: "3. Investigation",
+        heading: "3. Preserve information securely",
         paragraphs: [
-          "We conduct a technical and factual review of the incident against the policy terms. This may involve independent experts and cooperation from the insured.",
+          "Preserve relevant system state, logs, transaction records, communications, approvals, custody records, valuation information, and recovery evidence. Do not submit private keys, seed phrases, passwords, signing requests, privileged credentials, or confidential evidence through a public form.",
         ],
       },
       {
-        heading: "4. Loss assessment and resolution",
+        heading: "4. Review under issued documentation",
         paragraphs: [
-          "Where a loss is determined to fall within coverage, we assess the quantum in accordance with the policy and resolve the claim. We do not offer guaranteed or automatic payouts; each claim is assessed on its merits.",
+          "The responsible parties, review process, requested evidence, loss assessment, and any coverage decision depend on the transaction documents and facts. Initial receipt is not confirmation of insurance coverage or payment.",
         ],
       },
     ],
@@ -218,63 +212,69 @@ export const legalDocs: LegalDoc[] = [
     title: "Risk Disclosures",
     updated: UPDATED,
     intro:
-      "These disclosures concern the risks associated with digital assets, decentralized protocols and related infrastructure. They are provided for information and do not constitute advice.",
+      "Digital-asset protocols and infrastructure involve technical, economic, operational, legal, and market risks. These disclosures are general information, not advice.",
     sections: [
       {
-        heading: "1. Nature of digital-asset risk",
+        heading: "1. Technical and operational risk",
         paragraphs: [
-          "Digital assets and decentralized protocols are subject to significant technical, economic, operational, regulatory and market risks. These risks may be novel, rapidly evolving and difficult to quantify.",
+          "Code defects, access-control failures, key compromise, configuration error, governance action, and operational failures can cause irreversible or difficult-to-recover outcomes. Audits and controls reduce some risks but do not eliminate them.",
         ],
       },
       {
-        heading: "2. Smart contract and protocol risk",
+        heading: "2. Dependency and concentration risk",
         paragraphs: [
-          "Smart contracts may contain vulnerabilities. Protocol behaviour may deviate from intended design. Audits and reviews reduce but do not eliminate risk.",
+          "Oracles, bridges, networks, sequencers, validators, custodians, service providers, liquidity venues, and other protocols can create correlated or cascading exposures.",
         ],
       },
       {
-        heading: "3. Interconnection risk",
+        heading: "3. Economic and market risk",
         paragraphs: [
-          "Protocols depend on external components such as oracles, bridges and liquidity venues. A failure in one component may propagate across interconnected systems.",
+          "Volatility, illiquidity, depeg, liquidation, incentive design, bad debt, counterparty failure, and market manipulation can produce losses that differ from technical exploit losses.",
         ],
       },
       {
-        heading: "4. No elimination of risk",
+        heading: "4. Legal and regulatory uncertainty",
         paragraphs: [
-          "Insurance transfers certain defined risks subject to policy terms; it does not eliminate underlying risk. Insured parties remain responsible for their own risk management.",
+          "Legal characterization, enforceability, sanctions, authorization, tax, and regulatory treatment can vary by asset, activity, party, and jurisdiction and may change over time.",
+        ],
+      },
+      {
+        heading: "5. Role of insurance",
+        paragraphs: [
+          "Insurance coverage can address only defined risks under issued documentation. It does not certify security, eliminate risk, guarantee recovery, or replace governance, security engineering, operational controls, or incident response.",
         ],
       },
     ],
   },
   {
     slug: "regulatory",
-    title: "Regulatory / Licensing Information",
+    title: "Regulatory and Licensing Information",
     updated: UPDATED,
     intro:
-      "This page provides information regarding the regulatory status, licensing and structure of the Meridian Risk group of companies.",
+      "This website does not state that any unspecified entity holds a license or authorization or that any product is available in a particular jurisdiction.",
     sections: [
       {
-        heading: "1. Group structure",
+        heading: "1. Transaction-specific facts",
         paragraphs: [
-          "Meridian Risk operates through a group of companies, which may include licensed insurance and reinsurance entities and service companies. The entity providing a given product is identified in the relevant policy documentation.",
+          "The relevant transaction documentation should identify the contracting entities, product, carrier or capacity provider where applicable, intermediaries or administrators where applicable, and jurisdiction-specific information.",
         ],
       },
       {
-        heading: "2. Licensing and authorization",
+        heading: "2. Authorization and availability",
         paragraphs: [
-          "Insurance products are offered only in jurisdictions and through entities authorized to provide them. Availability of coverage varies by jurisdiction and is subject to applicable regulatory requirements.",
+          "Authorization and product-availability requirements vary by jurisdiction and transaction. No inference about licensing, authorization, passporting, or permitted activity should be drawn from a website page or brand name.",
         ],
       },
       {
-        heading: "3. Capital and capacity",
+        heading: "3. Verification",
         paragraphs: [
-          "Our capacity is supported by capital and reinsurance arrangements maintained in accordance with applicable regulatory and prudential requirements. Details are provided to counterparties as part of underwriting where appropriate.",
+          "Prospective counterparties should review transaction documentation, applicable public registers, and information supplied through authorized channels. Obtain independent advice where appropriate.",
         ],
       },
       {
-        heading: "4. Contact",
+        heading: "4. Enquiries",
         paragraphs: [
-          "For regulatory or compliance enquiries, please contact our office using the details provided on this website.",
+          "Use a configured public contact route or the contact identified in transaction documentation for regulatory or compliance enquiries. Do not send confidential regulatory material through an unverified channel.",
         ],
       },
     ],
@@ -285,136 +285,136 @@ export const legalDocs: LegalDoc[] = [
     updated: UPDATED,
     category: "transparency",
     intro:
-      "An overview of the evidence, judgement and authority framework Meridian Risk uses to assess protocol risk. This methodology is proprietary, may change without notice and does not create a duty to offer coverage.",
+      "This overview identifies information that may be considered in a preliminary underwriting review. It is not a scoring model, eligibility rule, or commitment to provide insurance coverage.",
     sections: [
       {
-        heading: "1. Evidence considered",
+        heading: "1. Information domains",
         paragraphs: [
-          "Underwriting may consider architecture, deployed code, audit history, economic design, governance, privileges, liquidity, dependencies, operations, incident history and any other information Meridian Risk considers relevant.",
+          "A review may consider architecture, deployed code, audit and remediation history, economic design, governance, privileges, liquidity, dependencies, operations, incident history, custody, and requested risk boundaries.",
         ],
       },
       {
-        heading: "2. Judgement and model limitations",
+        heading: "2. Evidence and limitations",
         paragraphs: [
-          "Models, scores and on-chain indicators support but do not replace underwriting judgement. Meridian Risk may apply adjustments, referrals, exclusions, sub-limits or decline a risk notwithstanding any displayed or calculated score.",
+          "Submitted, public, on-chain, and third-party information may be incomplete, delayed, inaccurate, or difficult to attribute. Indicators and models do not replace review of context and evidence.",
         ],
       },
       {
-        heading: "3. No entitlement or reliance",
+        heading: "3. Review status",
         paragraphs: [
-          "Submission of information, completion of review or prior quotation creates no entitlement to coverage, renewal or consistent terms. Meridian Risk may revise or withdraw indications before authorized execution of a policy.",
+          "Online submission and information review do not produce a score, eligibility decision, insurance coverage, or terms. Any proposal would require separate authorization and transaction documentation.",
         ],
       },
     ],
   },
   {
     slug: "security-practices",
-    title: "Security Practices",
+    title: "Website Security Information",
     updated: UPDATED,
     category: "transparency",
     intro:
-      "A high-level statement of the administrative and technical practices applied to underwriting information. Detailed controls are confidential and no security measure eliminates risk.",
+      "This page provides user guidance for handling information on the public website. It is not a security certification or description of transaction-specific controls.",
     sections: [
       {
-        heading: "1. Information handling",
+        heading: "1. Public-form boundaries",
         paragraphs: [
-          "Access to underwriting and claims information is limited according to business need and role. Service providers may process information under contractual obligations and applicable law.",
+          "Use public forms only for the requested intake fields. Do not send credentials, signing requests, private keys, seed phrases, passwords, undisclosed vulnerabilities, or confidential evidence.",
         ],
       },
       {
-        heading: "2. Security controls",
+        heading: "2. Verify channels",
         paragraphs: [
-          "Meridian Risk uses a risk-based combination of identity controls, encryption, logging, environment separation, vendor review and incident procedures. Controls may vary by system and sensitivity.",
+          "Verify portal links, contact addresses, and requests through known transaction channels. Do not approve a transaction or disclose access material in response to an unexpected message.",
         ],
       },
       {
-        heading: "3. No warranty",
+        heading: "3. Security limitations",
         paragraphs: [
-          "This statement is not a certification, warranty or representation that systems are invulnerable. Meridian Risk disclaims liability to the fullest extent permitted by law for reliance on this summary.",
+          "No website or transmission method is risk-free. Transaction-specific security requirements and evidence-transfer methods should be obtained from authorized documentation or contacts.",
         ],
       },
     ],
   },
   {
     slug: "capital-capacity",
-    title: "Capital & Capacity Information",
+    title: "Capacity Information",
     updated: UPDATED,
     category: "transparency",
     intro:
-      "General information concerning insurance capacity. Capacity is transaction-specific, may be supported by third parties and is not committed until stated in an executed policy.",
+      "This website does not state available insurance capacity, capital support, carrier participation, or reinsurance for a transaction.",
     sections: [
       {
-        heading: "1. Availability of capacity",
+        heading: "1. No website allocation",
         paragraphs: [
-          "Capacity depends on jurisdiction, product, accumulation, risk quality, market conditions and applicable authorization. Website references to limits or capacity are not offers or reservations of capital.",
+          "A program page, assessment request, or preliminary discussion does not reserve capacity or establish a limit. No website amount applies to a transaction.",
         ],
       },
       {
-        heading: "2. Reinsurance and participation",
+        heading: "2. Transaction documentation",
         paragraphs: [
-          "Meridian Risk may use reinsurance, co-insurance or other participation arrangements. Unless the policy expressly provides otherwise, the insured has no direct rights against a reinsurer or capacity provider.",
+          "If applicable, transaction documentation should identify the relevant carrier or participation structure, limits, and other capacity facts. Those facts should not be inferred from general website language.",
         ],
       },
       {
-        heading: "3. Counterparty diligence",
+        heading: "3. Counterparty review",
         paragraphs: [
-          "Financial and regulatory information appropriate to a proposed transaction may be made available during placement, subject to confidentiality, law and the rights of third parties.",
+          "Prospective counterparties should conduct their own review of the entities and documentation relevant to a proposed transaction and seek independent advice where appropriate.",
         ],
       },
     ],
   },
   {
     slug: "governance",
-    title: "Corporate Governance",
+    title: "Governance Information",
     updated: UPDATED,
     category: "transparency",
     intro:
-      "A summary of the authority and oversight principles applied within Meridian Risk. It does not amend any policy, create fiduciary duties or confer rights on website users.",
+      "This page explains that authority for a transaction must be verified from authorized documentation. It does not make claims about a particular corporate structure or committee process.",
     sections: [
       {
-        heading: "1. Authority and referral",
+        heading: "1. Authorized documentation",
         paragraphs: [
-          "Underwriting, claims and operational decisions are subject to defined authority and referral requirements. Only an authorized representative may bind coverage or amend policy terms.",
+          "Only communications and documents issued through an authorized transaction process should be relied on for a quotation, binder, policy, endorsement, claims decision, or other formal action.",
         ],
       },
       {
-        heading: "2. Oversight and records",
+        heading: "2. Verification",
         paragraphs: [
-          "Material decisions may be subject to technical, legal, compliance, capital or committee review. Meridian Risk maintains records in accordance with its policies and applicable requirements.",
+          "Users should verify the identity and authority of transaction participants and should not treat a website statement, model output, or informal message as approval of insurance coverage or a policy change.",
         ],
       },
       {
-        heading: "3. No waiver by communication",
+        heading: "3. Transaction controls",
         paragraphs: [
-          "Statements by personnel, service providers or models do not waive a policy provision or bind Meridian Risk unless documented in an authorized written endorsement.",
+          "Any applicable review, referral, recordkeeping, conflict, or approval requirements are matters for the relevant entities and transaction documentation.",
         ],
       },
     ],
   },
   {
     slug: "partners-reinsurance",
-    title: "Partners & Reinsurance",
+    title: "Partners and Risk Transfer",
     updated: UPDATED,
     category: "transparency",
     intro:
-      "General information on the use of specialist providers and risk-transfer counterparties. Specific relationships may be confidential, conditional or subject to change.",
+      "This website does not identify or imply a carrier, reinsurer, broker, adviser, or service-provider relationship unless that relationship is expressly stated and approved for public display.",
     sections: [
       {
-        heading: "1. Specialist providers",
+        heading: "1. Transaction participants",
         paragraphs: [
-          "Meridian Risk may engage auditors, forensic firms, counsel, data providers, brokers, claims specialists and other advisers. Their involvement does not make them insurers or create duties to an insured unless expressly agreed.",
+          "A transaction may involve different entities and professional service providers. Their identity, role, authority, and obligations must be determined from transaction-specific documentation.",
         ],
       },
       {
-        heading: "2. Reinsurance",
+        heading: "2. Risk-transfer arrangements",
         paragraphs: [
-          "Reinsurance is an arrangement between Meridian Risk and its reinsurers. It does not relieve the insured of policy obligations or provide direct rights against a reinsurer unless expressly stated in the policy.",
+          "Any insurance, coinsurance, reinsurance, or other risk-transfer structure is transaction-specific. This page does not assert that any such arrangement exists or grants rights to a website user.",
         ],
       },
       {
-        heading: "3. Changes and confidentiality",
+        heading: "3. Public references",
         paragraphs: [
-          "Counterparties, service providers and participation structures may change. Meridian Risk is not required to disclose confidential commercial terms except where required by law or the issued policy.",
+          "Names, marks, transactions, or relationships should be displayed only with appropriate factual verification and approval. Absence from the website does not establish whether a relationship exists.",
         ],
       },
     ],
