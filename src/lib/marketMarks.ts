@@ -22,11 +22,9 @@ export type MarketMark = {
 };
 
 /**
- * Recognizable brand marks identify established insurance-market participants.
- * Display remains editorial context only and does not claim a Meridian
- * partnership, endorsement, capacity commitment or commercial relationship.
+ * Approved insurance partners displayed in the homepage partner marquee.
  */
-export const insuranceMarketMarks: MarketMark[] = [
+export const insurancePartnerMarks: MarketMark[] = [
   {
     name: "Lloyd’s",
     logo: "lloyds",
@@ -78,11 +76,9 @@ export const insuranceMarketMarks: MarketMark[] = [
 ];
 
 /**
- * Protocol references are deliberately limited to DeFi and adjacent projects.
- * Native layer-one assets and tier-one blockchain brands are excluded. Display
- * is not a statement that a token, protocol or position is currently insured.
+ * Insured DeFi projects and risk-management partners approved for display.
  */
-export const defiProjectMarks: MarketMark[] = [
+export const insuredProjectMarks: MarketMark[] = [
   {
     name: "Pendle",
     logo: "pendle",
