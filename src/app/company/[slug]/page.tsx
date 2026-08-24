@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { InstitutionalPage } from "@/components/layout/InstitutionalPage";
 import { companyPages, getCompanyPage } from "@/lib/institutional";
+import { createPageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return companyPages.map((page) => ({ slug: page.slug }));
@@ -14,7 +15,11 @@ export function generateMetadata({
 }): Metadata {
   const page = getCompanyPage(params.slug);
   return page
-    ? { title: page.eyebrow, description: page.intro }
+    ? createPageMetadata({
+        title: page.eyebrow,
+        description: page.intro,
+        path: `/company/${page.slug}`,
+      })
     : { title: "Page not found" };
 }
 

@@ -10,11 +10,12 @@ export function FinalCTA() {
       <div className="container-x relative">
         <div className="reveal mx-auto max-w-3xl text-center">
           <h2 className="font-serif text-display font-light text-navy">
-            Protect what you&rsquo;ve built.
+            Request a preliminary underwriting review.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-muted">
-            Start with a protocol risk assessment and explore coverage designed
-            around your architecture.
+            Provide initial information about the organization, architecture,
+            controls and coverage to be considered. Submission does not create
+            coverage or an obligation to offer terms.
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <Button
@@ -23,15 +24,11 @@ export function FinalCTA() {
               variant="primary"
               className="group"
             >
-              Get a Risk Assessment
+              Request an assessment
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
-            <Button
-              href="/risk-assessment#contact"
-              size="lg"
-              variant="secondary"
-            >
-              Contact Underwriting
+            <Button href="/insurance" size="lg" variant="secondary">
+              View coverage areas
             </Button>
           </div>
         </div>

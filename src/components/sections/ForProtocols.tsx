@@ -11,14 +11,15 @@ export function ForProtocols() {
       <div className="container-x">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="reveal lg:col-span-5">
-            <SectionLabel>For protocols</SectionLabel>
+            <SectionLabel>Who we serve</SectionLabel>
             <h2 className="mt-7 font-serif text-display font-light text-navy">
-              Built for teams responsible for billions in on-chain value.
+              Coverage for organizations managing on-chain operational and
+              financial risk.
             </h2>
             <p className="mt-7 max-w-md text-[16px] leading-relaxed text-slate-muted">
-              We work with the organizations that operate, secure and govern
-              critical digital infrastructure — structuring coverage around the
-              specific architecture of each insured environment.
+              Underwriting begins with the organization, systems, assets,
+              dependencies and controls presented for review. Eligibility and
+              available structures vary by risk and jurisdiction.
             </p>
             <div className="mt-9">
               <Button
@@ -27,7 +28,7 @@ export function ForProtocols() {
                 variant="primary"
                 className="group"
               >
-                Discuss Your Risk
+                Request a preliminary assessment
                 <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </div>
@@ -35,16 +36,18 @@ export function ForProtocols() {
 
           <div className="reveal lg:col-span-7" data-reveal-delay="120">
             <div className="grid grid-cols-1 border-t border-line sm:grid-cols-2">
-              {audiences.map((a, i) => (
+              {audiences.map((audience, index) => (
                 <div
-                  key={a}
+                  key={audience}
                   className={`group flex items-center justify-between border-b border-line px-2 py-5 transition-colors hover:px-4 ${
-                    i % 2 === 0 ? "sm:border-r sm:pr-6" : "sm:pl-6"
+                    index % 2 === 0 ? "sm:border-r sm:pr-6" : "sm:pl-6"
                   }`}
                 >
-                  <span className="font-serif text-lg text-navy">{a}</span>
+                  <span className="font-serif text-lg text-navy">
+                    {audience}
+                  </span>
                   <span className="font-serif text-sm text-slate-faint">
-                    {String(i + 1).padStart(2, "0")}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
               ))}

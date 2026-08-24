@@ -5,12 +5,14 @@ import { IconArrowUpRight } from "@/components/ui/Icons";
 import { renderIcon } from "@/components/ui/iconMap";
 import { Button, ArrowRight } from "@/components/ui/Button";
 import { insurancePrograms } from "@/lib/programs";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Insurance Programs",
   description:
-    "Explore Meridian Risk insurance programs for smart contracts, protocol exploits, cross-chain infrastructure, stablecoins, treasuries and custom architectures.",
-};
+    "General program information for potential insurance coverage involving digital-asset protocols and infrastructure. Transaction documents control coverage.",
+  path: "/insurance",
+});
 
 export default function InsuranceIndexPage() {
   return (
@@ -19,12 +21,12 @@ export default function InsuranceIndexPage() {
         <div className="container-x">
           <SectionLabel tone="light">Insurance programs</SectionLabel>
           <h1 className="mt-6 max-w-4xl font-serif text-display font-light text-ivory">
-            Defined coverage for the architecture of on-chain risk.
+            Program information for defined digital-asset risks
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-            Each program is independently underwritten and documented around
-            scheduled assets, systems, triggers and controls. Availability and
-            final terms depend on the insured risk.
+            These summaries identify risk areas that may be considered during
+            underwriting. They are not quotations or policy terms. Transaction
+            documents control insurance coverage.
           </p>
         </div>
       </section>
@@ -53,7 +55,7 @@ export default function InsuranceIndexPage() {
                   {program.description}
                 </p>
                 <span className="mt-7 inline-flex items-center gap-2 text-[13px] font-medium text-navy group-hover:text-gold">
-                  Review program and indicative terms
+                  Review program overview
                   <IconArrowUpRight />
                 </span>
               </Link>
@@ -63,12 +65,12 @@ export default function InsuranceIndexPage() {
           <div className="mt-16 grid gap-8 border-t border-line pt-12 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-8">
               <h2 className="font-serif text-3xl font-light text-navy">
-                Not sure which program fits?
+                Request a preliminary review
               </h2>
               <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-muted">
-                Begin with a protocol assessment. Our underwriting team will map
-                your architecture and requested protection to the most
-                appropriate available structure.
+                Submit architecture and risk information for preliminary
+                underwriting review. No insurance coverage or terms are produced
+                by the online flow.
               </p>
             </div>
             <div className="lg:col-span-4 lg:text-right">
@@ -78,7 +80,7 @@ export default function InsuranceIndexPage() {
                 size="lg"
                 className="group"
               >
-                Get a Risk Assessment
+                Request an assessment
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Button>
             </div>

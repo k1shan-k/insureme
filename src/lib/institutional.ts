@@ -10,195 +10,198 @@ export type InstitutionalPage = {
 export const companyPages: InstitutionalPage[] = [
   {
     slug: "about",
-    title: "Risk discipline for decentralized infrastructure.",
+    title: "Underwriting for digital-asset protocols and infrastructure.",
     eyebrow: "About Meridian Risk",
     intro:
-      "Meridian Risk is an underwriting organization focused on defined risks across protocols, digital assets and the infrastructure supporting on-chain finance.",
+      "Meridian Risk evaluates defined technical, economic and operational exposures and structures insurance coverage around documented policy boundaries.",
     sections: [
       {
-        heading: "Our mandate",
+        heading: "Purpose",
         paragraphs: [
-          "We exist to translate complex on-chain risks into clearly bounded insurance structures. Our approach combines technical review, financial analysis, governance assessment and conventional insurance discipline.",
-          "We do not treat insurance as a substitute for security. Coverage is one component of a broader risk-management programme and is offered only where the risk can be sufficiently understood, priced and documented.",
+          "Digital-asset systems combine deployed code, governance, liquidity, custody and external infrastructure. Insurance can transfer selected risks only when the relevant assets, systems, triggers and loss measures are defined clearly.",
+          "Our role is to assess the information presented, determine whether a risk can be considered and document any proposed coverage in terms that identify what is included and excluded.",
         ],
       },
       {
-        heading: "How we work",
+        heading: "Assessment approach",
         paragraphs: [
-          "Every engagement begins with protocol architecture and control information. Underwriting considers code, dependencies, liquidity, governance, operational controls and prior incidents before terms are considered.",
+          "A review may consider contract architecture, audit and remediation history, administrative privileges, governance, liquidity, dependencies, incident history and operational controls.",
         ],
         items: [
           "Defined coverage triggers",
-          "Scheduled assets and infrastructure",
-          "Evidence-based risk selection",
-          "Ongoing material-change reporting",
+          "Scheduled assets and systems",
+          "Evidence-based risk review",
+          "Material-change obligations",
         ],
       },
       {
-        heading: "Institutional orientation",
+        heading: "Scope of insurance",
         paragraphs: [
-          "Our policies, claims framework and communications are designed for treasury teams, foundations, boards and institutional counterparties that require clear accountability and documented decision-making.",
+          "Insurance does not replace security engineering, governance or incident response. Coverage applies only as stated in authorized policy documentation and remains subject to its limits, retentions, exclusions and conditions.",
         ],
       },
     ],
-    cta: { label: "Explore insurance programs", href: "/insurance" },
+    cta: { label: "View coverage areas", href: "/insurance" },
   },
   {
     slug: "leadership",
-    title: "Governance built around underwriting accountability.",
-    eyebrow: "Leadership & governance",
+    title: "Governance and decision authority.",
+    eyebrow: "Corporate governance",
     intro:
-      "Meridian Risk separates commercial, underwriting, risk and claims responsibilities through defined authority, referral and oversight structures.",
+      "Authority for an insurance transaction should be verified from authorized documentation and communications.",
     sections: [
       {
-        heading: "Underwriting authority",
+        heading: "Transaction authority",
         paragraphs: [
-          "Risk acceptance is governed by documented authority levels. Complex, novel or concentrated risks are referred for additional technical, legal and capital review before any terms may be authorized.",
+          "Users should verify the identity and authority of transaction participants. Quotations, binders, policies, endorsements, claims decisions, and other formal actions should be relied on only when issued through an authorized transaction process.",
         ],
       },
       {
-        heading: "Oversight model",
+        heading: "Verification considerations",
         paragraphs: [
-          "Our operating model is designed around independent challenge and written records rather than individual discretion.",
+          "The relevant entities and transaction documents determine which review and decision controls apply to a matter.",
         ],
         items: [
-          "Underwriting committee",
-          "Technical risk review",
-          "Claims and coverage review",
-          "Compliance and regulatory oversight",
-          "Capital and accumulation monitoring",
+          "Identity and role of transaction participants",
+          "Authority for quotations and binders",
+          "Authority for policy changes and claims decisions",
+          "Applicable referral and approval requirements",
+          "Applicable recordkeeping and conflict requirements",
         ],
       },
       {
-        heading: "Conflicts and conduct",
+        heading: "Documentation and communications",
         paragraphs: [
-          "Potential conflicts are expected to be identified, documented and managed. No governance description on this website changes the authority or obligations stated in an issued policy or applicable law.",
+          "Any applicable review, referral, recordkeeping, conflict, or approval requirements are matters for the relevant entities and transaction documentation. A website statement, informal communication, or model output should not be treated as approval of insurance coverage or a policy change.",
         ],
       },
     ],
-    cta: { label: "Review governance disclosures", href: "/legal/governance" },
+    cta: { label: "Read governance information", href: "/legal/governance" },
   },
   {
     slug: "careers",
-    title: "Work at the intersection of insurance and on-chain systems.",
+    title: "Careers in digital-asset insurance and risk.",
     eyebrow: "Careers",
     intro:
-      "We are interested in disciplined operators who can move between technical evidence, financial exposure and precise policy language.",
+      "Meridian Risk considers candidates with experience in underwriting, protocol security, claims, insurance law and risk data.",
     sections: [
       {
-        heading: "What we value",
+        heading: "Professional disciplines",
         paragraphs: [
-          "Meridian Risk values intellectual honesty, written reasoning, careful risk selection and a willingness to say no where uncertainty cannot be bounded.",
+          "The work requires clear written reasoning, careful treatment of evidence and the ability to distinguish measurable exposure from unresolved uncertainty.",
         ],
         items: [
-          "Underwriting judgement",
-          "Protocol security expertise",
+          "Insurance underwriting",
+          "Protocol and application security",
           "Claims and forensic analysis",
           "Insurance product counsel",
           "Risk data engineering",
         ],
       },
       {
-        heading: "Open enquiries",
+        heading: "Current opportunities",
         paragraphs: [
-          "We do not publish speculative vacancies. Qualified candidates may use the configured careers contact when available and provide a concise introduction with relevant work. Receipt does not create an employment relationship or obligation to respond.",
+          "Open roles are communicated through authorized Meridian Risk channels. Unsolicited material should not contain confidential information, credentials or details of undisclosed vulnerabilities.",
         ],
       },
     ],
-    cta: { label: "Learn about Meridian", href: "/company/about" },
+    cta: { label: "About Meridian Risk", href: "/company/about" },
   },
 ];
 
 export const resourcePages: InstitutionalPage[] = [
   {
     slug: "insights",
-    title: "Practical perspectives on protocol risk.",
-    eyebrow: "Insights",
+    title: "Operational topics that affect insurability.",
+    eyebrow: "Risk topics",
     intro:
-      "Short-form analysis for protocol operators, treasury teams and institutional counterparties considering insurance and risk transfer.",
+      "A reference overview of protocol changes, controls and evidence that may affect underwriting or an issued policy.",
     sections: [
       {
-        heading: "Current themes",
+        heading: "Topics for protocol operators",
         paragraphs: [
-          "Our insight framework focuses on questions that directly affect insurability rather than market commentary or token promotion.",
+          "The significance of a change depends on the insured environment and the applicable policy. Material matters should be reported using the process stated in the policy documentation.",
         ],
         items: [
-          "Material change after policy inception",
-          "Governance and administrative privilege",
-          "Evidence preservation after an incident",
-          "Dependency concentration",
-          "Limits, retentions and loss measurement",
+          "Changes to governance or administrative privilege",
+          "Contract upgrades and migrations",
+          "New dependencies and concentration",
+          "Incident response and evidence preservation",
+          "Loss measurement, limits and retentions",
         ],
       },
       {
-        heading: "Information standard",
+        heading: "Use of this information",
         paragraphs: [
-          "Insight materials are general information only. They are not underwriting decisions, security certifications, investment recommendations or amendments to policy wording.",
+          "These topics are general information. They are not underwriting decisions, security certifications, investment recommendations or amendments to policy terms.",
         ],
       },
     ],
-    cta: { label: "Review risk disclosures", href: "/legal/risk-disclosures" },
+    cta: { label: "Read risk disclosures", href: "/legal/risk-disclosures" },
   },
   {
     slug: "research",
-    title: "Research for measurable on-chain exposure.",
-    eyebrow: "Research",
+    title: "Evidence used in protocol risk assessment.",
+    eyebrow: "Research approach",
     intro:
-      "Our research agenda examines how observable protocol characteristics can support disciplined underwriting without substituting model output for judgement.",
+      "Observable data can support underwriting when its source, context, limitations and relevance to the insured exposure are understood.",
     sections: [
       {
-        heading: "Research domains",
+        heading: "Assessment domains",
         paragraphs: [
-          "We prioritize repeatable methods, explicit assumptions and explainable indicators.",
+          "Technical and on-chain indicators are considered alongside documentation, interviews and underwriting judgment.",
         ],
         items: [
-          "Smart-contract change frequency",
+          "Contract deployments and change history",
           "Privilege and governance concentration",
-          "Liquidity and TVL concentration",
-          "Oracle and bridge dependencies",
+          "Liquidity and exposure concentration",
+          "Oracle, bridge and infrastructure dependencies",
           "Incident propagation and recovery",
         ],
       },
       {
-        heading: "Limitations",
+        heading: "Data limitations",
         paragraphs: [
-          "On-chain data can be incomplete, delayed, manipulated or difficult to attribute. Research indicators are inputs to underwriting and are not guarantees of security, performance, eligibility or claim outcome.",
+          "On-chain and third-party data may be incomplete, delayed, manipulated or difficult to attribute. No indicator is a guarantee of security, eligibility, performance or claim outcome.",
         ],
       },
     ],
     cta: {
-      label: "View underwriting methodology",
+      label: "Read the underwriting methodology",
       href: "/legal/underwriting-methodology",
     },
   },
   {
     slug: "risk-reports",
-    title: "Structured reporting for changing protocol risk.",
-    eyebrow: "Risk reports",
+    title: "Information structure for protocol risk reporting.",
+    eyebrow: "Reporting framework",
     intro:
-      "Risk reports organize material protocol characteristics and changes into an institutional format for review and escalation.",
+      "A structured report can organize material architecture, control and dependency information for underwriting and governance review.",
     sections: [
       {
-        heading: "Report framework",
+        heading: "Report content",
         paragraphs: [
-          "Illustrative reports may include architecture, controls, dependencies, concentration, governance, upgrades and incident history. Scope varies by engagement and available information.",
+          "The scope of a report depends on the engagement, available evidence and intended use.",
         ],
         items: [
-          "Protocol risk profile",
-          "Material-change log",
-          "Dependency map",
+          "Architecture and deployed contracts",
+          "Material-change record",
+          "Dependency and concentration map",
           "Control observations",
-          "Underwriting referrals",
+          "Items requiring underwriting referral",
         ],
       },
       {
-        heading: "No certification",
+        heading: "No certification or rating",
         paragraphs: [
-          "A risk report is not an audit, security certification, rating, warranty or promise of coverage. Meridian Risk may revise an assessment as information, methodology or market conditions change.",
+          "A risk report is not an audit, security certification, financial rating, warranty or decision to provide coverage. Findings may change when information or the assessed environment changes.",
         ],
       },
     ],
-    cta: { label: "Start a protocol assessment", href: "/risk-assessment" },
+    cta: {
+      label: "Request a preliminary assessment",
+      href: "/risk-assessment",
+    },
   },
 ];
 

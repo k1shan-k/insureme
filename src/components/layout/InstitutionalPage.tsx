@@ -20,19 +20,8 @@ export function InstitutionalPage({ page }: { page: InstitutionalPageData }) {
 
       <section className="bg-ivory py-16 lg:py-24">
         <div className="container-x">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <aside className="lg:col-span-3">
-              <div className="border-t border-line pt-6 lg:sticky lg:top-28">
-                <p className="text-[11px] font-medium uppercase tracking-label text-slate-faint">
-                  Institutional information
-                </p>
-                <p className="mt-4 text-[13px] leading-relaxed text-slate-muted">
-                  General information only. Issued policy wording and applicable
-                  law control where relevant.
-                </p>
-              </div>
-            </aside>
-            <article className="lg:col-span-9">
+          <div className="mx-auto max-w-4xl">
+            <article>
               <div className="max-w-3xl space-y-12">
                 {page.sections.map((section, index) => (
                   <section

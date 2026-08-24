@@ -3,30 +3,32 @@ import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { IconArrowUpRight } from "@/components/ui/Icons";
 import { resourcePages } from "@/lib/institutional";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Resources",
   description:
-    "Institutional insights, research, risk reports and policy documentation for on-chain risk.",
-};
+    "General information about risk topics, research inputs, reporting, program overviews, claims guidance, and disclosures for digital-asset protocols and infrastructure.",
+  path: "/resources",
+});
 
 const documentation = [
   {
-    title: "Insurance Programs",
+    title: "Insurance programs",
     href: "/insurance",
-    description: "Coverage structures and indicative program terms.",
+    description: "Non-binding program and coverage-consideration summaries.",
   },
   {
-    title: "Legal & Policy",
+    title: "Legal and disclosures",
     href: "/legal",
     description:
-      "Policy framework, disclosures, claims and regulatory information.",
+      "Website terms, privacy information, coverage documentation, and risk disclosures.",
   },
   {
-    title: "Claims Procedure",
+    title: "Claims procedure",
     href: "/legal/claims-procedure",
     description:
-      "Notification, evidence, investigation and resolution framework.",
+      "General notice and evidence guidance; issued documentation controls.",
   },
 ];
 
@@ -37,11 +39,12 @@ export default function ResourcesPage() {
         <div className="container-x">
           <SectionLabel tone="light">Resources</SectionLabel>
           <h1 className="mt-6 max-w-4xl font-serif text-display font-light text-ivory">
-            Information for disciplined risk decisions.
+            Reference information for risk review
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-            Research, reporting frameworks and policy documentation for protocol
-            teams and institutional counterparties.
+            General information about assessment inputs, protocol risk, and
+            documentation. These resources are not underwriting decisions or
+            transaction terms.
           </p>
         </div>
       </section>
@@ -62,7 +65,7 @@ export default function ResourcesPage() {
           <div className="mt-20">
             <SectionLabel>Documentation</SectionLabel>
             <h2 className="mt-5 font-serif text-4xl font-light text-navy">
-              Policy and programme reference.
+              Program and disclosure reference
             </h2>
             <div className="mt-10 grid border-l border-r border-t border-line lg:grid-cols-3">
               {documentation.map((item) => (

@@ -4,6 +4,8 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/util/Reveal";
+import { siteUrl } from "@/lib/config";
+import { site } from "@/lib/site";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -18,48 +20,38 @@ const serif = Source_Serif_4({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const SITE_NAME = "Meridian Risk";
-const SITE_URL = "https://meridianrisk.example";
+const title = "Meridian Risk — Digital-asset insurance information";
+const description =
+  "General information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure. Transaction documents control coverage.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
   title: {
-    default:
-      "Meridian Risk — Insurance infrastructure for the decentralized economy",
+    default: title,
     template: "%s — Meridian Risk",
   },
-  description:
-    "Institutional-grade insurance for Web3 protocols, DeFi applications, digital-asset infrastructure and treasuries. Underwriting informed by on-chain risk intelligence.",
+  description,
   keywords: [
-    "Web3 insurance",
-    "DeFi insurance",
-    "smart contract cover",
-    "protocol insurance",
-    "digital asset insurance",
-    "on-chain risk",
-    "institutional underwriting",
+    "digital-asset protocols and infrastructure",
+    "insurance coverage",
+    "preliminary underwriting review",
   ],
-  authors: [{ name: SITE_NAME }],
+  authors: [{ name: site.name }],
   openGraph: {
     type: "website",
-    siteName: SITE_NAME,
-    title: "Meridian Risk — Insurance for the decentralized economy",
-    description:
-      "Protecting protocols, digital assets and Web3 infrastructure against defined on-chain risks through institutional-grade underwriting.",
-    url: SITE_URL,
+    siteName: site.name,
+    title,
+    description,
+    url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Meridian Risk",
-    description:
-      "Insurance infrastructure for the decentralized economy. Institutional-grade underwriting for on-chain risk.",
+    title,
+    description,
   },
   robots: {
     index: true,
     follow: true,
-  },
-  alternates: {
-    canonical: "/",
   },
 };
 
@@ -70,21 +62,12 @@ export const viewport: Viewport = {
 
 const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "FinancialService",
-  name: SITE_NAME,
-  legalName: "Meridian Risk Underwriting Ltd.",
+  "@type": "Organization",
+  name: site.name,
+  ...(site.legalName ? { legalName: site.legalName } : {}),
   description:
-    "Institutional-grade insurance for Web3 protocols, DeFi applications, digital-asset infrastructure and treasuries.",
-  url: SITE_URL,
-  areaServed: "Global",
-  serviceType: [
-    "Smart Contract Cover",
-    "Protocol Exploit Cover",
-    "Cross-Chain & Bridge Cover",
-    "Stablecoin & Depeg Cover",
-    "Treasury & Digital Asset Cover",
-    "Custom Protocol Cover",
-  ],
+    "General information about underwriting and insurance coverage for digital-asset protocols and infrastructure.",
+  url: siteUrl,
 };
 
 export default function RootLayout({

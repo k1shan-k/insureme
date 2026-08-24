@@ -1,29 +1,36 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { RiskAssessmentFlow } from "@/components/risk/RiskAssessmentFlow";
 import { site } from "@/lib/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Get a Risk Assessment",
+export const metadata: Metadata = createPageMetadata({
+  title: "Request an Assessment",
   description:
-    "Begin a preliminary protocol risk assessment. Submit your architecture, review an indicative risk profile and explore coverage designed around your protocol.",
-};
+    "Submit information about digital-asset protocols and infrastructure for preliminary underwriting review. No score, eligibility decision, insurance coverage, or terms are produced online.",
+  path: "/risk-assessment",
+});
 
 export default function RiskAssessmentPage() {
+  const hasAssessmentContact = Boolean(site.email || site.phone);
+
   return (
     <>
       <section className="border-b border-line bg-navy-900 pb-14 pt-32 text-ivory lg:pb-20 lg:pt-40">
         <div className="container-x">
           <div className="max-w-3xl">
-            <SectionLabel tone="light">Protocol risk assessment</SectionLabel>
+            <SectionLabel tone="light">
+              Preliminary underwriting review
+            </SectionLabel>
             <h1 className="mt-6 font-serif text-display font-light text-ivory">
-              Begin with a risk assessment.
+              Request an assessment
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/65">
-              Provide your protocol information to receive an indicative risk
-              profile and explore coverage designed around your architecture.
-              The process below is a preliminary review and is not an
-              application for, or binding offer of, insurance.
+              Provide information about a digital-asset protocol or
+              infrastructure for preliminary underwriting review. This process
+              does not produce a score, eligibility decision, insurance
+              coverage, or terms.
             </p>
           </div>
         </div>
@@ -40,47 +47,52 @@ export default function RiskAssessmentPage() {
             >
               <div>
                 <h2 className="font-serif text-lg text-navy">
-                  Contact Underwriting
+                  Assessment information
                 </h2>
                 <p className="mt-2 text-[14px] leading-relaxed text-slate-muted">
-                  Prefer to speak directly? Our underwriting team is available
-                  for institutional enquiries.
+                  Review the underwriting methodology or use a configured
+                  contact route for an assessment enquiry.
                 </p>
+                <Link
+                  href="/legal/underwriting-methodology"
+                  className="mt-4 inline-flex text-[13px] font-medium text-navy underline decoration-line underline-offset-4 hover:text-gold"
+                >
+                  Review underwriting methodology
+                </Link>
               </div>
-              <div>
-                <div className="text-[11px] uppercase tracking-label text-slate-faint">
-                  Email
-                </div>
-                {site.email ? (
+              {site.email && (
+                <div>
+                  <div className="text-[11px] uppercase tracking-label text-slate-faint">
+                    Email
+                  </div>
                   <a
                     href={`mailto:${site.email}`}
                     className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
                   >
                     {site.email}
                   </a>
-                ) : (
-                  <p className="mt-2 text-[14px] text-slate-muted">
-                    Available during onboarding
-                  </p>
-                )}
-              </div>
-              <div>
-                <div className="text-[11px] uppercase tracking-label text-slate-faint">
-                  Telephone
                 </div>
-                {site.phone ? (
+              )}
+              {site.phone && (
+                <div>
+                  <div className="text-[11px] uppercase tracking-label text-slate-faint">
+                    Telephone
+                  </div>
                   <a
                     href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
                     className="mt-2 block text-[15px] text-navy transition-colors hover:text-gold"
                   >
                     {site.phone}
                   </a>
-                ) : (
-                  <p className="mt-2 text-[14px] text-slate-muted">
-                    Available to policyholders
-                  </p>
-                )}
-              </div>
+                </div>
+              )}
+              {!hasAssessmentContact && (
+                <p className="text-[14px] leading-relaxed text-slate-muted sm:col-span-2">
+                  No separate public assessment contact is configured. Use the
+                  form above to submit information when online intake is
+                  available.
+                </p>
+              )}
             </div>
           </div>
         </div>

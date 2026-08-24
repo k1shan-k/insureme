@@ -5,6 +5,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Button, ArrowRight } from "@/components/ui/Button";
 import { IconCheck, IconArrowUpRight } from "@/components/ui/Icons";
 import { getInsuranceProgram, insurancePrograms } from "@/lib/programs";
+import { createPageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return insurancePrograms.map((program) => ({ slug: program.slug }));
@@ -17,10 +18,11 @@ export function generateMetadata({
 }): Metadata {
   const program = getInsuranceProgram(params.slug);
   if (!program) return { title: "Insurance program not found" };
-  return {
-    title: `${program.title} — Program & Indicative Terms`,
-    description: `${program.description} Review indicative coverage triggers, exclusions, insured duties and claims conditions.`,
-  };
+  return createPageMetadata({
+    title: `${program.title} — Program Overview`,
+    description: `${program.description} Review risk areas and underwriting considerations. Transaction documents control insurance coverage.`,
+    path: `/insurance/${program.slug}`,
+  });
 }
 
 export default function InsuranceProgramPage({
@@ -54,16 +56,16 @@ export default function InsuranceProgramPage({
                 size="lg"
                 className="group"
               >
-                Request Assessment
+                Request an assessment
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
-                href="#indicative-terms"
+                href="#program-overview"
                 variant="secondary"
                 size="lg"
                 className="border-ivory/30 text-ivory hover:border-ivory hover:bg-white/[0.04]"
               >
-                Review Terms
+                Review considerations
               </Button>
             </div>
           </div>
@@ -97,7 +99,7 @@ export default function InsuranceProgramPage({
                   href="/insurance"
                   className="mt-7 inline-flex items-center gap-2 text-[13px] font-medium text-navy hover:text-gold"
                 >
-                  Compare all programs <IconArrowUpRight />
+                  Compare programs <IconArrowUpRight />
                 </Link>
               </div>
             </aside>
@@ -105,49 +107,48 @@ export default function InsuranceProgramPage({
             <div className="lg:col-span-9">
               <div className="border-l-2 border-gold bg-ivory-50 px-6 py-5">
                 <p className="text-[13px] font-medium uppercase tracking-[0.1em] text-gold">
-                  Important — indicative wording only
+                  General program information
                 </p>
                 <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-slate-muted">
-                  This page is not a quotation, binder, policy or promise of
-                  coverage. No insurance attaches unless Meridian Risk completes
-                  underwriting, receives premium and issues authorized policy
-                  documentation. The issued wording controls in every case.
+                  This page describes risk areas and underwriting
+                  considerations. It is not a quotation, binder, policy, or
+                  promise of insurance coverage. Transaction documents control
+                  coverage in every case.
                 </p>
               </div>
 
               <div className="mt-12 grid gap-10 sm:grid-cols-2">
                 <OverviewList
-                  title="Designed for"
+                  title="Potential users"
                   items={program.designedFor}
                 />
                 <OverviewList
-                  title="Required for underwriting"
+                  title="Information commonly requested"
                   items={program.requiredInformation}
                 />
                 <OverviewList
-                  title="Indicative coverage triggers"
+                  title="Events that may be considered"
                   items={program.indicativeTriggers}
                 />
                 <OverviewList
-                  title="Key program exclusions"
+                  title="Exclusion considerations"
                   items={program.programExclusions}
                   warning
                 />
               </div>
 
               <div
-                id="indicative-terms"
+                id="program-overview"
                 className="mt-20 scroll-mt-28 border-t border-line pt-10"
               >
-                <SectionLabel>Program terms</SectionLabel>
+                <SectionLabel>Program overview</SectionLabel>
                 <h2 className="mt-5 font-serif text-4xl font-light text-navy">
-                  Indicative conditions, limitations and insurer protections.
+                  Coverage considerations and risk boundaries
                 </h2>
                 <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-slate-muted">
-                  The provisions below illustrate the protections Meridian Risk
-                  ordinarily requires. Underwriting may add, remove or amend
-                  terms, exclusions, warranties, retentions, sub-limits and
-                  termination rights before any policy is offered.
+                  The following summaries are non-binding examples of matters
+                  that may be addressed during underwriting. They do not create
+                  coverage, exclusions, duties, or rights.
                 </p>
 
                 <div className="mt-12 space-y-12">
@@ -193,12 +194,12 @@ export default function InsuranceProgramPage({
 
                 <div className="mt-16 border border-line bg-navy-900 p-8 text-ivory sm:p-10">
                   <h2 className="font-serif text-3xl font-light">
-                    Discuss the risk with underwriting.
+                    Submit information for review
                   </h2>
                   <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-ivory/60">
-                    Start with protocol information. Submission does not bind
-                    Meridian Risk or create coverage, but it gives our team the
-                    basis for a structured underwriting review.
+                    A preliminary underwriting review can consider the
+                    architecture and requested risk areas. It does not determine
+                    eligibility, insurance coverage, or terms.
                   </p>
                   <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                     <Button
@@ -206,7 +207,7 @@ export default function InsuranceProgramPage({
                       variant="gold"
                       className="group"
                     >
-                      Begin Assessment{" "}
+                      Request an assessment
                       <ArrowRight className="transition-transform group-hover:translate-x-1" />
                     </Button>
                     <Button
@@ -214,7 +215,7 @@ export default function InsuranceProgramPage({
                       variant="secondary"
                       className="border-ivory/30 text-ivory hover:border-ivory hover:bg-white/[0.04]"
                     >
-                      General Policy Framework
+                      Review coverage documentation
                     </Button>
                   </div>
                 </div>

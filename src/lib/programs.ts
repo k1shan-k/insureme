@@ -30,138 +30,100 @@ export type PolicyFrameworkParameter = {
 export const policyFrameworkParameters: PolicyFrameworkParameter[] = [
   {
     index: "01",
-    name: "Coverage Boundary",
-    question: "What is scheduled?",
+    name: "Coverage boundary",
+    question: "What may be scheduled?",
     description:
-      "The named insured, covered contracts, wallets, assets, chains, dependencies and operating entities.",
-    schedule: "Expressly identified in the issued schedule",
+      "Relevant entities, contracts, wallets, assets, networks, dependencies, and operating arrangements.",
+    schedule: "Any applicable boundary is stated in transaction documents",
   },
   {
     index: "02",
-    name: "Covered Trigger",
-    question: "What event must occur?",
+    name: "Event definition",
+    question: "What event may be addressed?",
     description:
-      "The defined incident, cause, evidence threshold, discovery requirement and qualifying loss pathway.",
-    schedule: "Affirmatively stated in the insuring clause",
+      "An event definition may address cause, evidence, timing, discovery, and the relationship to loss.",
+    schedule: "Any covered event is defined in transaction documents",
   },
   {
     index: "03",
-    name: "Limit Structure",
-    question: "What is the maximum response?",
+    name: "Limit structure",
+    question: "What financial parameters may apply?",
     description:
-      "Per-event limits, aggregate limits, sub-limits, reinstatements and any co-insurance participation.",
-    schedule: "Set during underwriting; no website amount applies",
+      "Potential parameters include event and aggregate limits, sublimits, and participation percentages.",
+    schedule: "No amount displayed on this website applies to a transaction",
   },
   {
     index: "04",
     name: "Retention",
-    question: "What remains with the insured?",
+    question: "What amount may remain with the insured?",
     description:
-      "Deductibles, waiting periods, minimum loss thresholds, co-insurance and other self-insured amounts.",
-    schedule: "Applied before any covered amount is payable",
+      "Potential structures include deductibles, waiting periods, thresholds, and coinsurance.",
+    schedule: "Any applicable retention is stated in transaction documents",
   },
   {
     index: "05",
-    name: "Valuation Method",
-    question: "How is loss measured?",
+    name: "Valuation method",
+    question: "How may loss be measured?",
     description:
-      "Approved price sources, valuation time, observation periods, recovery offsets and asset-specific methodology.",
-    schedule: "Determined by the issued wording and evidence",
+      "Relevant considerations may include data sources, valuation time, observation periods, and recoveries.",
+    schedule: "Any valuation method is stated in transaction documents",
   },
   {
     index: "06",
-    name: "Policy Conditions",
-    question: "What duties must continue?",
+    name: "Policy conditions",
+    question: "What requirements may apply?",
     description:
-      "Disclosure, security controls, material-change approval, prompt notice, mitigation, evidence and cooperation.",
-    schedule: "Continuing conditions that may affect coverage",
+      "Transaction-specific requirements may address disclosure, controls, changes, notice, evidence, and cooperation.",
+    schedule: "Only issued documentation creates policy conditions",
   },
   {
     index: "07",
     name: "Exclusions",
-    question: "What remains outside cover?",
+    question: "What may remain outside coverage?",
     description:
-      "Unscheduled dependencies, known vulnerabilities, market loss, authorized acts, sanctions and other stated causes.",
-    schedule: "General and program-specific exclusions apply",
+      "Examples may include unscheduled dependencies, known issues, market loss, authorized acts, or prohibited activity.",
+    schedule: "Only issued documentation creates exclusions",
   },
   {
     index: "08",
-    name: "Claims Evidence",
-    question: "What must substantiate the loss?",
+    name: "Claims information",
+    question: "What information may be relevant?",
     description:
-      "Transaction traces, contract state, timestamps, incident records, custody evidence, valuation and recoveries.",
-    schedule: "Burden of proof remains with the insured",
+      "Relevant material may include transaction traces, system state, incident records, custody evidence, valuation, and recoveries.",
+    schedule: "Issued documentation controls notice and evidence requirements",
   },
 ];
 
 const commonTerms: ProgramSection[] = [
   {
-    heading: "Insured's duty of disclosure and continuing accuracy",
+    heading: "Purpose of this overview",
     paragraphs: [
-      "The insured must disclose every fact, circumstance, dependency, privilege, vulnerability, prior incident and proposed change that is or may reasonably be material to Meridian Risk's assessment of the risk. All information supplied at placement, renewal and during the policy period is treated as a continuing representation and warranty.",
-      "Meridian Risk may rely on information supplied without independently verifying it. Any material omission, inaccuracy, misleading statement or failure to update information entitles Meridian Risk, to the fullest extent permitted by law, to amend terms, reduce or deny a claim, suspend coverage, cancel the policy or treat the policy as void from inception.",
+      "This program overview describes risk areas that may be considered during underwriting. It is not a quotation, binder, policy, or representation that insurance coverage is available.",
+      "Transaction documents control coverage, including the insured parties and interests, scheduled systems and assets, event definitions, limits, retentions, exclusions, conditions, governing law, and claims requirements.",
     ],
   },
   {
-    heading: "Conditions precedent to coverage",
+    heading: "Information for underwriting",
     paragraphs: [
-      "No coverage attaches unless the premium and all applicable charges have been received, the insured has complied with all binding risk requirements, and the relevant asset, contract, wallet, dependency, chain and entity are expressly identified in the policy schedule.",
+      "A preliminary underwriting review may consider the submitted architecture, controls, dependencies, loss scenarios, incident history, and supporting evidence. Additional or updated information may be requested before any decision is made.",
+      "Review of information, a risk indicator, or discussion of possible structure does not determine eligibility or create insurance coverage or terms.",
+    ],
+  },
+  {
+    heading: "Coverage considerations",
+    paragraphs: [
+      "If a transaction proceeds, its documentation may define scheduled components, covered events, loss measurement, limits, retentions, exclusions, notice requirements, and other conditions. Those provisions are transaction-specific.",
     ],
     list: [
-      "Required audits, remediation items and security controls must remain in force.",
-      "The insured must maintain access controls, key-management procedures, incident response plans and monitoring represented during underwriting.",
-      "Any material change requires prior written approval from Meridian Risk; coverage for the affected risk may be suspended until approval is given.",
-      "The insured bears the burden of establishing that every coverage requirement and condition precedent has been satisfied.",
+      "Dependencies and changes may affect the assessed risk boundary.",
+      "Economic, operational, custody, governance, and third-party causes may be treated differently from code defects.",
+      "Recovery, valuation, aggregation, and other insurance may affect the assessment of a loss.",
     ],
   },
   {
-    heading: "Notification, mitigation and control of claims",
+    heading: "Incident and claims information",
     paragraphs: [
-      "The insured must notify Meridian Risk immediately after becoming aware of any incident, suspected incident, threat, vulnerability or circumstance that may give rise to a claim, and in all cases within the shorter period stated in the policy. Late notice may prejudice or extinguish coverage whether or not prejudice can be quantified.",
-      "The insured must take all reasonable steps to prevent, contain, mitigate and recover loss, preserve evidence, maintain complete records and follow Meridian Risk's reasonable instructions. No admission, settlement, payment, fork, rollback, reimbursement, bounty or material remediation may be agreed without prior written consent, except where immediately necessary to prevent further loss.",
-      "Meridian Risk may appoint counsel, forensic specialists, auditors, valuers and other experts; coordinate the investigation; participate in incident response; and assume control of negotiations or recovery actions where the policy permits. Cooperation is a continuing condition of coverage.",
-    ],
-  },
-  {
-    heading: "Loss measurement, limits and aggregation",
-    paragraphs: [
-      "Only direct, actual and irrecoverable loss is potentially indemnifiable. Loss is measured using the valuation method, observation period, data sources and valuation time selected in the policy schedule or, if not specified, a commercially reasonable methodology selected by Meridian Risk. Hypothetical value, opportunity cost, lost yield, lost fees, loss of market, reputational harm and consequential or indirect loss are excluded.",
-      "All losses arising from, attributable to, or connected with the same vulnerability, actor, campaign, dependency, governance action, transaction sequence, design defect or originating cause may be treated as one event at the earliest applicable time. Payments remain subject to deductibles, waiting periods, sub-limits, co-insurance, aggregate limits and other retentions.",
-    ],
-  },
-  {
-    heading: "General exclusions",
-    paragraphs: [
-      "Unless expressly endorsed in writing, no coverage applies to loss arising from or contributed to by any of the following:",
-    ],
-    list: [
-      "Known, disclosed or reasonably discoverable vulnerabilities, prior incidents or circumstances existing before attachment.",
-      "Fraud, dishonesty, collusion, intentional conduct, reckless conduct or material non-compliance by an insured, founder, employee, contractor, delegate, administrator or governance participant acting with authority.",
-      "Market movement, volatility, insufficient liquidity, adverse selection, impermanent loss, liquidation, bad debt, tokenomics, incentive design or ordinary economic operation of a protocol.",
-      "War, terrorism, cyber warfare, widespread infrastructure or internet failure, sovereign action, confiscation, sanctions, regulatory action or unlawful activity.",
-      "Failure of an unscheduled third party, chain, oracle, bridge, custodian, exchange, validator, sequencer, cloud provider or other dependency.",
-      "Fines, penalties, taxes, punitive or exemplary damages, contractual liabilities voluntarily assumed, legal costs not approved in advance, and losses prohibited from payment by law or sanctions.",
-    ],
-  },
-  {
-    heading: "Recoveries, subrogation and other insurance",
-    paragraphs: [
-      "Meridian Risk is subrogated to all rights of recovery upon payment or advancement. The insured must preserve and assist those rights and may not waive them without prior written consent. Any recovery, restitution, returned asset, fork proceeds, reimbursement, grant, bounty recapture or third-party payment relating to the loss must be disclosed and will reduce the covered loss or be repaid to Meridian Risk after payment.",
-      "This coverage is excess of any other valid and collectible insurance, indemnity, guarantee, reserve, compensation scheme or recovery unless the issued policy expressly states otherwise.",
-    ],
-  },
-  {
-    heading: "Meridian Risk's rights; cancellation and non-renewal",
-    paragraphs: [
-      "Meridian Risk may audit compliance, request additional information, impose reasonable protective measures, amend terms at renewal, decline renewal, or exercise cancellation and suspension rights stated in the policy. Monitoring, silence, review or receipt of information does not constitute acceptance of a change, waiver, advice or confirmation of coverage.",
-      "Any determination, consent or approval by Meridian Risk must be in writing by an authorized representative. No broker, website statement, dashboard, risk score, proposal or informal communication may amend coverage. Rights and remedies are cumulative, and delay in exercising a right is not a waiver.",
-    ],
-  },
-  {
-    heading: "Order of precedence and governing wording",
-    paragraphs: [
-      "These website terms are an indicative summary only and are not a binder, quotation, contract or promise of payment. The issued policy schedule, endorsements and full wording exclusively govern. If documents conflict, the order of precedence stated in the issued policy applies, with specifically negotiated endorsements prevailing over general summaries.",
-      "Coverage is available only in eligible jurisdictions through an appropriately authorized entity. Governing law, dispute resolution, service requirements, limitation periods and forum are those stated in the issued policy. Independent legal, tax and insurance advice should be obtained before placement.",
+      "Potential insureds and policyholders should follow the notice, mitigation, evidence, and communication requirements in their issued documentation. This website does not extend a deadline, replace a required notice channel, or determine whether an event is covered.",
     ],
   },
 ];
@@ -177,10 +139,10 @@ export const insurancePrograms: InsuranceProgram[] = [
     title: "Smart Contract Cover",
     shortTitle: "Smart Contract",
     description:
-      "Protection against defined losses arising from qualifying smart-contract incidents.",
+      "A program area concerning defined losses associated with scheduled smart-contract code.",
     icon: "smart-contract",
     strapline:
-      "Defined protection for scheduled contract code and qualifying unintended execution.",
+      "Underwriting considerations for scheduled contract code and unintended execution events.",
     designedFor: [
       "DeFi applications",
       "On-chain marketplaces",
@@ -188,36 +150,34 @@ export const insurancePrograms: InsuranceProgram[] = [
       "Protocol foundations",
     ],
     indicativeTriggers: [
-      "A vulnerability in scheduled production contract code that enables unauthorized transfer or permanent loss of scheduled assets.",
-      "Unintended execution of a scheduled contract that directly causes an irrecoverable asset loss during the policy period.",
-      "A qualifying incident first discovered and notified during the applicable coverage period, after any waiting period and retention.",
+      "A defect in scheduled production code that permits an unauthorized transfer or permanent loss of scheduled assets may be considered.",
+      "Unintended execution of a scheduled contract that directly causes asset loss may be considered.",
+      "Timing, discovery, evidence, retention, and recovery parameters would be defined only in transaction documents.",
     ],
     programExclusions: [
-      "Contracts, versions, proxies, modules, chains or assets not expressly scheduled.",
-      "Any deployment, upgrade, parameter change or governance action not approved in writing before implementation.",
-      "Oracle error, bridge failure, private-key compromise, social engineering, front-running, MEV, congestion or economic design failure unless specifically endorsed.",
-      "Loss reproducible only through assumptions or privileges unavailable to the relevant actor at the time of the incident.",
+      "Unscheduled contracts, versions, proxies, modules, networks, or assets may be outside a proposed risk boundary.",
+      "Deployments, upgrades, parameter changes, or governance actions may require separate review.",
+      "Oracle error, bridge failure, key compromise, social engineering, transaction ordering, congestion, and economic design are distinct risk causes.",
+      "A warning, defect, or attempted exploit without qualifying loss may not satisfy a transaction-specific event definition.",
     ],
     requiredInformation: [
       "Verified source and deployed bytecode",
       "Audit reports and remediation log",
-      "Admin and upgrade controls",
+      "Administrative and upgrade controls",
       "Dependency and asset schedule",
       "Incident response plan",
     ],
     terms: withCommon([
       {
-        heading: "Indicative insuring agreement",
+        heading: "Smart-contract risk area",
         paragraphs: [
-          "Subject to all terms, Meridian Risk may indemnify the named insured for direct and irrecoverable loss of scheduled assets caused solely and directly by a qualifying smart-contract incident affecting scheduled contract code during the policy period.",
-          "A qualifying incident must satisfy the technical trigger in the issued schedule and be established by reproducible on-chain evidence. A defect, warning, audit finding or attempted exploit without covered loss is not itself a claim.",
+          "Underwriting may examine whether loss arises directly from scheduled code operating in an unintended manner. The relevant code, assets, event, causation, and evidence would need transaction-specific definitions.",
         ],
       },
       {
-        heading: "Scheduled code and change control",
+        heading: "Code and change boundaries",
         paragraphs: [
-          "Coverage is confined to the exact addresses, implementations, bytecode hashes, modules, chains and assets listed in the schedule. Replacement, migration, proxy upgrade, parameter change, emergency action or addition of a dependency is outside coverage unless Meridian Risk approves it in writing.",
-          "If an emergency change is necessary, the insured must notify Meridian Risk before execution where practicable and immediately afterward in all other cases. Meridian Risk may suspend, restrict or reprice the affected coverage.",
+          "Addresses, implementations, modules, networks, assets, upgrade mechanisms, and dependencies may form part of the assessed boundary. Migrations and changes can alter that boundary and may require further review.",
         ],
       },
     ]),
@@ -228,10 +188,10 @@ export const insurancePrograms: InsuranceProgram[] = [
     title: "Protocol Exploit Cover",
     shortTitle: "Protocol Exploit",
     description:
-      "Coverage designed for qualifying protocol-level security events.",
+      "A program area concerning defined external exploit events affecting a scheduled protocol.",
     icon: "exploit",
     strapline:
-      "Protocol-level protection structured around defined exploit paths and scheduled assets.",
+      "Underwriting considerations for specified exploit paths and scheduled protocol assets.",
     designedFor: [
       "Lending markets",
       "Decentralized exchanges",
@@ -239,15 +199,15 @@ export const insurancePrograms: InsuranceProgram[] = [
       "On-chain asset managers",
     ],
     indicativeTriggers: [
-      "An external actor uses a covered exploit technique against the scheduled protocol and directly removes or destroys scheduled assets.",
-      "The exploit is unauthorized, first occurs during the policy period and meets any minimum loss, waiting period and evidence requirement.",
-      "The proximate cause falls within the exploit categories affirmatively listed in the issued schedule.",
+      "An unauthorized external actor using a specified exploit technique against a scheduled protocol may be considered.",
+      "A direct removal or destruction of scheduled assets may need to meet defined timing, loss, and evidence parameters.",
+      "The relevant exploit categories and causation standard would be stated only in transaction documents.",
     ],
     programExclusions: [
-      "Governance capture, approved governance proposals, malicious voting, bribery or concentration of voting power unless endorsed.",
-      "Compromise or misuse of private keys, credentials, multisigs, administrators, delegates or front-end infrastructure.",
-      "Price manipulation, flash-loan-assisted economic attacks, bad debt or oracle manipulation unless the specific mechanism is scheduled.",
-      "Acts involving an insider, affiliated party or person acting with authorized access.",
+      "Governance capture, approved proposals, voting conduct, bribery, and voting concentration are distinct risk causes.",
+      "Compromise or misuse of keys, credentials, multisignature controls, administrators, delegates, or front-end systems may be treated separately.",
+      "Price manipulation, flash-loan-assisted economic attacks, bad debt, and oracle manipulation may require express consideration.",
+      "Insider, affiliate, or authorized-access conduct may fall outside an external exploit definition.",
     ],
     requiredInformation: [
       "Threat model and exploit taxonomy",
@@ -258,17 +218,15 @@ export const insurancePrograms: InsuranceProgram[] = [
     ],
     terms: withCommon([
       {
-        heading: "Indicative insuring agreement",
+        heading: "Protocol exploit risk area",
         paragraphs: [
-          "Subject to all terms, Meridian Risk may indemnify direct, irrecoverable loss of scheduled assets resulting solely from a covered external protocol exploit first occurring during the policy period. Covered exploit techniques are limited to those affirmatively identified in the schedule.",
-          "The insured must prove unauthorized exploitation, causation and quantum through transaction traces, state changes, forensic evidence and any additional information reasonably requested by Meridian Risk.",
+          "Underwriting may distinguish external unauthorized exploitation from governance, credential, economic, oracle, and insider events. Any covered category would require a definition in transaction documents.",
         ],
       },
       {
-        heading: "Attribution and exploit classification",
+        heading: "Attribution and classification",
         paragraphs: [
-          "Meridian Risk may classify the originating cause of an event using the dominant or proximate cause, notwithstanding that multiple transactions, actors or vulnerabilities are involved. Classification controls whether the event falls within a scheduled trigger or an exclusion.",
-          "White-hat activity, permitted testing, approved governance action, bounty participation or transactions performed under valid authority are not unauthorized exploits unless the policy expressly provides otherwise.",
+          "Transaction traces, state changes, authority, actor relationships, and dominant causes may be relevant when classifying an event. Permitted testing and authorized activity are considered separately from unauthorized exploitation.",
         ],
       },
     ]),
@@ -279,10 +237,10 @@ export const insurancePrograms: InsuranceProgram[] = [
     title: "Cross-Chain & Bridge Cover",
     shortTitle: "Cross-Chain & Bridge",
     description:
-      "Protection against defined failures involving bridges and cross-chain infrastructure.",
+      "A program area concerning defined failures in scheduled bridge and cross-chain infrastructure.",
     icon: "bridge",
     strapline:
-      "Scheduled protection for qualifying failures across specified cross-chain architecture.",
+      "Underwriting considerations for specified routes, mechanisms, and cross-chain dependencies.",
     designedFor: [
       "Cross-chain bridges",
       "Interoperability protocols",
@@ -290,36 +248,34 @@ export const insurancePrograms: InsuranceProgram[] = [
       "Multichain applications",
     ],
     indicativeTriggers: [
-      "Unauthorized minting, release or transfer caused by a covered defect in a scheduled bridge contract or verification mechanism.",
-      "A covered validator, relayer or messaging failure that directly causes permanent loss of scheduled assets.",
-      "The event affects an expressly scheduled route, chain pair, contract set and asset during the policy period.",
+      "Unauthorized minting, release, or transfer caused by a specified bridge or verification defect may be considered.",
+      "A defined validator, relayer, or messaging failure that directly causes permanent asset loss may be considered.",
+      "Any relevant route, network pair, contracts, assets, and event period would need to be scheduled in transaction documents.",
     ],
     programExclusions: [
-      "Underlying chain failure, reorganization, finality failure, sequencer outage, validator slashing or consensus attack unless endorsed.",
-      "Depeg, impairment or lack of redemption of wrapped, synthetic or canonical assets.",
-      "Congestion, delayed messages, stuck transfers or unavailable liquidity without permanent covered loss.",
-      "Failure of an unscheduled route, relayer, validator set, custodian, messaging layer or destination protocol.",
+      "Underlying network failure, reorganization, finality failure, sequencer outage, slashing, and consensus attack are distinct risk causes.",
+      "Depeg, impairment, or redemption failure of wrapped, synthetic, or canonical assets may be treated separately.",
+      "Congestion, delayed messages, stuck transfers, and unavailable liquidity do not necessarily result in permanent loss.",
+      "Unscheduled routes, relayers, validators, custodians, messaging layers, and destination protocols may be outside the assessed boundary.",
     ],
     requiredInformation: [
-      "Route and chain-pair schedule",
+      "Route and network-pair schedule",
       "Verification and validator model",
       "Relayer and messaging dependencies",
-      "Mint/burn controls",
+      "Mint and burn controls",
       "Emergency pause and recovery procedures",
     ],
     terms: withCommon([
       {
-        heading: "Indicative insuring agreement",
+        heading: "Cross-chain risk area",
         paragraphs: [
-          "Subject to all terms, Meridian Risk may indemnify direct and irrecoverable loss of scheduled assets caused solely by a covered failure of the scheduled bridge or cross-chain mechanism on an approved route during the policy period.",
-          "Coverage does not attach merely because a message, transfer or redemption is delayed. The insured must establish permanent loss after expiration of the policy's waiting and recovery periods.",
+          "Underwriting may examine whether a loss originates in a bridge mechanism, an underlying network, an asset, or another dependency. Delay and temporary unavailability are considered separately from permanent loss.",
         ],
       },
       {
-        heading: "Route, finality and dependency boundaries",
+        heading: "Route and dependency boundaries",
         paragraphs: [
-          "Each covered route is treated as a distinct risk and must identify the source chain, destination chain, contracts, verification method, relayers, validator set, assets and finality assumptions. Components outside that boundary are not covered.",
-          "Meridian Risk may determine when finality occurred and whether the loss originated in the bridge, an underlying chain or another dependency, using reasonable technical evidence and appointed experts.",
+          "A review may identify source and destination networks, contracts, verification methods, relayers, validator sets, assets, and finality assumptions for each route.",
         ],
       },
     ]),
@@ -330,10 +286,10 @@ export const insurancePrograms: InsuranceProgram[] = [
     title: "Stablecoin & Depeg Cover",
     shortTitle: "Stablecoin & Depeg",
     description:
-      "Coverage for specifically defined market and asset events where applicable.",
+      "A program area concerning specifically defined stablecoin price and realized-loss events.",
     icon: "depeg",
     strapline:
-      "Trigger-based indemnity protection for scheduled assets and sustained qualifying depeg events.",
+      "Underwriting considerations for scheduled assets, price observations, and realized loss.",
     designedFor: [
       "Stablecoin issuers",
       "Protocol treasuries",
@@ -341,36 +297,34 @@ export const insurancePrograms: InsuranceProgram[] = [
       "Institutional digital-asset platforms",
     ],
     indicativeTriggers: [
-      "A scheduled stablecoin trades below the specified trigger price for the full observation period across approved data sources.",
-      "The insured realizes a direct loss through a covered disposal or redemption event in the manner required by the policy.",
-      "All trigger, liquidity, timing, custody and evidence conditions in the schedule are satisfied.",
+      "A scheduled asset trading below a defined price for a defined observation period across specified sources may be considered.",
+      "A direct realized loss through a specified disposal or redemption process may be relevant.",
+      "Price, timing, custody, liquidity, ownership, and evidence parameters would be stated only in transaction documents.",
     ],
     programExclusions: [
-      "Price movement that does not meet the trigger level or continuous observation period.",
-      "Unrealized mark-to-market loss, voluntary sale outside the permitted window or loss increased by delay or speculation.",
-      "Issuer insolvency, fraud, reserve impairment, redemption suspension, sanctions or regulatory action unless specifically endorsed.",
-      "Manipulated, stale, unavailable or anomalous prices and venues excluded by the valuation methodology.",
+      "Price movement that does not meet a defined level or observation period may fall outside a proposed event definition.",
+      "Unrealized mark-to-market change, disposal outside a defined process, delay, and speculation may be treated separately.",
+      "Issuer insolvency, fraud, reserve impairment, redemption suspension, sanctions, and regulatory action are distinct risk causes.",
+      "Manipulated, stale, unavailable, or anomalous prices may be excluded from a valuation methodology.",
     ],
     requiredInformation: [
       "Asset and exposure schedule",
       "Custody and wallet evidence",
-      "Approved price sources",
+      "Proposed price sources",
       "Liquidity and disposal plan",
       "Issuer and reserve analysis",
     ],
     terms: withCommon([
       {
-        heading: "Indicative insuring agreement",
+        heading: "Stablecoin and depeg risk area",
         paragraphs: [
-          "Subject to all terms, Meridian Risk may indemnify a defined portion of direct realized loss on a scheduled stablecoin where the asset satisfies the trigger price and continuous observation period stated in the schedule and the insured complies with prescribed disposal, redemption and notice requirements.",
-          "A depeg does not create automatic entitlement to payment. The insured must establish eligible holdings before the event, continuous ownership where required, the permitted realization transaction and net loss after all recoveries.",
+          "Underwriting may examine price thresholds, observation periods, eligible holdings, realization, recoveries, and valuation sources. A price movement alone does not establish insurance coverage or payment.",
         ],
       },
       {
-        heading: "Price determination and anti-manipulation",
+        heading: "Price and valuation considerations",
         paragraphs: [
-          "The policy schedule controls eligible venues, price sources, time-weighting, outlier treatment and observation periods. If a source is unavailable, compromised or unrepresentative, Meridian Risk may disregard it and select a commercially reasonable replacement source.",
-          "No coverage applies to loss influenced by the insured's trading, liquidity withdrawal, governance activity or other conduct intended or reasonably likely to affect the trigger or measured price.",
+          "Venue quality, source availability, time weighting, outliers, liquidity, and conduct affecting the measured price may be relevant to a transaction-specific methodology.",
         ],
       },
     ]),
@@ -380,10 +334,11 @@ export const insurancePrograms: InsuranceProgram[] = [
     slug: "treasury-digital-asset-cover",
     title: "Treasury & Digital Asset Cover",
     shortTitle: "Treasury & Digital Asset",
-    description: "Protection for eligible protocol-controlled digital assets.",
+    description:
+      "A program area concerning defined loss events affecting scheduled digital assets and custody arrangements.",
     icon: "treasury",
     strapline:
-      "Scheduled protection for protocol-controlled assets held within approved custody arrangements.",
+      "Underwriting considerations for scheduled assets, wallets, custody, and transaction controls.",
     designedFor: [
       "Protocol treasuries",
       "Foundations",
@@ -391,15 +346,15 @@ export const insurancePrograms: InsuranceProgram[] = [
       "Institutional platforms",
     ],
     indicativeTriggers: [
-      "Unauthorized external transfer of scheduled assets from an approved wallet caused by a covered compromise.",
-      "Permanent destruction or loss of access caused by a covered event expressly stated in the schedule.",
-      "The affected wallet, asset, custody configuration and control procedure are all scheduled and compliant.",
+      "An unauthorized external transfer of scheduled assets from a specified wallet following a defined compromise may be considered.",
+      "Permanent destruction or loss of access caused by a specified event may be considered.",
+      "Wallets, assets, custody configuration, ownership interests, and controls would require transaction-specific review.",
     ],
     programExclusions: [
-      "Authorized, mistaken or socially engineered transfers approved through valid credentials or required signers unless endorsed.",
-      "Loss, disclosure, backup failure or misuse of private keys, seed phrases or credentials contrary to represented controls.",
-      "Market value decline, staking or restaking slashing, lockup, illiquidity, lending loss or protocol participation risk.",
-      "Exchange, custodian, counterparty or issuer insolvency or failure unless the entity and risk are specifically scheduled.",
+      "Authorized, mistaken, or socially engineered transfers using valid approvals may be treated separately from external compromise.",
+      "Key, seed phrase, backup, or credential handling inconsistent with the assessed control environment may affect the risk analysis.",
+      "Market decline, slashing, lockup, illiquidity, lending loss, and protocol participation are distinct risk causes.",
+      "Exchange, custodian, counterparty, or issuer failure may require separate consideration.",
     ],
     requiredInformation: [
       "Wallet and asset schedule",
@@ -410,17 +365,15 @@ export const insurancePrograms: InsuranceProgram[] = [
     ],
     terms: withCommon([
       {
-        heading: "Indicative insuring agreement",
+        heading: "Treasury and custody risk area",
         paragraphs: [
-          "Subject to all terms, Meridian Risk may indemnify direct and irrecoverable loss of scheduled digital assets from an approved custody arrangement caused solely by a covered event during the policy period.",
-          "Only the named insured's legally and beneficially owned interest is eligible. Assets held for users, customers, affiliates or third parties are excluded unless expressly declared and scheduled.",
+          "Underwriting may consider ownership, custody architecture, signer authority, approval procedures, transaction controls, backup arrangements, and the cause of any loss of assets or access.",
         ],
       },
       {
-        heading: "Custody, authority and valuation",
+        heading: "Authority and valuation considerations",
         paragraphs: [
-          "Coverage depends on continuous compliance with the scheduled custody model, signer thresholds, transaction limits, allowlists, segregation, hardware requirements and approval procedures. A transfer executed with valid authority is presumed authorized unless the insured proves a covered compromise.",
-          "Asset value will be determined net of recoveries and using the scheduled valuation source and time. No amount is payable for appreciation after the event or for value attributable to forks, airdrops, rewards or unvested rights unless expressly scheduled.",
+          "The distinction between authorized and unauthorized activity, together with recoveries and the valuation source and time, may be material to a transaction-specific structure.",
         ],
       },
     ]),
@@ -431,10 +384,10 @@ export const insurancePrograms: InsuranceProgram[] = [
     title: "Custom Protocol Cover",
     shortTitle: "Custom Protocol",
     description:
-      "Tailored underwriting for sophisticated or unconventional Web3 architectures.",
+      "A review path for architectures or risk combinations not represented by the other program summaries.",
     icon: "custom",
     strapline:
-      "Bespoke wording for complex architectures that do not fit a standard risk category.",
+      "Preliminary review of complex architectures and transaction-specific risk areas.",
     designedFor: [
       "Novel protocol architectures",
       "Institutional infrastructure",
@@ -442,36 +395,34 @@ export const insurancePrograms: InsuranceProgram[] = [
       "Multiline placements",
     ],
     indicativeTriggers: [
-      "Only the events, causes, assets and losses affirmatively described in the negotiated insuring agreement.",
-      "A covered event occurring within the scheduled architecture and policy period after satisfaction of all bespoke conditions.",
-      "Direct and irrecoverable loss established using the evidence and valuation method specified in the endorsement.",
+      "Only events, causes, assets, and loss measures defined in transaction documents could form part of insurance coverage.",
+      "Architecture, timing, evidence, and other transaction-specific parameters may be required.",
+      "Direct loss and valuation concepts may need to be defined for the relevant risk scenario.",
     ],
     programExclusions: [
-      "Every risk, event, asset, dependency and loss category not affirmatively included in the negotiated wording.",
-      "Any deviation from the represented architecture, controls, limits, use case or deployment without prior written approval.",
-      "Correlation, accumulation and systemic events beyond the scenarios and sub-limits expressly accepted.",
-      "Any standard or manuscript exclusion, warranty or condition stated in the issued policy and endorsements.",
+      "Risks, events, assets, dependencies, and loss categories outside a documented transaction boundary may be excluded.",
+      "Changes to represented architecture, controls, limits, use, or deployment may require further review.",
+      "Correlation, accumulation, and systemic events may require separate boundaries or sublimits.",
+      "Any exclusions or conditions would arise only from issued transaction documents, not this website.",
     ],
     requiredInformation: [
       "Complete architecture and dependency map",
       "Loss scenarios and quantification",
       "Control and governance evidence",
       "Independent audits and opinions",
-      "Requested triggers, limits and structure",
+      "Requested triggers, limits, and structure",
     ],
     terms: withCommon([
       {
-        heading: "Bespoke insuring agreement",
+        heading: "Custom risk area",
         paragraphs: [
-          "Custom Protocol Cover is available only through individually negotiated wording. No event is covered by implication, analogy, trade usage or marketing description. The policy responds solely to risks affirmatively accepted in the insuring agreement and schedule.",
-          "Any example, indication, risk score, term sheet or preliminary discussion is non-binding. Meridian Risk may withdraw or revise proposed terms at any time before authorized execution of the policy and receipt of premium.",
+          "A custom review begins with the architecture, parties, assets, dependencies, controls, and loss scenarios presented. Discussion of a possible structure is preliminary and non-binding.",
         ],
       },
       {
-        heading: "Manuscript wording and risk boundaries",
+        heading: "Transaction-specific boundaries",
         paragraphs: [
-          "The insured must provide a complete architecture, dependency, asset and control schedule. Unscheduled components and deviations are outside the risk accepted. Bespoke warranties, reporting duties, sub-limits, exclusions and termination events may be imposed to address concentration, novelty and correlation.",
-          "Where a manuscript endorsement conflicts with standard wording, only the specific conflict is modified; all unaffected protections, exclusions, conditions and insurer rights remain in force.",
+          "Any insurance coverage would need to be documented expressly. No event, asset, dependency, exclusion, condition, or right is created by analogy to another program or by this overview.",
         ],
       },
     ]),

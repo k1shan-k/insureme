@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Meridian Risk",
     short_name: "Meridian",
     description:
-      "Insurance infrastructure for the decentralized economy. Institutional-grade underwriting for Web3 and DeFi risk.",
+      "Information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure.",
     start_url: "/",
     display: "standalone",
     background_color: "#F7F4EE",
