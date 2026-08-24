@@ -93,3 +93,100 @@ body {
     transition: none;
   }
 }
+
+/* Transparent institutional market and asset marquees */
+@keyframes market-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-mask {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: market-marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track--reverse {
+  animation-direction: reverse;
+  animation-duration: 48s;
+}
+
+.marquee-mask:hover .marquee-track,
+.marquee-mask:focus-within .marquee-track,
+.marquee-track--paused {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.market-mark {
+  display: flex;
+  min-width: 250px;
+  align-items: center;
+  gap: 0.9rem;
+  padding-inline: 1.75rem;
+  opacity: 0.68;
+  transition: opacity 300ms ease;
+}
+
+.market-mark:hover {
+  opacity: 1;
+}
+
+.market-mark__symbol {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(14, 42, 71, 0.28);
+  color: #0e2a47;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.market-mark__symbol--asset {
+  border-radius: 999px;
+  border-color: rgba(169, 133, 47, 0.38);
+  color: #a9852f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-toggle {
+    display: none;
+  }
+
+  .marquee-mask {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .marquee-track {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .marquee-duplicate {
+    display: none;
+  }
+}

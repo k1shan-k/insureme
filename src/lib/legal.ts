@@ -26,11 +26,13 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "1. Information we collect",
         paragraphs: [
-          "We collect information you provide directly — such as contact details, protocol information and correspondence — as well as information generated through your use of our website and services.",
+          "We collect information you provide directly — such as contact details, protocol information, claim or incident notifications and correspondence — as well as information generated through your use of our website and services.",
         ],
         list: [
           "Identity and contact information provided in enquiries or applications.",
           "Protocol and organizational information submitted for risk assessment.",
+          "Claim and incident information, including policy references, discovery times, event descriptions, affected systems and initial loss estimates.",
+          "Technical evidence such as transaction hashes, public addresses, logs, evidence links, mitigation records and claims correspondence.",
           "Technical data such as IP address, device and browser information.",
           "Publicly available on-chain data relevant to underwriting and monitoring.",
         ],
@@ -44,7 +46,7 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "3. Sharing and disclosure",
         paragraphs: [
-          "We may share information with affiliates, reinsurers, service providers, professional advisers, and regulatory or governmental authorities where permitted or required. We do not sell personal information.",
+          "We may share information with affiliates, insurers, reinsurers, brokers, claims experts, forensic investigators, counsel, service providers, professional advisers, and regulatory or governmental authorities where permitted or required. We do not sell personal information.",
         ],
       },
       {

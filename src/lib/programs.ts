@@ -19,6 +19,81 @@ export type InsuranceProgram = {
   terms: ProgramSection[];
 };
 
+export type PolicyFrameworkParameter = {
+  index: string;
+  name: string;
+  question: string;
+  description: string;
+  schedule: string;
+};
+
+export const policyFrameworkParameters: PolicyFrameworkParameter[] = [
+  {
+    index: "01",
+    name: "Coverage Boundary",
+    question: "What is scheduled?",
+    description:
+      "The named insured, covered contracts, wallets, assets, chains, dependencies and operating entities.",
+    schedule: "Expressly identified in the issued schedule",
+  },
+  {
+    index: "02",
+    name: "Covered Trigger",
+    question: "What event must occur?",
+    description:
+      "The defined incident, cause, evidence threshold, discovery requirement and qualifying loss pathway.",
+    schedule: "Affirmatively stated in the insuring clause",
+  },
+  {
+    index: "03",
+    name: "Limit Structure",
+    question: "What is the maximum response?",
+    description:
+      "Per-event limits, aggregate limits, sub-limits, reinstatements and any co-insurance participation.",
+    schedule: "Set during underwriting; no website amount applies",
+  },
+  {
+    index: "04",
+    name: "Retention",
+    question: "What remains with the insured?",
+    description:
+      "Deductibles, waiting periods, minimum loss thresholds, co-insurance and other self-insured amounts.",
+    schedule: "Applied before any covered amount is payable",
+  },
+  {
+    index: "05",
+    name: "Valuation Method",
+    question: "How is loss measured?",
+    description:
+      "Approved price sources, valuation time, observation periods, recovery offsets and asset-specific methodology.",
+    schedule: "Determined by the issued wording and evidence",
+  },
+  {
+    index: "06",
+    name: "Policy Conditions",
+    question: "What duties must continue?",
+    description:
+      "Disclosure, security controls, material-change approval, prompt notice, mitigation, evidence and cooperation.",
+    schedule: "Continuing conditions that may affect coverage",
+  },
+  {
+    index: "07",
+    name: "Exclusions",
+    question: "What remains outside cover?",
+    description:
+      "Unscheduled dependencies, known vulnerabilities, market loss, authorized acts, sanctions and other stated causes.",
+    schedule: "General and program-specific exclusions apply",
+  },
+  {
+    index: "08",
+    name: "Claims Evidence",
+    question: "What must substantiate the loss?",
+    description:
+      "Transaction traces, contract state, timestamps, incident records, custody evidence, valuation and recoveries.",
+    schedule: "Burden of proof remains with the insured",
+  },
+];
+
 const commonTerms: ProgramSection[] = [
   {
     heading: "Insured's duty of disclosure and continuing accuracy",
