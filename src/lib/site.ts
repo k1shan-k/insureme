@@ -12,7 +12,7 @@ export const primaryNav: { label: string; href: string }[] = [
   { label: "Insurance", href: "/insurance" },
   { label: "Risk Intelligence", href: "/#risk-intelligence" },
   { label: "For Protocols", href: "/#for-protocols" },
-  { label: "Claims", href: "/legal/claims-procedure" },
+  { label: "Claims", href: "/claims/notify" },
   { label: "Resources", href: "/resources" },
   { label: "About", href: "/company/about" },
 ];
@@ -36,7 +36,8 @@ export const footerColumns: {
       { label: "Programs", href: "/insurance" },
       { label: "For Protocols", href: "/#for-protocols" },
       { label: "Risk Intelligence", href: "/#risk-intelligence" },
-      { label: "Claims", href: "/legal/claims-procedure" },
+      { label: "Notify an Incident", href: "/claims/notify" },
+      { label: "Claims Process", href: "/legal/claims-procedure" },
     ],
   },
   {

@@ -42,12 +42,21 @@ export function Claims() {
               for incident notification, evidence preservation, investigation,
               loss assessment and resolution.
             </p>
-            <div className="mt-9">
+            <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <Button
-                href="/legal/claims-procedure"
+                href="/claims/notify"
                 size="lg"
                 variant="gold"
                 className="group"
+              >
+                Notify an Incident
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
+              <Button
+                href="/legal/claims-procedure"
+                size="lg"
+                variant="secondary"
+                className="group !border-ivory/25 !text-ivory hover:!border-ivory/60 hover:!bg-white/5"
               >
                 Understand the Claims Process
                 <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
