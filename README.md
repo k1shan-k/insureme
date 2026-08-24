@@ -123,7 +123,12 @@ Marketing copy communicates value positively while avoiding unconditional promis
 payment. Coverage is consistently described as subject to underwriting, policy terms, limits,
 deductibles, exclusions and conditions.
 
-The animated insurance-market and digital-asset marks are editorial references rendered locally.
-They do not represent partnerships, endorsements, committed capacity, active policies or guaranteed
-asset eligibility. Only named insureds, scheduled assets and expressly covered risks in an issued
-policy are insured.
+The animated insurance-market and DeFi project rows use locally rendered, recognizable vector brand
+marks for identification. The DeFi selection is intentionally limited to specialist protocols and
+on-chain finance projects such as Pendle, Morpho, Ethena, Frax, Convex, Yearn, Balancer and Maple;
+native layer-one assets such as BTC and ETH are excluded. All names and marks remain the property
+of their respective owners.
+
+Display is editorial context only and does not represent a partnership, endorsement, committed
+capacity, active policy or guaranteed eligibility. Only named insureds, scheduled assets and
+expressly covered risks in an issued policy are insured.

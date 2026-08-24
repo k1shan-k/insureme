@@ -1,71 +1,134 @@
 export type MarketMark = {
   name: string;
-  short: string;
+  logo:
+    | "lloyds"
+    | "swiss-re"
+    | "munich-re"
+    | "hannover-re"
+    | "allianz"
+    | "aig"
+    | "zurich"
+    | "marsh"
+    | "pendle"
+    | "morpho"
+    | "ethena"
+    | "frax"
+    | "convex"
+    | "yearn"
+    | "balancer"
+    | "maple";
   descriptor: string;
-  tone?: "market" | "asset";
+  tone: "market" | "defi";
 };
 
 /**
- * Organizations named here are established participants in the global insurance
- * market. Their display is editorial context only and does not claim a Meridian
+ * Recognizable brand marks identify established insurance-market participants.
+ * Display remains editorial context only and does not claim a Meridian
  * partnership, endorsement, capacity commitment or commercial relationship.
  */
 export const insuranceMarketMarks: MarketMark[] = [
   {
     name: "Lloyd’s",
-    short: "L",
+    logo: "lloyds",
     descriptor: "Insurance market",
     tone: "market",
   },
-  { name: "Swiss Re", short: "SR", descriptor: "Reinsurance", tone: "market" },
-  { name: "Munich Re", short: "MR", descriptor: "Reinsurance", tone: "market" },
   {
-    name: "Hannover Re",
-    short: "HR",
+    name: "Swiss Re",
+    logo: "swiss-re",
     descriptor: "Reinsurance",
     tone: "market",
   },
   {
-    name: "Allianz Commercial",
-    short: "AC",
+    name: "Munich Re",
+    logo: "munich-re",
+    descriptor: "Reinsurance",
+    tone: "market",
+  },
+  {
+    name: "Hannover Re",
+    logo: "hannover-re",
+    descriptor: "Reinsurance",
+    tone: "market",
+  },
+  {
+    name: "Allianz",
+    logo: "allianz",
     descriptor: "Commercial insurance",
     tone: "market",
   },
   {
     name: "AIG",
-    short: "AIG",
+    logo: "aig",
     descriptor: "Commercial insurance",
     tone: "market",
   },
   {
     name: "Zurich",
-    short: "Z",
+    logo: "zurich",
     descriptor: "Commercial insurance",
     tone: "market",
   },
   {
     name: "Marsh",
-    short: "M",
+    logo: "marsh",
     descriptor: "Insurance broking",
     tone: "market",
   },
 ];
 
 /**
- * These are examples of widely used digital assets whose exposures may be
- * considered during underwriting. They are not represented as currently insured.
+ * Protocol references are deliberately limited to DeFi and adjacent projects.
+ * Native layer-one assets and tier-one blockchain brands are excluded. Display
+ * is not a statement that a token, protocol or position is currently insured.
  */
-export const digitalAssetMarks: MarketMark[] = [
-  { name: "Bitcoin", short: "₿", descriptor: "BTC exposure", tone: "asset" },
-  { name: "Ethereum", short: "Ξ", descriptor: "ETH exposure", tone: "asset" },
-  { name: "USD Coin", short: "$", descriptor: "USDC exposure", tone: "asset" },
-  { name: "Tether", short: "₮", descriptor: "USDT exposure", tone: "asset" },
-  { name: "Dai", short: "D", descriptor: "DAI exposure", tone: "asset" },
+export const defiProjectMarks: MarketMark[] = [
   {
-    name: "Lido Staked ETH",
-    short: "st",
-    descriptor: "stETH exposure",
-    tone: "asset",
+    name: "Pendle",
+    logo: "pendle",
+    descriptor: "Yield markets",
+    tone: "defi",
   },
-  { name: "Solana", short: "S", descriptor: "SOL exposure", tone: "asset" },
+  {
+    name: "Morpho",
+    logo: "morpho",
+    descriptor: "DeFi lending",
+    tone: "defi",
+  },
+  {
+    name: "Ethena",
+    logo: "ethena",
+    descriptor: "Synthetic dollar",
+    tone: "defi",
+  },
+  {
+    name: "Frax",
+    logo: "frax",
+    descriptor: "Stablecoin protocol",
+    tone: "defi",
+  },
+  {
+    name: "Convex",
+    logo: "convex",
+    descriptor: "Yield optimization",
+    tone: "defi",
+  },
+  {
+    name: "Yearn",
+    logo: "yearn",
+    descriptor: "DeFi vaults",
+    tone: "defi",
+  },
+  {
+    name: "Balancer",
+    logo: "balancer",
+    descriptor: "Liquidity protocol",
+    tone: "defi",
+  },
+  {
+    name: "Maple",
+    logo: "maple",
+    descriptor: "On-chain credit",
+    tone: "defi",
+  },
 ];
