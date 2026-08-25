@@ -195,14 +195,54 @@ type StoredAssessment = {
   payload: Record<string, unknown>;
 };
 
+type PersistenceFailureStage =
+  | "insert_request"
+  | "insert_response"
+  | "insert_representation"
+  | "duplicate_lookup_request"
+  | "duplicate_lookup_response"
+  | "duplicate_lookup_representation";
+
+class AssessmentPersistenceError extends Error {
+  constructor(
+    readonly stage: PersistenceFailureStage,
+    readonly status?: number,
+  ) {
+    super("Assessment persistence failed.");
+    this.name = "AssessmentPersistenceError";
+  }
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function isSupabaseServerKey(value: string) {
+  if (value.startsWith("sb_secret_")) {
+    return value.length > "sb_secret_".length;
+  }
+  if (value.startsWith("sb_publishable_")) return false;
+
+  // Legacy service_role keys are JWTs. Decode only to reject an anon JWT here;
+  // Supabase still performs the authoritative signature check.
+  const parts = value.split(".");
+  if (parts.length !== 3) return false;
+  try {
+    const claims: unknown = JSON.parse(
+      Buffer.from(parts[1], "base64url").toString("utf8"),
+    );
+    return isRecord(claims) && claims.role === "service_role";
+  } catch {
+    return false;
+  }
 }
 
 function getSupabaseConfig(): SupabaseConfig | null {
   const configuredUrl = process.env.SUPABASE_URL?.trim();
   const secretKey = process.env.SUPABASE_SECRET_KEY?.trim();
-  if (!configuredUrl || !secretKey) return null;
+  if (!configuredUrl || !secretKey || !isSupabaseServerKey(secretKey)) {
+    return null;
+  }
 
   try {
     const url = new URL(configuredUrl);
@@ -280,15 +320,19 @@ function parseStoredAssessment(value: unknown): StoredAssessment | null {
   };
 }
 
-async function responseRows(response: Response): Promise<unknown[] | null> {
-  const raw = await response.text();
-  if (!raw) return [];
-
+async function responseRows(
+  response: Response,
+  stage: "insert_representation" | "duplicate_lookup_representation",
+): Promise<unknown[]> {
   try {
+    const raw = await response.text();
+    if (!raw) return [];
+
     const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : null;
+    if (!Array.isArray(parsed)) throw new Error("Unexpected representation.");
+    return parsed;
   } catch {
-    return null;
+    throw new AssessmentPersistenceError(stage);
   }
 }
 
@@ -313,20 +357,26 @@ async function persistAssessment(
     "Accept-Profile": "public",
   };
   const signal = AbortSignal.timeout(8_000);
-  const inserted = await fetch(insertUrl, {
-    method: "POST",
-    headers: {
-      ...headers,
-      Prefer: "resolution=ignore-duplicates,return=representation",
-    },
-    body: JSON.stringify(row),
-    signal,
-    redirect: "error",
-  });
+  let inserted: Response;
+  try {
+    inserted = await fetch(insertUrl, {
+      method: "POST",
+      headers: {
+        ...headers,
+        Prefer: "resolution=ignore-duplicates,return=representation",
+      },
+      body: JSON.stringify(row),
+      signal,
+      redirect: "error",
+    });
+  } catch {
+    throw new AssessmentPersistenceError("insert_request");
+  }
 
-  if (!inserted.ok) throw new Error("Assessment persistence failed.");
-  const insertedRows = await responseRows(inserted);
-  if (!insertedRows) throw new Error("Assessment persistence failed.");
+  if (!inserted.ok) {
+    throw new AssessmentPersistenceError("insert_response", inserted.status);
+  }
+  const insertedRows = await responseRows(inserted, "insert_representation");
 
   let assessment: StoredAssessment | null = null;
   if (insertedRows.length === 1) {
@@ -337,21 +387,41 @@ async function persistAssessment(
     lookupUrl.searchParams.set("select", select);
     lookupUrl.searchParams.set("limit", "1");
 
-    const existing = await fetch(lookupUrl, {
-      method: "GET",
-      headers,
-      signal,
-      redirect: "error",
-    });
-    if (!existing.ok) throw new Error("Assessment lookup failed.");
-    const existingRows = await responseRows(existing);
-    if (!existingRows || existingRows.length !== 1) {
-      throw new Error("Assessment lookup failed.");
+    let existing: Response;
+    try {
+      existing = await fetch(lookupUrl, {
+        method: "GET",
+        headers,
+        signal,
+        redirect: "error",
+      });
+    } catch {
+      throw new AssessmentPersistenceError("duplicate_lookup_request");
+    }
+    if (!existing.ok) {
+      throw new AssessmentPersistenceError(
+        "duplicate_lookup_response",
+        existing.status,
+      );
+    }
+    const existingRows = await responseRows(
+      existing,
+      "duplicate_lookup_representation",
+    );
+    if (existingRows.length !== 1) {
+      throw new AssessmentPersistenceError("duplicate_lookup_representation");
     }
     assessment = parseStoredAssessment(existingRows[0]);
+    if (!assessment) {
+      throw new AssessmentPersistenceError("duplicate_lookup_representation");
+    }
+  } else {
+    throw new AssessmentPersistenceError("insert_representation");
   }
 
-  if (!assessment) throw new Error("Assessment persistence failed.");
+  if (!assessment) {
+    throw new AssessmentPersistenceError("insert_representation");
+  }
   if (!isSameSubmissionPayload(assessment.payload, payload)) {
     return { conflict: true };
   }
@@ -660,10 +730,17 @@ export async function POST(request: Request) {
       );
     }
     storedReference = persisted.assessment.reference;
-  } catch {
-    console.error(
-      "Risk assessment intake is unavailable: Supabase persistence failed.",
-    );
+  } catch (error) {
+    if (error instanceof AssessmentPersistenceError) {
+      const status = error.status ? ` status=${error.status}` : "";
+      console.error(
+        `Risk assessment intake is unavailable: Supabase persistence failed at stage=${error.stage}${status}.`,
+      );
+    } else {
+      console.error(
+        "Risk assessment intake is unavailable: Supabase persistence failed at stage=unexpected.",
+      );
+    }
     return NextResponse.json(
       {
         error:
