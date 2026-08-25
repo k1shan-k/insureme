@@ -182,19 +182,181 @@ function isRealIsoDate(value: string) {
   );
 }
 
-function isValidWebhookUrl(value: string) {
+type SupabaseConfig = {
+  origin: string;
+  secretKey: string;
+};
+
+type StoredAssessment = {
+  reference: string;
+  status: string;
+  received_at: string;
+  response_due_at: string;
+  payload: Record<string, unknown>;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function getSupabaseConfig(): SupabaseConfig | null {
+  const configuredUrl = process.env.SUPABASE_URL?.trim();
+  const secretKey = process.env.SUPABASE_SECRET_KEY?.trim();
+  if (!configuredUrl || !secretKey) return null;
+
   try {
-    const url = new URL(value);
-    const allowedProtocol =
-      process.env.NODE_ENV === "production"
-        ? url.protocol === "https:"
-        : url.protocol === "https:" || url.protocol === "http:";
-    return (
-      allowedProtocol && Boolean(url.hostname) && !url.username && !url.password
-    );
+    const url = new URL(configuredUrl);
+    const isProduction = process.env.NODE_ENV === "production";
+    const allowedProtocol = isProduction
+      ? url.protocol === "https:"
+      : url.protocol === "https:" || url.protocol === "http:";
+    const allowedHost =
+      !isProduction ||
+      (/^[a-z0-9-]+\.supabase\.co$/i.test(url.hostname) && !url.port);
+
+    if (
+      !allowedProtocol ||
+      !allowedHost ||
+      !url.hostname ||
+      url.username ||
+      url.password ||
+      url.pathname !== "/" ||
+      url.search ||
+      url.hash
+    ) {
+      return null;
+    }
+
+    return { origin: url.origin, secretKey };
   } catch {
-    return false;
+    return null;
   }
+}
+
+function stableSerialize(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map(stableSerialize).join(",")}]`;
+  }
+  if (isRecord(value)) {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableSerialize(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value) ?? "null";
+}
+
+function isSameSubmissionPayload(
+  storedPayload: Record<string, unknown>,
+  currentPayload: Record<string, unknown>,
+) {
+  const stableStored = { ...storedPayload };
+  const stableCurrent = { ...currentPayload };
+  delete stableStored.reference;
+  delete stableStored.receivedAt;
+  delete stableCurrent.reference;
+  delete stableCurrent.receivedAt;
+  return stableSerialize(stableStored) === stableSerialize(stableCurrent);
+}
+
+function parseStoredAssessment(value: unknown): StoredAssessment | null {
+  if (
+    !isRecord(value) ||
+    typeof value.reference !== "string" ||
+    typeof value.status !== "string" ||
+    typeof value.received_at !== "string" ||
+    typeof value.response_due_at !== "string" ||
+    !isRecord(value.payload)
+  ) {
+    return null;
+  }
+
+  return {
+    reference: value.reference,
+    status: value.status,
+    received_at: value.received_at,
+    response_due_at: value.response_due_at,
+    payload: value.payload,
+  };
+}
+
+async function responseRows(response: Response): Promise<unknown[] | null> {
+  const raw = await response.text();
+  if (!raw) return [];
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function persistAssessment(
+  config: SupabaseConfig,
+  submissionId: string,
+  row: Record<string, unknown>,
+  payload: Record<string, unknown>,
+): Promise<
+  { assessment: StoredAssessment; conflict: false } | { conflict: true }
+> {
+  const select = "reference,status,received_at,response_due_at,payload";
+  const insertUrl = new URL("/rest/v1/risk_assessments", config.origin);
+  insertUrl.searchParams.set("on_conflict", "submission_id");
+  insertUrl.searchParams.set("select", select);
+
+  // Opaque sb_secret_* keys authenticate through apikey and are not Bearer JWTs.
+  const headers = {
+    apikey: config.secretKey,
+    "Content-Type": "application/json",
+    "Content-Profile": "public",
+    "Accept-Profile": "public",
+  };
+  const signal = AbortSignal.timeout(8_000);
+  const inserted = await fetch(insertUrl, {
+    method: "POST",
+    headers: {
+      ...headers,
+      Prefer: "resolution=ignore-duplicates,return=representation",
+    },
+    body: JSON.stringify(row),
+    signal,
+    redirect: "error",
+  });
+
+  if (!inserted.ok) throw new Error("Assessment persistence failed.");
+  const insertedRows = await responseRows(inserted);
+  if (!insertedRows) throw new Error("Assessment persistence failed.");
+
+  let assessment: StoredAssessment | null = null;
+  if (insertedRows.length === 1) {
+    assessment = parseStoredAssessment(insertedRows[0]);
+  } else if (insertedRows.length === 0) {
+    const lookupUrl = new URL("/rest/v1/risk_assessments", config.origin);
+    lookupUrl.searchParams.set("submission_id", `eq.${submissionId}`);
+    lookupUrl.searchParams.set("select", select);
+    lookupUrl.searchParams.set("limit", "1");
+
+    const existing = await fetch(lookupUrl, {
+      method: "GET",
+      headers,
+      signal,
+      redirect: "error",
+    });
+    if (!existing.ok) throw new Error("Assessment lookup failed.");
+    const existingRows = await responseRows(existing);
+    if (!existingRows || existingRows.length !== 1) {
+      throw new Error("Assessment lookup failed.");
+    }
+    assessment = parseStoredAssessment(existingRows[0]);
+  }
+
+  if (!assessment) throw new Error("Assessment persistence failed.");
+  if (!isSameSubmissionPayload(assessment.payload, payload)) {
+    return { conflict: true };
+  }
+
+  return { assessment, conflict: false };
 }
 
 function intakeUnavailable() {
@@ -408,26 +570,23 @@ export async function POST(request: Request) {
     );
   }
 
-  const webhookUrl = process.env.RISK_ASSESSMENT_WEBHOOK_URL;
-  const webhookToken = process.env.RISK_ASSESSMENT_WEBHOOK_TOKEN;
-  if (!webhookUrl || !isValidWebhookUrl(webhookUrl)) {
+  const supabase = getSupabaseConfig();
+  if (!supabase) {
     console.error(
-      "Risk assessment intake is unavailable: webhook configuration is missing or invalid.",
-    );
-    return intakeUnavailable();
-  }
-  if (process.env.NODE_ENV === "production" && !webhookToken) {
-    console.error(
-      "Risk assessment intake is unavailable: receiver authentication is not configured.",
+      "Risk assessment intake is unavailable: Supabase configuration is missing or invalid.",
     );
     return intakeUnavailable();
   }
 
-  const reference = `MR-${new Date().getUTCFullYear()}-${submissionId.replaceAll("-", "").slice(0, 8).toUpperCase()}`;
-  const payload = {
+  const receivedAt = new Date().toISOString();
+  const responseDueAt = new Date(
+    Date.parse(receivedAt) + 24 * 60 * 60 * 1_000,
+  ).toISOString();
+  const reference = `MR-${new Date(receivedAt).getUTCFullYear()}-${submissionId.replaceAll("-", "").slice(0, 8).toUpperCase()}`;
+  const payload: Record<string, unknown> = {
     submissionId,
     reference,
-    receivedAt: new Date().toISOString(),
+    receivedAt,
     reviewType: "manual",
     responseTargetHours: 24,
     protocol,
@@ -461,28 +620,50 @@ export async function POST(request: Request) {
     notes,
     authorityConfirmed,
   };
+  const row: Record<string, unknown> = {
+    submission_id: submissionId,
+    reference,
+    status: "new",
+    protocol,
+    legal_name: legalName,
+    website,
+    category,
+    jurisdiction,
+    contact_name: name,
+    contact_email: email,
+    contact_role: role,
+    contact_phone: phone,
+    preferred_contact: preferredContact,
+    requested_limit: requestedLimit,
+    target_effective_date: targetEffectiveDate,
+    policy_period: policyPeriod,
+    payload,
+    received_at: receivedAt,
+    response_due_at: responseDueAt,
+  };
 
+  let storedReference: string;
   try {
-    const upstream = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Idempotency-Key": submissionId,
-        "X-Assessment-Reference": reference,
-        ...(webhookToken
-          ? {
-              Authorization: `Bearer ${webhookToken}`,
-            }
-          : {}),
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(8_000),
-      redirect: "error",
-    });
-
-    if (!upstream.ok)
-      throw new Error(`Intake webhook returned ${upstream.status}`);
+    const persisted = await persistAssessment(
+      supabase,
+      submissionId,
+      row,
+      payload,
+    );
+    if (persisted.conflict) {
+      return NextResponse.json(
+        {
+          error:
+            "This submission identifier is already associated with different assessment data.",
+        },
+        { status: 409 },
+      );
+    }
+    storedReference = persisted.assessment.reference;
   } catch {
+    console.error(
+      "Risk assessment intake is unavailable: Supabase persistence failed.",
+    );
     return NextResponse.json(
       {
         error:
@@ -494,7 +675,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json(
     {
-      reference,
+      reference: storedReference,
       status: "received_for_preliminary_review",
       message:
         "Submission received for manual review. A human underwriter will review a complete submission and send the assessment and quotation within 24 hours. If more information is required, the submitter will receive a status update within that period. Any quotation is subject to underwriting and authorized transaction documents.",

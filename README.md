@@ -83,14 +83,14 @@ Copy `.env.example` into the deployment's environment configuration and set only
 
 - `NEXT_PUBLIC_SITE_URL` is preferred in production and should be set to the verified public canonical origin. When it is blank on Vercel, the application uses `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL`; ensure Vercel system environment variables are available to the build. Non-Vercel production builds must set `NEXT_PUBLIC_SITE_URL`.
 - `NEXT_PUBLIC_CLIENT_PORTAL_URL` is optional and must be a credential-free HTTPS URL when set. Blank or invalid values are omitted outside production; invalid configured values fail clearly in production. `NEXT_PUBLIC_CLIENT_SERVICES_EMAIL` and other public entity or contact values are optional and omitted when blank.
-- `RISK_ASSESSMENT_WEBHOOK_URL` is required in production, must be credential-free HTTPS, and must point to a receiver that durably persists or enqueues accepted assessment submissions before returning `2xx`. HTTP is permitted only outside production.
-- `RISK_ASSESSMENT_WEBHOOK_TOKEN` is required in production. Keep it separate from `CLAIMS_NOTIFICATION_WEBHOOK_TOKEN` and never expose either through `NEXT_PUBLIC_*`.
-- The assessment receiver must deduplicate deliveries using `Idempotency-Key`, retain `X-Assessment-Reference`, assign every complete submission to a human underwriter, and track the 24-hour response target.
+- `SUPABASE_URL` is required for assessment intake and must be the hosted Supabase project origin (`https://<project-ref>.supabase.co`) with no credentials, custom port, path, query, or fragment. Development also permits an HTTP origin for a local Supabase instance.
+- `SUPABASE_SECRET_KEY` is required for assessment intake. Use the server-side secret key from Supabase **Settings → API Keys** (prefer the current `sb_secret_*` format). Store it only in the deployment's encrypted server environment; never commit it, paste it into browser code, or expose it through a `NEXT_PUBLIC_*` variable. Secret and legacy service-role keys bypass row-level security.
+- Assessment submissions are written directly from the server route to `public.risk_assessments`; browser clients receive neither database credentials nor direct table access. Keep RLS enabled with no anonymous insert/read policy for this sensitive intake data.
 - `CLAIMS_NOTIFICATION_WEBHOOK_URL` must be HTTPS and its receiver must durably persist or enqueue accepted notifications before returning `2xx`.
 - The claims receiver must deduplicate retries by the `Idempotency-Key` header.
 - `CLAIMS_NOTIFICATION_WEBHOOK_TOKEN` is required for claims delivery and must remain server-side.
 
-The application does not claim a deployment adapter. Validate the build, runtime, environment handling, webhook behavior, and edge protections on the selected production platform.
+The application does not claim a deployment adapter. Validate the build, runtime, environment handling, Supabase persistence, claims-webhook behavior, and edge protections on the selected production platform.
 
 ## Assessment intake and manual review
 
@@ -105,11 +105,35 @@ The structured submission includes:
 
 The `companySite` honeypot remains part of the browser payload but is never forwarded. The form does not accept uploads and warns users not to submit passwords, private keys, seed phrases, signing requests, privileged credentials, or confidential vulnerability or exploit material.
 
-The browser creates a stable submission UUID when delivery begins, reuses it for an unchanged retry, and replaces it only after the user edits submitted data. The API normalizes every assessment field and adds `reference`, `receivedAt`, `reviewType: "manual"`, and `responseTargetHours: 24`. It sends the stable UUID in `Idempotency-Key` and the public reference in `X-Assessment-Reference`; the receiver must deduplicate on the idempotency key, preserve the reference, durably persist or enqueue the request, assign it to a human underwriter, and track the response target before returning `2xx`. Redirects are rejected. The browser receives a reference only after successful receiver acceptance.
+The browser creates a stable submission UUID when delivery begins, reuses it for an unchanged retry, and replaces it only after the user edits submitted data. The API normalizes every assessment field and adds `reference`, `receivedAt`, `reviewType: "manual"`, and `responseTargetHours: 24`. It inserts the submission directly into `public.risk_assessments` using the server-only secret key. The UUID is the database idempotency key: an unchanged retry returns the original stored reference without overwriting status, assignment, notes, or timestamps. Reusing a UUID with different assessment data returns `409`. Redirects are rejected, and the browser receives a reference only after a durable row exists.
+
+New rows use database status `new`; the public API retains status `received_for_preliminary_review`. Searchable organization, contact, coverage, and date fields are stored in dedicated columns, while the complete normalized submission is retained in `payload`. `received_at` is captured once and `response_due_at` is exactly 24 hours later. The honeypot and all environment secrets are excluded from the stored payload.
+
+The route requires the preconfigured `public.risk_assessments` schema: `submission_id` (UUID) and `reference` must each be unique, `payload` must be `jsonb`, and the summary, workflow, receipt, deadline, assignment, response, quotation, closure, and audit timestamp columns described below must remain available. Keep RLS enabled, revoke anonymous/authenticated table access, and define no browser-facing policy; the server secret is the only application credential authorized to persist or retrieve these records.
 
 A human underwriter will review a complete submission and send the assessment and quotation within 24 hours. If more information is required, the submitter will receive a status update within that period. No automated score is produced. Any quotation remains subject to underwriting and authorized transaction documents and does not bind coverage.
 
-In production, the assessment webhook must be credential-free HTTPS and `RISK_ASSESSMENT_WEBHOOK_TOKEN` must be set. Missing or invalid receiver configuration fails closed with a generic service-unavailable response.
+Operations staff can retrieve submissions in Supabase from **Table Editor → risk_assessments**. The dedicated summary columns support filtering without opening the full `payload`; for example:
+
+```sql
+select
+  reference,
+  status,
+  protocol,
+  contact_name,
+  contact_email,
+  requested_limit,
+  received_at,
+  response_due_at,
+  assigned_to
+from public.risk_assessments
+where status in ('new', 'under_review', 'more_information_required')
+order by response_due_at asc;
+```
+
+The configured workflow statuses are `new`, `under_review`, `more_information_required`, `quoted`, `declined`, and `closed`. Operational processes should assign each new row, update its status, set `first_responded_at` on the first human response, and monitor `response_due_at` for escalation. The database stores the request; it does not by itself notify or assign an underwriter, so those queue procedures must be actively operated or automated separately.
+
+Set `SUPABASE_URL` and `SUPABASE_SECRET_KEY` only for the production deployment that should accept live submissions. Do not point preview deployments at the production project. If preview submissions are needed, use a separate staging Supabase project with the same schema and separate secret; otherwise leave these variables unset so preview intake fails closed with a generic service-unavailable response.
 
 ## Claims intake and sensitive data
 
@@ -124,7 +148,7 @@ The form does not accept file uploads. It instructs users not to provide seed ph
 Do not launch until all of the following are complete:
 
 - Verify the resolved production origin: set `NEXT_PUBLIC_SITE_URL` to the approved canonical domain, or confirm the Vercel system-domain fallback is correct. Verify every configured public contact and portal value.
-- Deploy durable webhook receivers for both intake routes; verify assessment and claims deduplication using `Idempotency-Key`, and retain the assessment reference header.
+- Verify direct assessment persistence in the production Supabase project, including unchanged-retry deduplication by `submission_id`, original-reference retention, `new` status, and the 24-hour `response_due_at`; separately verify claims-webhook deduplication using `Idempotency-Key`.
 - Configure manual assessment assignment, queue monitoring, and escalation so every complete submission receives an assessment and quotation within 24 hours or a status update within that period.
 - Approve all public legal, entity, regulatory, carrier, capacity, and transaction facts before publication.
 - Obtain display approval for every partner, carrier, customer, insured-project name, logo, or relationship reference.
