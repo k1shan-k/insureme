@@ -207,6 +207,7 @@ class AssessmentPersistenceError extends Error {
   constructor(
     readonly stage: PersistenceFailureStage,
     readonly status?: number,
+    readonly code?: string,
   ) {
     super("Assessment persistence failed.");
     this.name = "AssessmentPersistenceError";
@@ -320,6 +321,20 @@ function parseStoredAssessment(value: unknown): StoredAssessment | null {
   };
 }
 
+async function responseErrorCode(response: Response) {
+  try {
+    const raw = await response.text();
+    if (!raw) return undefined;
+
+    const parsed: unknown = JSON.parse(raw);
+    if (!isRecord(parsed) || typeof parsed.code !== "string") return undefined;
+    const code = parsed.code.trim();
+    return /^(?:[A-Z0-9]{5}|PGRST[0-9]{3})$/.test(code) ? code : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 async function responseRows(
   response: Response,
   stage: "insert_representation" | "duplicate_lookup_representation",
@@ -374,7 +389,11 @@ async function persistAssessment(
   }
 
   if (!inserted.ok) {
-    throw new AssessmentPersistenceError("insert_response", inserted.status);
+    throw new AssessmentPersistenceError(
+      "insert_response",
+      inserted.status,
+      await responseErrorCode(inserted),
+    );
   }
   const insertedRows = await responseRows(inserted, "insert_representation");
 
@@ -402,6 +421,7 @@ async function persistAssessment(
       throw new AssessmentPersistenceError(
         "duplicate_lookup_response",
         existing.status,
+        await responseErrorCode(existing),
       );
     }
     const existingRows = await responseRows(
@@ -733,8 +753,9 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof AssessmentPersistenceError) {
       const status = error.status ? ` status=${error.status}` : "";
+      const code = error.code ? ` code=${error.code}` : "";
       console.error(
-        `Risk assessment intake is unavailable: Supabase persistence failed at stage=${error.stage}${status}.`,
+        `Risk assessment intake is unavailable: Supabase persistence failed at stage=${error.stage}${status}${code}.`,
       );
     } else {
       console.error(
