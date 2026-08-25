@@ -997,7 +997,7 @@ export function RiskAssessmentFlow() {
                   placeholder="Optional additional context"
                 />
               </Field>
-              <div className="sr-only" aria-hidden="true">
+              <div hidden aria-hidden="true">
                 <label htmlFor="company-site">Company site</label>
                 <input
                   id="company-site"

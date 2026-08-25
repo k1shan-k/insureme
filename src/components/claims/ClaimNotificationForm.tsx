@@ -446,7 +446,7 @@ export function ClaimNotificationForm() {
             </div>
           </FormSection>
 
-          <div className="sr-only" aria-hidden="true">
+          <div hidden aria-hidden="true">
             <label htmlFor="claim-company-site">Company site</label>
             <input
               id="claim-company-site"
