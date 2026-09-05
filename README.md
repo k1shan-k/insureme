@@ -107,7 +107,9 @@ The assessment route talks to Supabase through PostgREST over `fetch`, not a TCP
 
 ### Rate limiting does not survive serverless — configure it at the edge
 
-`src/lib/rateLimit.ts` keeps counters in module scope. On Vercel and Netlify that state is **per warm instance**, and the platform runs many instances concurrently and recycles them freely. The in-process limiter is therefore a courtesy speed bump, not protection. Traffic spread across instances is effectively unlimited.
+`src/lib/rateLimit.ts` keeps counters in module scope. On Vercel and Netlify that state does not persist between invocations.
+
+**This was measured, not assumed.** Serving the Netlify build locally (`netlify serve`, which runs the real Functions runtime), 28 consecutive requests to `/api/claims/notifications` carrying a constant client IP returned `422` every time and never once returned `429`. The identical code under `next start` limits on the 5th request. Both `x-nf-client-connection-ip` and `x-forwarded-for` were tried. Treat the in-process limiter as providing **no** protection on Netlify.
 
 Configure real protection on the platform before accepting live submissions:
 
@@ -144,7 +146,9 @@ CLAIMS_NOTIFICATION_WEBHOOK_URL   https://<receiver>/...
 CLAIMS_NOTIFICATION_WEBHOOK_TOKEN <bearer token>
 ```
 
-Netlify additionally needs `@netlify/plugin-nextjs` for App Router route handlers.
+Netlify configuration is committed in `netlify.toml`: build command, publish directory, `@netlify/plugin-nextjs` (pinned in `devDependencies`), `NODE_VERSION=20`, `NPM_FLAGS=--ci` so a lockfile mismatch fails the build, `Cache-Control: no-store` on `/api/*`, and baseline security headers. Deploy-preview and branch-deploy contexts blank `NEXT_PUBLIC_SITE_URL` so previews resolve their own deploy URL rather than advertising the production origin.
+
+The route handlers are bundled into a single Node function (`___netlify-server-handler`). Do not move them to the Edge runtime: the assessment route decodes a legacy Supabase JWT with `Buffer`, which Edge does not provide.
 
 **Preview deployments must not share production intake.** Leave `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and the claims variables unset in the Preview/Deploy-Preview context so preview intake fails closed with a generic 503, or point previews at a separate staging project with the same schema and its own secret.
 

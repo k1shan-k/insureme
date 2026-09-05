@@ -3,11 +3,14 @@
  *
  * IMPORTANT SERVERLESS CAVEAT
  * ---------------------------
- * On Vercel and Netlify these routes run as serverless functions. Module state
- * lives in a single warm instance, and the platform runs many instances
- * concurrently and recycles them freely. A counter kept here is therefore a
- * per-instance speed bump, NOT distributed protection: an attacker spread
- * across instances is effectively unlimited.
+ * On Vercel and Netlify these routes run as serverless functions, and module
+ * state does NOT reliably persist between invocations.
+ *
+ * Measured against the real Netlify Functions runtime (`netlify serve`): 28
+ * consecutive requests with a constant client IP never triggered a 429, while
+ * the same code under `next start` limits on the 5th. Treat this limiter as
+ * providing NO protection on Netlify, and at best a per-instance speed bump
+ * elsewhere.
  *
  * Real protection must be configured at the platform edge:
  *   - Vercel:  Firewall / WAF rate-limiting rules on the route, or @upstash/ratelimit.

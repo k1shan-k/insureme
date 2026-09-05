@@ -1,0 +1,43 @@
+# Netlify build configuration for the Prime Insurances site.
+#
+# The App Router route handlers under src/app/api/ become Netlify Functions on
+# the Node runtime. They must NOT be moved to the Edge runtime: the assessment
+# route decodes a legacy Supabase JWT with `Buffer`, which Edge does not provide.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js 14.2 and @netlify/plugin-nextjs 5 both require Node >= 18.
+  NODE_VERSION = "20"
+  # Fail the build on a lockfile mismatch rather than silently resolving new
+  # transitive versions.
+  NPM_FLAGS = "--ci"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Intake endpoints must never be cached: they are POST-only handlers that issue
+# a reference per submission.
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+
+# The policyholder portal page is already noindex in its route metadata; keep
+# deploy previews out of search results entirely.
+[context.deploy-preview]
+  [context.deploy-preview.environment]
+    NEXT_PUBLIC_SITE_URL = ""
+
+[context.branch-deploy]
+  [context.branch-deploy.environment]
+    NEXT_PUBLIC_SITE_URL = ""
