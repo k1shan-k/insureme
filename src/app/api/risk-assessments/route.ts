@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { insurancePrograms } from "@/lib/programs";
 import { createIpRateLimiter } from "@/lib/rateLimit";
+import {
+  NETLIFY_FORM_ASSESSMENT,
+  NetlifyFormsError,
+  getNetlifyFormsConfig,
+  submitToNetlifyForms,
+  type NetlifyFormsConfig,
+} from "@/lib/netlifyForms";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID =
@@ -652,10 +659,14 @@ export async function POST(request: Request) {
     );
   }
 
+  // Sinks in precedence order. Supabase stays authoritative wherever it is
+  // configured because it is the only one of the two that can deduplicate an
+  // unchanged retry by submission_id. Netlify Forms is the opt-in alternative.
   const supabase = getSupabaseConfig();
-  if (!supabase) {
+  const netlifyForms = supabase ? null : getNetlifyFormsConfig();
+  if (!supabase && !netlifyForms) {
     console.error(
-      "Risk assessment intake is unavailable: Supabase configuration is missing or invalid.",
+      "Risk assessment intake is unavailable: neither Supabase nor Netlify Forms is configured.",
     );
     return intakeUnavailable();
   }
@@ -726,22 +737,33 @@ export async function POST(request: Request) {
 
   let storedReference: string;
   try {
-    const persisted = await persistAssessment(
-      supabase,
-      submissionId,
-      row,
-      payload,
-    );
-    if (persisted.conflict) {
-      return NextResponse.json(
-        {
-          error:
-            "This submission identifier is already associated with different assessment data.",
-        },
-        { status: 409 },
+    if (supabase) {
+      const persisted = await persistAssessment(
+        supabase,
+        submissionId,
+        row,
+        payload,
       );
+      if (persisted.conflict) {
+        return NextResponse.json(
+          {
+            error:
+              "This submission identifier is already associated with different assessment data.",
+          },
+          { status: 409 },
+        );
+      }
+      storedReference = persisted.assessment.reference;
+    } else {
+      // Netlify Forms has no upsert, so an unchanged retry creates a second
+      // submission carrying this same reference. Operations staff dedupe on it.
+      await submitToNetlifyForms(
+        netlifyForms as NetlifyFormsConfig,
+        NETLIFY_FORM_ASSESSMENT,
+        { ...payload, responseDueAt },
+      );
+      storedReference = reference;
     }
-    storedReference = persisted.assessment.reference;
   } catch (error) {
     if (error instanceof AssessmentPersistenceError) {
       const status = error.status ? ` status=${error.status}` : "";
@@ -749,9 +771,14 @@ export async function POST(request: Request) {
       console.error(
         `Risk assessment intake is unavailable: Supabase persistence failed at stage=${error.stage}${status}${code}.`,
       );
+    } else if (error instanceof NetlifyFormsError) {
+      const status = error.status ? ` status=${error.status}` : "";
+      console.error(
+        `Risk assessment intake is unavailable: Netlify Forms delivery failed${status}.`,
+      );
     } else {
       console.error(
-        "Risk assessment intake is unavailable: Supabase persistence failed at stage=unexpected.",
+        "Risk assessment intake is unavailable: persistence failed at stage=unexpected.",
       );
     }
     return NextResponse.json(

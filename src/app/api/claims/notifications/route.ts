@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { createIpRateLimiter } from "@/lib/rateLimit";
+import {
+  NETLIFY_FORM_CLAIMS,
+  NetlifyFormsError,
+  getNetlifyFormsConfig,
+  submitToNetlifyForms,
+} from "@/lib/netlifyForms";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID =
@@ -252,9 +258,15 @@ export async function POST(request: Request) {
     );
   }
 
+  // Delivery sinks, in precedence order. Netlify Forms is opt-in and is used
+  // only when no webhook is configured, so an existing webhook deployment is
+  // never silently redirected.
+  const netlifyForms = getNetlifyFormsConfig();
   const webhookUrl = process.env.CLAIMS_NOTIFICATION_WEBHOOK_URL;
   const webhookToken = process.env.CLAIMS_NOTIFICATION_WEBHOOK_TOKEN;
-  if (!webhookUrl || !webhookToken) {
+  const useWebhook = Boolean(webhookUrl && webhookToken);
+
+  if (!useWebhook && !netlifyForms) {
     return NextResponse.json(
       {
         error:
@@ -264,20 +276,24 @@ export async function POST(request: Request) {
     );
   }
 
-  try {
-    const configuredUrl = new URL(webhookUrl);
-    if (
-      configuredUrl.protocol !== "https:" ||
-      configuredUrl.username ||
-      configuredUrl.password
-    ) {
-      throw new Error("Claims webhook must use HTTPS without URL credentials");
+  if (useWebhook) {
+    try {
+      const configuredUrl = new URL(webhookUrl as string);
+      if (
+        configuredUrl.protocol !== "https:" ||
+        configuredUrl.username ||
+        configuredUrl.password
+      ) {
+        throw new Error(
+          "Claims webhook must use HTTPS without URL credentials",
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { error: "Online claims intake is temporarily unavailable." },
+        { status: 503 },
+      );
     }
-  } catch {
-    return NextResponse.json(
-      { error: "Online claims intake is temporarily unavailable." },
-      { status: 503 },
-    );
   }
 
   const reference = `CLM-${new Date(discoveredAt).getUTCFullYear()}-${submissionId.slice(0, 8).toUpperCase()}`;
@@ -307,23 +323,35 @@ export async function POST(request: Request) {
   };
 
   try {
-    const upstream = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${webhookToken}`,
-        "Idempotency-Key": submissionId,
-        "X-Claim-Reference": reference,
-      },
-      body: JSON.stringify(payload),
-      redirect: "manual",
-      signal: AbortSignal.timeout(8_000),
-    });
+    if (useWebhook) {
+      const upstream = await fetch(webhookUrl as string, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${webhookToken}`,
+          "Idempotency-Key": submissionId,
+          "X-Claim-Reference": reference,
+        },
+        body: JSON.stringify(payload),
+        redirect: "manual",
+        signal: AbortSignal.timeout(8_000),
+      });
 
-    if (!upstream.ok || (upstream.status >= 300 && upstream.status < 400)) {
-      throw new Error(`Claims webhook returned ${upstream.status}`);
+      if (!upstream.ok || (upstream.status >= 300 && upstream.status < 400)) {
+        throw new Error(`Claims webhook returned ${upstream.status}`);
+      }
+    } else if (netlifyForms) {
+      // Netlify Forms cannot deduplicate: a retry produces a second submission
+      // carrying the same reference. Operations staff must dedupe on it.
+      await submitToNetlifyForms(netlifyForms, NETLIFY_FORM_CLAIMS, payload);
     }
-  } catch {
+  } catch (error) {
+    if (error instanceof NetlifyFormsError) {
+      const status = error.status ? ` status=${error.status}` : "";
+      console.error(
+        `Claims intake is unavailable: Netlify Forms delivery failed${status}.`,
+      );
+    }
     return NextResponse.json(
       {
         error:
