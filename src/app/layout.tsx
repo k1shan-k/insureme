@@ -20,7 +20,7 @@ const serif = Source_Serif_4({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const title = "Meridian Risk — Digital-asset insurance information";
+const title = "Digital-asset insurance information — Prime Insurances";
 const description =
   "General information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure. Transaction documents control coverage.";
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s — Meridian Risk",
+    template: "%s — Prime Insurances",
   },
   description,
   keywords: [

@@ -236,7 +236,7 @@ export function ClaimNotificationForm() {
                   onChange={(event) =>
                     set("policyReference", event.target.value)
                   }
-                  placeholder="MR-POL-… or Unknown"
+                  placeholder="PI-POL-… or Unknown"
                   maxLength={120}
                 />
               </Field>

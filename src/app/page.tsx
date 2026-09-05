@@ -16,7 +16,7 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Meridian Risk — Digital-asset insurance information",
+  title: "Digital-asset insurance information — Prime Insurances",
   description:
     "General information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure. Transaction documents control coverage.",
   path: "/",

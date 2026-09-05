@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createIpRateLimiter } from "@/lib/rateLimit";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID =
@@ -6,7 +7,6 @@ const UUID =
 const MAX_BODY_BYTES = 32_000;
 const RATE_WINDOW_MS = 60_000;
 const RATE_LIMIT = 4;
-const MAX_RATE_BUCKETS = 5_000;
 
 const ALLOWED_KEYS = new Set([
   "submissionId",
@@ -48,10 +48,14 @@ const INCIDENT_STATUSES = new Set([
   "resolved",
   "unknown",
 ]);
-const rateBuckets = new Map<string, number[]>();
+// Per-instance only. See src/lib/rateLimit.ts — edge rate limiting is required
+// in production on Vercel/Netlify.
+const isRateLimited = createIpRateLimiter({
+  limit: RATE_LIMIT,
+  windowMs: RATE_WINDOW_MS,
+});
 
 class BodyTooLargeError extends Error {}
-
 function text(value: unknown, max: number) {
   return typeof value === "string" && value.length <= max ? value.trim() : null;
 }
@@ -112,32 +116,6 @@ async function readBodyWithLimit(request: Request) {
   } finally {
     reader.releaseLock();
   }
-}
-
-function isRateLimited(request: Request) {
-  // Only trust Cloudflare's edge-provided address. Deployments elsewhere should
-  // enforce a shared limiter at their own trusted edge rather than trusting XFF.
-  const key = request.headers.get("cf-connecting-ip")?.trim();
-  if (!key) return false;
-
-  const now = Date.now();
-  for (const [bucketKey, timestamps] of rateBuckets) {
-    if (!timestamps.some((timestamp) => now - timestamp < RATE_WINDOW_MS)) {
-      rateBuckets.delete(bucketKey);
-    }
-  }
-
-  if (!rateBuckets.has(key) && rateBuckets.size >= MAX_RATE_BUCKETS) {
-    const oldestKey = rateBuckets.keys().next().value as string | undefined;
-    if (oldestKey) rateBuckets.delete(oldestKey);
-  }
-
-  const recent = (rateBuckets.get(key) || []).filter(
-    (timestamp) => now - timestamp < RATE_WINDOW_MS,
-  );
-  recent.push(now);
-  rateBuckets.set(key, recent);
-  return recent.length > RATE_LIMIT;
 }
 
 export async function POST(request: Request) {

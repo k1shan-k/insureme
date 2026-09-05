@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { InstitutionalPage } from "@/components/layout/InstitutionalPage";
 import { companyPages, getCompanyPage } from "@/lib/institutional";
 import { createPageMetadata } from "@/lib/metadata";
+import { site } from "@/lib/site";
 
 export function generateStaticParams() {
   return companyPages.map((page) => ({ slug: page.slug }));
@@ -19,6 +20,9 @@ export function generateMetadata({
         title: page.eyebrow,
         description: page.intro,
         path: `/company/${page.slug}`,
+        // Eyebrows that already carry the brand name are used verbatim so the
+        // metadata template does not append it twice.
+        absoluteTitle: page.eyebrow.includes(site.name),
       })
     : { title: "Page not found" };
 }
