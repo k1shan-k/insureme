@@ -107,7 +107,9 @@ The assessment route talks to Supabase through PostgREST over `fetch`, not a TCP
 
 ### Rate limiting does not survive serverless — configure it at the edge
 
-`src/lib/rateLimit.ts` keeps counters in module scope. On Vercel and Netlify that state is **per warm instance**, and the platform runs many instances concurrently and recycles them freely. The in-process limiter is therefore a courtesy speed bump, not protection. Traffic spread across instances is effectively unlimited.
+`src/lib/rateLimit.ts` keeps counters in module scope. On Vercel and Netlify that state does not persist between invocations.
+
+**This was measured, not assumed.** Serving the Netlify build locally (`netlify serve`, which runs the real Functions runtime), 28 consecutive requests to `/api/claims/notifications` carrying a constant client IP returned `422` every time and never once returned `429`. The identical code under `next start` limits on the 5th request. Both `x-nf-client-connection-ip` and `x-forwarded-for` were tried. Treat the in-process limiter as providing **no** protection on Netlify.
 
 Configure real protection on the platform before accepting live submissions:
 
@@ -144,12 +146,30 @@ CLAIMS_NOTIFICATION_WEBHOOK_URL   https://<receiver>/...
 CLAIMS_NOTIFICATION_WEBHOOK_TOKEN <bearer token>
 ```
 
-Netlify additionally needs `@netlify/plugin-nextjs` for App Router route handlers.
+Netlify configuration is committed in `netlify.toml`: build command, publish directory, `@netlify/plugin-nextjs` (pinned in `devDependencies`), `NODE_VERSION=20`, `NPM_FLAGS=--ci` so a lockfile mismatch fails the build, `Cache-Control: no-store` on `/api/*`, and baseline security headers. Deploy-preview and branch-deploy contexts blank `NEXT_PUBLIC_SITE_URL` so previews resolve their own deploy URL rather than advertising the production origin.
+
+The route handlers are bundled into a single Node function (`___netlify-server-handler`). Do not move them to the Edge runtime: the assessment route decodes a legacy Supabase JWT with `Buffer`, which Edge does not provide.
 
 **Preview deployments must not share production intake.** Leave `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and the claims variables unset in the Preview/Deploy-Preview context so preview intake fails closed with a generic 503, or point previews at a separate staging project with the same schema and its own secret.
 
-### Database schema
+### Netlify Forms as an alternative intake sink
 
+Set `NETLIFY_FORMS_ENABLED=true` to route intake to Netlify Forms instead of Supabase and the claims webhook. Submissions then appear under **Forms** in the Netlify UI with the usual notifications, and no Supabase project is needed.
+
+Precedence is deliberate and not configurable:
+
+| Route | Sink used |
+| --- | --- |
+| `/api/risk-assessments` | Supabase if configured, otherwise Netlify Forms |
+| `/api/claims/notifications` | Webhook if configured, otherwise Netlify Forms |
+
+**Submission still goes through the route handlers.** The documented Netlify Forms pattern posts straight from the browser to a static file, which would bypass every guarantee these routes provide: allowlisted fields, enum validation, size caps, honeypot rejection, real-calendar-date checks, the issued `PI-`/`CLM-` reference, and the 24-hour deadline. So the handlers validate exactly as before and only then forward a normalised payload from the server. The React components are unchanged.
+
+**What you give up.** Netlify Forms has no upsert and no idempotency key. Supabase dedupes on `submission_id`, so an unchanged retry returns the original reference without creating a second record. Netlify Forms cannot: a retry creates a second submission carrying the same `reference`, and operations staff must dedupe on that value. This was measured, not assumed — submitting the same claim twice produced two submissions with reference `CLM-2026-6276B4EB`. Prefer Supabase when duplicate-free intake matters. Note also that free-plan submission quotas apply, and that submissions are then stored in the Netlify UI, a different data location with its own access controls, for material including contract addresses, security-control descriptions and incident history.
+
+**`public/__forms.html` is load-bearing.** Netlify detects forms by scanning static HTML at deploy time, and accepts only the form and field names it detected. Next.js App Router pages are not emitted as static HTML for this purpose, so `data-netlify` attributes in React have no effect — and `@netlify/plugin-nextjs@5` intentionally fails the build if it finds them without a static detection file. Any field added to a payload must also be declared in `public/__forms.html`, or Netlify silently drops it.
+
+### Database schema
 `supabase/migrations/0001_risk_assessments.sql` creates `public.risk_assessments` with the unique `submission_id` conflict target the route requires, the workflow status constraint, the operations queue columns and indexes, RLS enabled with no policy, and privileges revoked from `anon`/`authenticated`. Run it in the Supabase SQL editor **before** setting the environment variables, or inserts fail with `PGRST204` (missing column) or `42P10` (no unique constraint on the conflict target).
 
 ### Exercising the forms locally

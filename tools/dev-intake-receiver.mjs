@@ -47,6 +47,7 @@ const CLAIMS_TOKEN = process.env.DEV_CLAIMS_TOKEN || "dev-claims-token";
 
 const ASSESSMENTS_LOG = join(DATA_DIR, "risk_assessments.jsonl");
 const CLAIMS_LOG = join(DATA_DIR, "claims_notifications.jsonl");
+const FORMS_LOG = join(DATA_DIR, "netlify_form_submissions.jsonl");
 
 // The claims route refuses any webhook URL that is not HTTPS, with no
 // development exception, so TLS is required to exercise that form locally.
@@ -60,6 +61,8 @@ const useTls = existsSync(TLS_CERT) && existsSync(TLS_KEY);
 const assessments = new Map();
 /** Idempotency-Key -> stored claim reference */
 const claims = new Map();
+/** Netlify Forms submissions captured this run */
+const formSubmissions = [];
 
 function json(res, status, body) {
   const raw = JSON.stringify(body);
@@ -128,11 +131,15 @@ const handler = async (req, res) => {
       ok: true,
       assessments: assessments.size,
       claims: claims.size,
+      netlifyForms: formSubmissions.length,
       dataDir: DATA_DIR,
     });
   }
   if (req.method === "GET" && path === "/_dev/assessments") {
     return json(res, 200, [...assessments.values()]);
+  }
+  if (req.method === "GET" && path === "/_dev/forms") {
+    return json(res, 200, formSubmissions);
   }
   if (req.method === "GET" && path === "/_dev/claims") {
     return json(res, 200, [...claims.entries()].map(([key, reference]) => ({ key, reference })));
@@ -220,6 +227,36 @@ const handler = async (req, res) => {
     return json(res, 202, { accepted: true, reference: payload?.reference ?? null });
   }
 
+  // ---- Netlify Forms detection-file stand-in ------------------------------
+  // Netlify accepts submissions as urlencoded POSTs to the static detection
+  // file, identifying the target form by the `form-name` field. This mirrors
+  // that contract so the server-side sink can be verified locally.
+  if (req.method === "POST" && path === "/__forms.html") {
+    const ct = String(req.headers["content-type"] || "");
+    if (!ct.startsWith("application/x-www-form-urlencoded")) {
+      console.log(`[forms] rejected: wrong Content-Type "${ct}"`);
+      return json(res, 415, { error: "expected application/x-www-form-urlencoded" });
+    }
+
+    const fields = Object.fromEntries(new URLSearchParams(await body(req)));
+    const formName = fields["form-name"];
+    if (!formName) {
+      console.log("[forms] rejected: missing form-name");
+      return json(res, 400, { error: "form-name required" });
+    }
+
+    await appendFile(
+      FORMS_LOG,
+      `${JSON.stringify({ formName, receivedAt: new Date().toISOString(), fields })}\n`,
+      "utf8",
+    );
+    formSubmissions.push({ formName, fields });
+    console.log(
+      `[forms] ${formName}: ${Object.keys(fields).length} fields, reference=${fields.reference}`,
+    );
+    return json(res, 200, { ok: true });
+  }
+
   return json(res, 404, { error: "not found" });
 };
 
@@ -241,5 +278,6 @@ server.listen(PORT, "127.0.0.1", () => {
   }
   console.log(`  assessments (PostgREST shim)  /rest/v1/risk_assessments  [${assessments.size} loaded]`);
   console.log(`  claims webhook                /claims-webhook            [${claims.size} loaded]`);
-  console.log(`  inspect                       /_dev/assessments  /_dev/claims  /_dev/health`);
+  console.log(`  netlify forms stand-in        /__forms.html`);
+  console.log(`  inspect                       /_dev/assessments  /_dev/claims  /_dev/forms  /_dev/health`);
 });

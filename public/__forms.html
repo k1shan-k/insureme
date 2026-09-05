@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Form detection</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <!--
+      Deploy-time form detection for Netlify Forms. Never shown to users.
+
+      Netlify detects forms by scanning STATIC HTML at deploy time, and only the
+      form and field names it detects are accepted at runtime. Next.js App Router
+      pages are not emitted as static HTML for this purpose, so `data-netlify`
+      attributes placed in React components have no effect. This file is the
+      supported workaround.
+
+      Consequences to respect when editing:
+        * Every field posted at runtime MUST be declared here, or Netlify
+          silently drops it.
+        * The `name` of each form MUST match the `form-name` value sent by
+          src/lib/netlifyForms.ts.
+        * Do NOT add `data-netlify` to the React form components. The Next.js
+          runtime fails the build when it finds those attributes without a
+          static detection file, and they would do nothing anyway.
+    -->
+
+    <!-- Assessment intake: mirrors the payload built in
+         src/app/api/risk-assessments/route.ts -->
+    <form name="risk-assessment" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="risk-assessment" />
+      <input name="reference" type="text" />
+      <input name="submissionId" type="text" />
+      <input name="receivedAt" type="text" />
+      <input name="responseDueAt" type="text" />
+      <input name="reviewType" type="text" />
+      <input name="responseTargetHours" type="text" />
+      <input name="protocol" type="text" />
+      <input name="legalName" type="text" />
+      <input name="website" type="text" />
+      <input name="category" type="text" />
+      <input name="jurisdiction" type="text" />
+      <input name="protocolDescription" type="text" />
+      <input name="tvl" type="text" />
+      <input name="chains" type="text" />
+      <input name="contractDetails" type="text" />
+      <input name="audits" type="text" />
+      <input name="auditDetails" type="text" />
+      <input name="governance" type="text" />
+      <input name="admin" type="text" />
+      <input name="oracles" type="text" />
+      <input name="dependencies" type="text" />
+      <input name="securityControls" type="text" />
+      <input name="incidentHistory" type="text" />
+      <input name="incidentDetails" type="text" />
+      <input name="interests" type="text" />
+      <input name="coverageObjectives" type="text" />
+      <input name="requestedLimit" type="text" />
+      <input name="targetEffectiveDate" type="text" />
+      <input name="policyPeriod" type="text" />
+      <input name="name" type="text" />
+      <input name="email" type="text" />
+      <input name="role" type="text" />
+      <input name="phone" type="text" />
+      <input name="preferredContact" type="text" />
+      <input name="notes" type="text" />
+      <input name="authorityConfirmed" type="text" />
+    </form>
+
+    <!-- Claims intake: mirrors the payload built in
+         src/app/api/claims/notifications/route.ts -->
+    <form name="claims-notification" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="claims-notification" />
+      <input name="reference" type="text" />
+      <input name="submissionId" type="text" />
+      <input name="receivedAt" type="text" />
+      <input name="policyReference" type="text" />
+      <input name="organization" type="text" />
+      <input name="contactName" type="text" />
+      <input name="email" type="text" />
+      <input name="role" type="text" />
+      <input name="phone" type="text" />
+      <input name="discoveredAt" type="text" />
+      <input name="discoveredAtLocal" type="text" />
+      <input name="timezoneOffsetMinutes" type="text" />
+      <input name="timezone" type="text" />
+      <input name="incidentType" type="text" />
+      <input name="incidentStatus" type="text" />
+      <input name="summary" type="text" />
+      <input name="affectedSystems" type="text" />
+      <input name="transactionHashes" type="text" />
+      <input name="estimatedLoss" type="text" />
+      <input name="mitigation" type="text" />
+      <input name="evidenceLinks" type="text" />
+      <input name="acknowledgement" type="text" />
+    </form>
+  </body>
+</html>
