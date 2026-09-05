@@ -152,6 +152,10 @@ The route handlers are bundled into a single Node function (`___netlify-server-h
 
 **Preview deployments must not share production intake.** Leave `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and the claims variables unset in the Preview/Deploy-Preview context so preview intake fails closed with a generic 503, or point previews at a separate staging project with the same schema and its own secret.
 
+**Deploy from Git, not from a working directory.** Connect the repository in Netlify so builds run from a clean checkout. `netlify deploy --build` builds in whatever directory it is run from, and the Next.js runtime copies `.env.local` into the function bundle at `.netlify/functions-internal/___netlify-server-handler/.env.local`. A local development `.env.local` therefore becomes live production configuration.
+
+This was observed, not theorised. A local file pointing `SUPABASE_URL` and `CLAIMS_NOTIFICATION_WEBHOOK_URL` at `https://127.0.0.1:4000` was deployed, and the claims route then returned 503 for every submission: it accepts any HTTPS webhook, so it tried to POST to loopback and failed in roughly 50 ms without ever reaching the Netlify Forms fallback. Assessment intake survived only because its stricter production rule requires a `<project-ref>.supabase.co` host, rejected the loopback origin, and fell through to Netlify Forms. If the file had held real credentials they would have shipped inside a deployed artifact. Verify with `find .netlify -name ".env*"` after any local build; it should return nothing.
+
 ### Netlify Forms as an alternative intake sink
 
 Set `NETLIFY_FORMS_ENABLED=true` to route intake to Netlify Forms instead of Supabase and the claims webhook. Submissions then appear under **Forms** in the Netlify UI with the usual notifications, and no Supabase project is needed.
