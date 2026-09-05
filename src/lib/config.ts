@@ -1,11 +1,22 @@
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
 const vercelDeploymentUrl = process.env.VERCEL_URL?.trim();
+// Netlify sets no VERCEL_* variables. `URL` is the production site origin and
+// `DEPLOY_PRIME_URL` the per-deploy origin; both are read only when NETLIFY is
+// set, because `URL` is too generic a name to trust elsewhere.
+const netlifySiteUrl = process.env.NETLIFY ? process.env.URL?.trim() : undefined;
+const netlifyDeployUrl = process.env.NETLIFY
+  ? process.env.DEPLOY_PRIME_URL?.trim()
+  : undefined;
 const configuredClientPortalUrl =
   process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL?.trim();
 
 type SiteUrlSource =
-  "NEXT_PUBLIC_SITE_URL" | "VERCEL_PROJECT_PRODUCTION_URL" | "VERCEL_URL";
+  | "NEXT_PUBLIC_SITE_URL"
+  | "VERCEL_PROJECT_PRODUCTION_URL"
+  | "VERCEL_URL"
+  | "URL"
+  | "DEPLOY_PRIME_URL";
 
 function parseSiteOrigin(
   value: string,
@@ -57,9 +68,15 @@ function resolveSiteUrl() {
   if (vercelDeploymentUrl) {
     return parseSiteOrigin(vercelDeploymentUrl, "VERCEL_URL", true);
   }
+  if (netlifySiteUrl) {
+    return parseSiteOrigin(netlifySiteUrl, "URL", true);
+  }
+  if (netlifyDeployUrl) {
+    return parseSiteOrigin(netlifyDeployUrl, "DEPLOY_PRIME_URL", true);
+  }
   if (process.env.NODE_ENV === "production") {
     throw new Error(
-      "A public site origin is required in production. Set NEXT_PUBLIC_SITE_URL or expose Vercel system environment variables.",
+      "A public site origin is required in production. Set NEXT_PUBLIC_SITE_URL, or expose the Vercel/Netlify system environment variables.",
     );
   }
 

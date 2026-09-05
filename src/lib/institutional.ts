@@ -11,9 +11,9 @@ export const companyPages: InstitutionalPage[] = [
   {
     slug: "about",
     title: "Underwriting for digital-asset protocols and infrastructure.",
-    eyebrow: "About Meridian Risk",
+    eyebrow: "About Prime Insurances",
     intro:
-      "Meridian Risk evaluates defined technical, economic and operational exposures and structures insurance coverage around documented policy boundaries.",
+      "Prime Insurances evaluates defined technical, economic and operational exposures and structures insurance coverage around documented policy boundaries.",
     sections: [
       {
         heading: "Purpose",
@@ -83,7 +83,7 @@ export const companyPages: InstitutionalPage[] = [
     title: "Careers in digital-asset insurance and risk.",
     eyebrow: "Careers",
     intro:
-      "Meridian Risk considers candidates with experience in underwriting, protocol security, claims, insurance law and risk data.",
+      "Prime Insurances considers candidates with experience in underwriting, protocol security, claims, insurance law and risk data.",
     sections: [
       {
         heading: "Professional disciplines",
@@ -101,11 +101,11 @@ export const companyPages: InstitutionalPage[] = [
       {
         heading: "Current opportunities",
         paragraphs: [
-          "Open roles are communicated through authorized Meridian Risk channels. Unsolicited material should not contain confidential information, credentials or details of undisclosed vulnerabilities.",
+          "Open roles are communicated through authorized Prime Insurances channels. Unsolicited material should not contain confidential information, credentials or details of undisclosed vulnerabilities.",
         ],
       },
     ],
-    cta: { label: "About Meridian Risk", href: "/company/about" },
+    cta: { label: "About Prime Insurances", href: "/company/about" },
   },
 ];
 

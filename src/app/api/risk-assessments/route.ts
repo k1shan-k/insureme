@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { insurancePrograms } from "@/lib/programs";
+import { createIpRateLimiter } from "@/lib/rateLimit";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID =
@@ -117,7 +118,12 @@ const ALLOWED_POLICY_PERIODS = new Set([
 ]);
 const ALLOWED_CONTACT_METHODS = new Set(["Email", "Telephone", "Video call"]);
 
-const rateBuckets = new Map<string, number[]>();
+// Per-instance only. See src/lib/rateLimit.ts — edge rate limiting is required
+// in production on Vercel/Netlify.
+const isRateLimited = createIpRateLimiter({
+  limit: RATE_LIMIT,
+  windowMs: RATE_WINDOW_MS,
+});
 
 function text(value: unknown, max: number) {
   return typeof value === "string" && value.length <= max ? value.trim() : null;
@@ -459,20 +465,6 @@ function intakeUnavailable() {
   );
 }
 
-function isRateLimited(request: Request) {
-  const forwarded =
-    request.headers.get("cf-connecting-ip") ||
-    request.headers.get("x-forwarded-for");
-  const key = forwarded?.split(",")[0]?.trim() || "unknown";
-  const now = Date.now();
-  const recent = (rateBuckets.get(key) || []).filter(
-    (timestamp) => now - timestamp < RATE_WINDOW_MS,
-  );
-  recent.push(now);
-  rateBuckets.set(key, recent);
-  return recent.length > RATE_LIMIT;
-}
-
 export async function POST(request: Request) {
   if (
     !request.headers
@@ -672,7 +664,7 @@ export async function POST(request: Request) {
   const responseDueAt = new Date(
     Date.parse(receivedAt) + 24 * 60 * 60 * 1_000,
   ).toISOString();
-  const reference = `MR-${new Date(receivedAt).getUTCFullYear()}-${submissionId.replaceAll("-", "").slice(0, 8).toUpperCase()}`;
+  const reference = `PI-${new Date(receivedAt).getUTCFullYear()}-${submissionId.replaceAll("-", "").slice(0, 8).toUpperCase()}`;
   const payload: Record<string, unknown> = {
     submissionId,
     reference,

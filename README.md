@@ -1,6 +1,6 @@
-# Meridian Risk
+# Prime Insurances
 
-A Next.js website presenting general information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure. Public copy is intentionally non-binding: transaction documents control coverage.
+A Next.js website for **Prime Insurances** presenting general information about preliminary underwriting review and potential insurance coverage for digital-asset protocols and infrastructure. Public copy is intentionally non-binding: transaction documents control coverage.
 
 ## Tech stack
 
@@ -25,7 +25,11 @@ npm run build
 npm start
 ```
 
-`NEXT_PUBLIC_SITE_URL` is the preferred production origin and must contain the verified public HTTPS origin only, without credentials, a path, query parameters, or a fragment. On Vercel, builds fall back to `VERCEL_PROJECT_PRODUCTION_URL` and then `VERCEL_URL` when the explicit value is blank. The resolved origin supplies route-correct canonical metadata, the sitemap, and robots configuration. Non-Vercel production builds must set `NEXT_PUBLIC_SITE_URL`.
+`NEXT_PUBLIC_SITE_URL` is the preferred production origin and must contain the verified public HTTPS origin only, without credentials, a path, query parameters, or a fragment. The canonical Prime Insurances origin is <https://primeinsurances.com>. On Vercel, builds fall back to `VERCEL_PROJECT_PRODUCTION_URL` and then `VERCEL_URL` when the explicit value is blank. The resolved origin supplies route-correct canonical metadata, the sitemap, and robots configuration. Non-Vercel production builds must set `NEXT_PUBLIC_SITE_URL`.
+
+## Brand
+
+The identity is an original Prime Insurances identity. Use "Prime Insurances" in prose; do not shorten it to "Prime Insurance" or "Prime". Page titles end in `Prime Insurances` via the root metadata template. The logo mark combines a protective shield with a geometric **P** and is defined inline in `src/components/ui/Logo.tsx`. Assessment references use the `PI-` prefix. The former "Meridian Risk" name must not be reintroduced in user-facing copy, code, examples, or documentation.
 
 ## Design system
 
@@ -93,6 +97,71 @@ Copy `.env.example` into the deployment's environment configuration and set only
 
 The application does not claim a deployment adapter. Validate the build, runtime, environment handling, Supabase persistence, claims-webhook behavior, and edge protections on the selected production platform.
 
+## Deployment (Vercel / Netlify)
+
+Both intake routes are Next.js route handlers, so on Vercel and Netlify they run as **serverless functions**. That constrains the design in ways worth stating explicitly.
+
+### Why Supabase over HTTPS is the right store here
+
+The assessment route talks to Supabase through PostgREST over `fetch`, not a TCP Postgres connection. This is deliberate and suits serverless: there is no connection pool to exhaust across cold starts, and no pooler to configure. Do not swap in a direct-Postgres client without adding a pooler.
+
+### Rate limiting does not survive serverless — configure it at the edge
+
+`src/lib/rateLimit.ts` keeps counters in module scope. On Vercel and Netlify that state is **per warm instance**, and the platform runs many instances concurrently and recycles them freely. The in-process limiter is therefore a courtesy speed bump, not protection. Traffic spread across instances is effectively unlimited.
+
+Configure real protection on the platform before accepting live submissions:
+
+- **Vercel** — Firewall / WAF rate-limiting rules scoped to `/api/risk-assessments` and `/api/claims/notifications`, or `@upstash/ratelimit` backed by a shared store.
+- **Netlify** — function-level rate limiting, or an equivalent shared store.
+
+Client IP is read only from headers a trusted platform edge writes: `cf-connecting-ip` (Cloudflare), `x-nf-client-connection-ip` (Netlify), `x-vercel-forwarded-for` (Vercel). Bare `x-forwarded-for` is trusted **only** when `VERCEL` or `NETLIFY` is set, because any client can send it. When no trusted header is present the routes do not apply per-IP limiting at all rather than collapsing every caller into one shared bucket, which would let a single client exhaust the quota for everyone.
+
+### Function timeout budget
+
+The assessment route creates one `AbortSignal.timeout(8_000)` and shares it across both the insert and the duplicate-lookup request, so the Supabase phase cannot exceed 8s in total. That fits the 10s default function limit on Vercel Hobby and Netlify. If you lower the platform timeout below 10s, lower the signal to match.
+
+### Resolving the public origin
+
+`NEXT_PUBLIC_SITE_URL` is preferred everywhere. When it is blank the origin is resolved in this order:
+
+| Platform | Fallbacks used |
+| --- | --- |
+| Vercel | `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL` |
+| Netlify | `URL`, then `DEPLOY_PRIME_URL` (read only when `NETLIFY` is set) |
+| Anything else | none — the production build fails closed |
+
+A production build with no resolvable origin throws by design, because the sitemap, robots and canonical metadata would otherwise be silently wrong.
+
+### Environment variables per platform
+
+Set these as **server-side** variables in the platform dashboard, scoped per context. Never prefix the Supabase or claims secrets with `NEXT_PUBLIC_`.
+
+```
+NEXT_PUBLIC_SITE_URL              https://primeinsurances.com
+SUPABASE_URL                      https://<project-ref>.supabase.co
+SUPABASE_SECRET_KEY               sb_secret_...
+CLAIMS_NOTIFICATION_WEBHOOK_URL   https://<receiver>/...
+CLAIMS_NOTIFICATION_WEBHOOK_TOKEN <bearer token>
+```
+
+Netlify additionally needs `@netlify/plugin-nextjs` for App Router route handlers.
+
+**Preview deployments must not share production intake.** Leave `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and the claims variables unset in the Preview/Deploy-Preview context so preview intake fails closed with a generic 503, or point previews at a separate staging project with the same schema and its own secret.
+
+### Database schema
+
+`supabase/migrations/0001_risk_assessments.sql` creates `public.risk_assessments` with the unique `submission_id` conflict target the route requires, the workflow status constraint, the operations queue columns and indexes, RLS enabled with no policy, and privileges revoked from `anon`/`authenticated`. Run it in the Supabase SQL editor **before** setting the environment variables, or inserts fail with `PGRST204` (missing column) or `42P10` (no unique constraint on the conflict target).
+
+### Exercising the forms locally
+
+Neither form can submit without external infrastructure. For local work, `tools/dev-intake-receiver.mjs` stands in for both — a PostgREST-shaped store for assessments and an HTTPS claims webhook that deduplicates on `Idempotency-Key`:
+
+```bash
+./tools/dev-with-local-intake.sh      # receiver on loopback + next dev
+```
+
+It is **development only**. It writes submissions as JSON lines outside the repository, does not implement Postgres types, constraints or RLS, and must never receive production traffic. The assessment route only accepts an `http`/non-`supabase.co` origin when `NODE_ENV` is not `production`, so this wiring is deliberately unusable in a production build.
+
 ## Assessment intake and manual review
 
 `/risk-assessment` is a five-step intake: Organization; Architecture & controls; Coverage request; Review details; Contact & submit. Step four is a read-only summary with edit controls. Client validation prevents incomplete steps from advancing, while `POST /api/risk-assessments` remains authoritative and accepts only an allowlisted JSON body of at most 128 KB. The expanded cap accommodates the bounded character limits after UTF-8 encoding and JSON escaping.
@@ -151,7 +220,8 @@ The form does not accept file uploads. It instructs users not to provide seed ph
 Do not launch until all of the following are complete:
 
 - Verify the resolved production origin: set `NEXT_PUBLIC_SITE_URL` to the approved canonical domain, or confirm the Vercel system-domain fallback is correct. Verify every configured public contact and portal value.
-- Verify direct assessment persistence in the production Supabase project, including unchanged-retry deduplication by `submission_id`, original-reference retention, `new` status, and the 24-hour `response_due_at`; separately verify claims-webhook deduplication using `Idempotency-Key`.
+- Run `supabase/migrations/0001_risk_assessments.sql` against the production project, then verify direct assessment persistence in that project, including unchanged-retry deduplication by `submission_id`, original-reference retention, `new` status, and the 24-hour `response_due_at`; separately verify claims-webhook deduplication using `Idempotency-Key`.
+- Enable platform-level rate limiting on both intake routes. The in-process limiter is per serverless instance and is not a substitute.
 - Configure manual assessment assignment, queue monitoring, and escalation so every complete submission receives an assessment and quotation within 24 hours or a status update within that period.
 - Approve all public legal, entity, regulatory, carrier, capacity, and transaction facts before publication.
 - Obtain display approval for every partner, carrier, customer, insured-project name, logo, or relationship reference.

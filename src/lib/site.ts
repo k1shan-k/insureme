@@ -1,5 +1,5 @@
 export const site = {
-  name: "Meridian Risk",
+  name: "Prime Insurances",
   legalName: process.env.NEXT_PUBLIC_LEGAL_NAME || "",
   tagline: "Insurance and underwriting for digital-asset risk.",
   year: new Date().getUTCFullYear(),
