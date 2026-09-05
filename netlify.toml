@@ -5,15 +5,15 @@
 # route decodes a legacy Supabase JWT with `Buffer`, which Edge does not provide.
 
 [build]
-  command = "npm run build"
+  # Netlify's automatic dependency step runs `npm install`, not `npm ci`, and
+  # `npm install` may update package-lock.json. Running `npm ci` explicitly here
+  # makes the committed lockfile authoritative and fails the build on a mismatch.
+  command = "npm ci && npm run build"
   publish = ".next"
 
 [build.environment]
   # Next.js 14.2 and @netlify/plugin-nextjs 5 both require Node >= 18.
   NODE_VERSION = "20"
-  # Fail the build on a lockfile mismatch rather than silently resolving new
-  # transitive versions.
-  NPM_FLAGS = "--ci"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
