@@ -5,10 +5,12 @@
 # route decodes a legacy Supabase JWT with `Buffer`, which Edge does not provide.
 
 [build]
-  # Netlify's automatic dependency step runs `npm install`, not `npm ci`, and
-  # `npm install` may update package-lock.json. Running `npm ci` explicitly here
-  # makes the committed lockfile authoritative and fails the build on a mismatch.
-  command = "npm ci && npm run build"
+  # NEXT_PUBLIC_* values are inlined at build time, whereas Netlify's URL /
+  # DEPLOY_PRIME_URL are runtime-unreliable inside the server function. So the
+  # origin must be resolved HERE and baked in, otherwise every route 500s.
+  # `npm ci` (rather than Netlify's automatic `npm install`) makes the committed
+  # lockfile authoritative and fails the build on a mismatch.
+  command = "npm ci && NEXT_PUBLIC_SITE_URL=\"${NEXT_PUBLIC_SITE_URL:-$URL}\" npm run build"
   publish = ".next"
 
 [build.environment]
@@ -32,12 +34,17 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "DENY"
 
-# The policyholder portal page is already noindex in its route metadata; keep
-# deploy previews out of search results entirely.
-[context.deploy-preview]
-  [context.deploy-preview.environment]
-    NEXT_PUBLIC_SITE_URL = ""
+# Previews should not be indexed, and should not compete with the production
+# origin in search. Handled with a noindex header rather than by rewriting the
+# origin: DEPLOY_PRIME_URL is derived from the branch name, and a branch
+# containing "/" yields a URL with a path, which fails origin validation and
+# breaks the build.
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
 
-[context.branch-deploy]
-  [context.branch-deploy.environment]
-    NEXT_PUBLIC_SITE_URL = ""
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"

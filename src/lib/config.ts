@@ -18,6 +18,13 @@ type SiteUrlSource =
   | "URL"
   | "DEPLOY_PRIME_URL";
 
+/**
+ * Last-resort origin used only when a production *request* cannot resolve one.
+ * Serving pages with imperfect metadata is strictly better than returning 500
+ * for every route, which is what throwing at module scope would do.
+ */
+const RUNTIME_FALLBACK_ORIGIN = "https://localhost";
+
 function parseSiteOrigin(
   value: string,
   source: SiteUrlSource,
@@ -75,9 +82,24 @@ function resolveSiteUrl() {
     return parseSiteOrigin(netlifyDeployUrl, "DEPLOY_PRIME_URL", true);
   }
   if (process.env.NODE_ENV === "production") {
-    throw new Error(
-      "A public site origin is required in production. Set NEXT_PUBLIC_SITE_URL, or expose the Vercel/Netlify system environment variables.",
+    // Fail the BUILD closed. A missing origin would otherwise produce silently
+    // wrong canonical metadata, sitemap and robots.
+    if (process.env.NEXT_PHASE === "phase-production-build") {
+      throw new Error(
+        "A public site origin is required in production. Set NEXT_PUBLIC_SITE_URL, or expose the Vercel/Netlify system environment variables.",
+      );
+    }
+
+    // At REQUEST time, never take the whole site down over metadata.
+    // NEXT_PUBLIC_* values are inlined at build time, while URL / VERCEL_URL are
+    // read at runtime and are NOT guaranteed inside a serverless function. A
+    // context that blanked NEXT_PUBLIC_SITE_URL would otherwise throw here at
+    // module scope and return 500 for every route. Prerendered pages already
+    // carry the origin resolved during the build, so degrade loudly instead.
+    console.error(
+      "Public site origin could not be resolved at runtime. Set NEXT_PUBLIC_SITE_URL so it is baked into the build; canonical metadata may be incorrect until then.",
     );
+    return RUNTIME_FALLBACK_ORIGIN;
   }
 
   return "http://localhost:3000";
